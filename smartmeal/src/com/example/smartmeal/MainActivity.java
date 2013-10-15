@@ -2,17 +2,16 @@ package com.example.smartmeal;
 
 import java.util.Locale;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -69,7 +68,7 @@ public class MainActivity extends FragmentActivity {
 			// getItem is called to instantiate the fragment for the given page.
 			// Return a DummySectionFragment (defined as a static inner class
 			// below) with the page number as its lone argument.
-			Fragment fragment = new DummySectionFragment();
+			Fragment fragment = new DummySectionFragment(MainActivity.this);
 			Bundle args = new Bundle();
 			args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
 			fragment.setArguments(args);
@@ -101,6 +100,7 @@ public class MainActivity extends FragmentActivity {
 	 * A dummy fragment representing a section of the app, but that simply
 	 * displays dummy text.
 	 */
+	@SuppressLint("ValidFragment")
 	public static class DummySectionFragment extends Fragment {
 
 		/**
@@ -108,8 +108,11 @@ public class MainActivity extends FragmentActivity {
 		 * fragment.
 		 */
 		public static final String	ARG_SECTION_NUMBER	= "section_number";
-
-		public DummySectionFragment() {}
+		public static Activity activity;
+		
+		public DummySectionFragment(Activity activity){
+			DummySectionFragment.activity = activity;
+		}
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -117,6 +120,7 @@ public class MainActivity extends FragmentActivity {
 			View rootView = inflater.inflate(R.layout.fragment_main_dummy, container, false);
 			TextView dummyTextView = (TextView) rootView.findViewById(R.id.section_label);
 			dummyTextView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
+//			dummyTextView.setText((new Dummy()).setupKnowledgeBase(DummySectionFragment.activity));
 			return rootView;
 		}
 	}

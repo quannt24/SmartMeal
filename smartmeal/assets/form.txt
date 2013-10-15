@@ -1,0 +1,12 @@
+ingredients,kind,energy(KCal),protein(g),fat(g),carbon(g),sugar(g)
+#per 100g
+#kind is one of
+	# cereal
+	# vegetable
+	# meat
+	# fish
+	# egg
+	# spice
+	# drink
+	
+dish,ingredient_1,weight_1,quantity_2,weight_2 
