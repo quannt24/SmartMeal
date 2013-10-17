@@ -9,13 +9,13 @@ HOW TO RUN
 
 0. Go to <SDK>/tools/ant/build.xml. Replace 
 
-0.a target name="-dex" depends="-compile, -post-compile, -obfuscate"
-    by
-0.b target name="-dex" depends="-jarjar"
+1. target name="-dex" depends="-compile, -post-compile, -obfuscate"
+2. by
+3. target name="-dex" depends="-jarjar"
 
-1. You need to install Ant (plugin or standalone)
-2. Then, clean your project
-3. Choose ant debug or run $ant debug
-4. Go to the bin/ directory of the project
-5. Execute adb install -r MainActivity-debug.apk
-6. The result on the device is 3 tabs with my type BMI: 1 (little overweight)
+4. You need to install Ant (plugin or standalone)
+5. Then, clean your project
+6. Choose ant debug or run $ant debug
+7. Go to the bin/ directory of the project
+8. Execute adb install -r MainActivity-debug.apk
+9. The result on the device is 3 tabs with my type BMI: 1 (little overweight)
