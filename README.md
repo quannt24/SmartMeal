@@ -7,11 +7,11 @@ You need to update SDK building-tools ^^ it took me 3 hours to complete download
 HOW TO RUN
 ==========
 
-0. Go to <SDK>/tools/ant/build.xml
-    Replace
-  target name="-dex" depends="-compile, -post-compile, -obfuscate"
+0. Go to <SDK>/tools/ant/build.xml. Replace 
+
+0.a target name="-dex" depends="-compile, -post-compile, -obfuscate"
     by
-  target name="-dex" depends="-jarjar"
+0.b target name="-dex" depends="-jarjar"
 
 1. You need to install Ant (plugin or standalone)
 2. Then, clean your project
