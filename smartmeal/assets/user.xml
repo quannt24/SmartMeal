@@ -3,8 +3,7 @@
 	<name>RuleExecutionSet</name>
 	<description>Rule Execution Set</description>
 
-	<synonymn name="user" class="com.ict.ke.engine.user.User" />
-	<synonymn name="eval" class="com.ict.ke.engine.Evaluate" />
+	<synonymn name="user" class="com.example.smartmeal.engine.User" />
 
 	<!-- BMI evaluation -->
 	<rule name="Rule1" description="BMI evaluation">

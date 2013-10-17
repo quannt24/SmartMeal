@@ -16,6 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.smartmeal.engine.Dummy;
+
 public class MainActivity extends FragmentActivity {
 
 	/**
@@ -34,6 +36,7 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
 		setContentView(R.layout.activity_main);
 
 		// Create the adapter that will return a fragment for each of the three
@@ -108,9 +111,9 @@ public class MainActivity extends FragmentActivity {
 		 * fragment.
 		 */
 		public static final String	ARG_SECTION_NUMBER	= "section_number";
-		public static Activity activity;
-		
-		public DummySectionFragment(Activity activity){
+		public static Activity		activity;
+
+		public DummySectionFragment(Activity activity) {
 			DummySectionFragment.activity = activity;
 		}
 
@@ -120,7 +123,7 @@ public class MainActivity extends FragmentActivity {
 			View rootView = inflater.inflate(R.layout.fragment_main_dummy, container, false);
 			TextView dummyTextView = (TextView) rootView.findViewById(R.id.section_label);
 			dummyTextView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
-//			dummyTextView.setText((new Dummy()).setupKnowledgeBase(DummySectionFragment.activity));
+			dummyTextView.setText((new Dummy()).setupKnowledgeBase(DummySectionFragment.activity));
 			return rootView;
 		}
 	}

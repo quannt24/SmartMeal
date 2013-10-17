@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="MainActivity" default="help">
+<project name="MainActivity">
 
     <!-- The local.properties file is created and updated by the 'android' tool.
          It contains the path to the SDK. It should *NOT* be checked into
@@ -86,7 +86,17 @@
          In all cases you must update the value of version-tag below to read 'custom' instead of an integer,
          in order to avoid having your file be overridden by tools such as "android update project"
     -->
-    <!-- version-tag: 1 -->
+    <!-- version-tag: 2 -->
+    <target name="-jarjar" depends="-compile">
+        <taskdef name="jarjar" classname="com.tonicsystems.jarjar.JarJarTask"
+                 classpath="buildtools/jarjar-1.4.jar"/>
+        <jarjar jarfile="${out.absolute.dir}/repackagedclasses.jar">
+            <fileset dir="${out.classes.absolute.dir}" />
+            <zipgroupfileset dir="${jar.libs.absolute.dir}" includes="*.jar" />
+            <rule pattern="javax.rules.**" result="androidjavax.rules.@1"/>
+            <rule pattern="java.rmi.**" result="androidjavax.rmi.@1"/>
+        </jarjar>
+    </target>
     <import file="${sdk.dir}/tools/ant/build.xml" />
 
 </project>
