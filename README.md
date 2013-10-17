@@ -7,6 +7,12 @@ You need to update SDK building-tools ^^ it took me 3 hours to complete download
 HOW TO RUN
 ==========
 
+0. Go to <SDK>/tools/ant/build.xml
+    Replace
+  <target name="-dex" depends="-compile, -post-compile, -obfuscate">
+    by
+	<target name="-dex" depends="-jarjar">
+
 1. You need to install Ant (plugin or standalone)
 2. Then, clean your project
 3. Choose ant debug or run $ant debug
