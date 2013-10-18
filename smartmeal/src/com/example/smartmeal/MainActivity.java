@@ -16,8 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.smartmeal.engine.Dummy;
-
 public class MainActivity extends FragmentActivity {
 
 	/**
