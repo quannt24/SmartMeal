@@ -11,9 +11,7 @@ import java.util.List;
 
 import javax.rules.InvalidRuleSessionException;
 import javax.rules.StatefulRuleSession;
-import javax.rules.StatelessRuleSession;
 
-import org.jruleengine.Clause;
 import org.jruleengine.StatefulRuleSessionImpl;
 
 import com.ict.ke.engine.Evaluate;
@@ -22,7 +20,7 @@ import com.ict.ke.engine.user.User;
 
 /**
  * @author Quan T. Nguyen <br>
- * Hanoi University of Science and Technology
+ *         Hanoi University of Science and Technology
  */
 public class Tester {
 
@@ -37,12 +35,12 @@ public class Tester {
 		user.setHeight(165);
 		user.setWeight(72);
 		user.setActivity(Evaluate.ACTIVITY_MANY);
-		
+
 		Smie smie = new Smie();
 		StatefulRuleSession session = smie.setupSession("res/rule/calperday.xml");
-		
+
 		// TODO Test rules here
-		try {
+		try{
 			// Add input
 			ArrayList<Object> input = new ArrayList<Object>();
 			input.add(user);
@@ -58,12 +56,15 @@ public class Tester {
 			// Loop over the results.
 			Hashtable wm = ((StatefulRuleSessionImpl) session).getWorkingMemory();
 			Enumeration en = wm.keys();
-			while (en.hasMoreElements()) {
+			while(en.hasMoreElements()){
 				Object obj = en.nextElement();
 				System.out.println("Clause Found: " + obj + " " + wm.get(obj));
 			}
-		} catch (InvalidRuleSessionException | RemoteException e) {
-			// TODO Auto-generated catch block
+		}
+		catch (InvalidRuleSessionException e){
+			e.printStackTrace();
+		}
+		catch (RemoteException e){
 			e.printStackTrace();
 		}
 

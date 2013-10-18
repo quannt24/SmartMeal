@@ -57,7 +57,7 @@ public class Dummy {
 					RuleRuntime.STATELESS_SESSION_TYPE);
 
 			// Execute the rules without a filter.
-			List<User> users = new ArrayList<>();
+			List<User> users = new ArrayList<User>();
 			users.add(user);
 			statelessRuleSession.executeRules(users);
 			// TODO test
