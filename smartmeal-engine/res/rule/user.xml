@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rule-execution-set>
+	<name>RuleExecutionSet</name>
+	<description>Rule Execution Set</description>
+
+	<synonymn name="user" class="com.ict.ke.engine.user.User" />
+	<synonymn name="eval" class="com.ict.ke.engine.Evaluate" />
+
+	<!-- BMI evaluation -->
+	<rule name="Rule1" description="BMI evaluation">
+		<if leftTerm="user.getBMI" op="&lt;" rightTerm="15" />
+		<then method="user.setBMIType" arg1="-2" />
+	</rule>
+
+	<rule name="Rule2" description="BMI evaluation">
+		<if leftTerm="user.getBMI" op="&lt;" rightTerm="18.5" />
+		<then method="user.setBMIType" arg1="-1" />
+	</rule>
+
+	<rule name="Rule3" description="BMI evaluation">
+		<if leftTerm="user.getBMI" op="&lt;" rightTerm="25" />
+		<then method="user.setBMIType" arg1="0" />
+	</rule>
+
+	<rule name="Rule4" description="BMI evaluation">
+		<if leftTerm="user.getBMI" op="&lt;" rightTerm="30" />
+		<then method="user.setBMIType" arg1="1" />
+	</rule>
+
+	<rule name="Rule5" description="BMI evaluation">
+		<if leftTerm="user.getBMI" op=">=" rightTerm="30" />
+		<then method="user.setBMIType" arg1="2" />
+	</rule>
+
+</rule-execution-set>

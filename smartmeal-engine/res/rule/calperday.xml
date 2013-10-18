@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rule-execution-set>
+    <name>RESCalorPerDay</name>
+    <description>Rule Execution Set for calculating needed calor per day (in KCal)</description>
+
+    <synonymn name="user" class="com.ict.ke.engine.user.User" />
+    <synonymn name="prop" class="org.jruleengine.Clause" /> 
+    
+    <rule name="cpdR1">
+        <if leftTerm="user.getAge" op="&lt;" rightTerm="4" />
+        <then method="prop.setClause" arg1="kcalPerDay" arg2="1180" /> 
+    </rule>
+</rule-execution-set>
