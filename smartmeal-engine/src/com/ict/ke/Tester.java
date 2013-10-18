@@ -3,6 +3,10 @@
  */
 package com.ict.ke;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -37,10 +41,15 @@ public class Tester {
 		user.setActivity(Evaluate.ACTIVITY_MANY);
 
 		Smie smie = new Smie();
-		StatefulRuleSession session = smie.setupSession("res/rule/calperday.xml");
+		StatefulRuleSession session = null;
 
 		// TODO Test rules here
 		try{
+			InputStream inStream;
+			inStream = new FileInputStream(new File("res/rule/calperday.xml"));
+
+			session = smie.setupSession(inStream);
+
 			// Add input
 			ArrayList<Object> input = new ArrayList<Object>();
 			input.add(user);
@@ -61,14 +70,19 @@ public class Tester {
 				System.out.println("Clause Found: " + obj + " " + wm.get(obj));
 			}
 		}
+		catch (FileNotFoundException e){
+			e.printStackTrace();
+		}
 		catch (InvalidRuleSessionException e){
 			e.printStackTrace();
 		}
 		catch (RemoteException e){
 			e.printStackTrace();
 		}
+		finally{
+			smie.finishSession(session);
+		}
 
-		smie.finishSession(session);
 	}
 
 }
