@@ -123,7 +123,7 @@ public class MainActivity extends FragmentActivity {
 			View rootView = inflater.inflate(R.layout.fragment_main_dummy, container, false);
 			TextView dummyTextView = (TextView) rootView.findViewById(R.id.section_label);
 			dummyTextView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
-			dummyTextView.setText((new Dummy()).setupKnowledgeBase(DummySectionFragment.activity));
+			dummyTextView.setText((new Dummy()).setupKnowledgeBase(DummySectionFragment.activity) + "/" + 12);
 			return rootView;
 		}
 	}
