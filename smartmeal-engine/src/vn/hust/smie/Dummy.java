@@ -1,4 +1,4 @@
-package com.ict.ke;
+package vn.hust.smie;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -16,10 +16,11 @@ import javax.rules.admin.RuleExecutionSet;
 
 import org.junit.Test;
 
-import com.ict.ke.engine.Evaluate;
-import com.ict.ke.engine.Ingredient;
-import com.ict.ke.engine.Parser;
-import com.ict.ke.engine.user.User;
+import vn.hust.smie.engine.Evaluate;
+import vn.hust.smie.engine.Ingredient;
+import vn.hust.smie.engine.Parser;
+import vn.hust.smie.engine.user.User;
+
 
 public class Dummy {
 

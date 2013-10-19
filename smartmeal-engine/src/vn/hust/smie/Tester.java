@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.ict.ke;
+package vn.hust.smie;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,9 +18,10 @@ import javax.rules.StatefulRuleSession;
 
 import org.jruleengine.StatefulRuleSessionImpl;
 
-import com.ict.ke.engine.Evaluate;
-import com.ict.ke.engine.Smie;
-import com.ict.ke.engine.user.User;
+import vn.hust.smie.engine.Evaluate;
+import vn.hust.smie.engine.Smie;
+import vn.hust.smie.engine.user.User;
+
 
 /**
  * @author Quan T. Nguyen <br>

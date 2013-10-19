@@ -1,4 +1,4 @@
-package com.ict.ke.engine.user;
+package vn.hust.smie.engine.user;
 
 import java.util.Calendar;
 

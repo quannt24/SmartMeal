@@ -1,4 +1,4 @@
-package com.ict.ke.engine;
+package vn.hust.smie.engine;
 
 
 public class Ingredient {
