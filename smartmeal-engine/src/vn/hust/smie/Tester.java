@@ -18,72 +18,64 @@ import javax.rules.StatefulRuleSession;
 
 import org.jruleengine.StatefulRuleSessionImpl;
 
-import vn.hust.smie.engine.Evaluate;
-import vn.hust.smie.engine.Smie;
-import vn.hust.smie.engine.user.User;
-
-
 /**
  * @author Quan T. Nguyen <br>
  *         Hanoi University of Science and Technology
  */
 public class Tester {
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		User user = new User();
-		user.setName("L� Qu�n");
-		user.setYear(2012);
-		user.setHeight(165);
-		user.setWeight(72);
-		user.setActivity(Evaluate.ACTIVITY_MANY);
+    /**
+     * @param args
+     */
+    public static void main(String[] args) {
+	// TODO Auto-generated method stub
+	User user = new User();
+	user.setName("Le Quan");
+	user.setSex(User.SEX_MALE);
+	user.setYearOfBirth(1991);
+	user.setHeight(1.65);
+	user.setWeight(72);
+	user.setActivity(User.ACTIVITY_MANY);
 
-		Smie smie = new Smie();
-		StatefulRuleSession session = null;
-
-		// TODO Test rules here
-		try{
-			InputStream inStream;
-			inStream = new FileInputStream(new File("res/rule/calperday.xml"));
-
-			session = smie.setupSession(inStream);
-
-			// Add input
-			ArrayList<Object> input = new ArrayList<Object>();
-			input.add(user);
-			session.addObject(user);
-
-			// Execute rules
-			List results = null;
-			session.executeRules();
-			results = session.getObjects();
-
-			// Output
-			System.out.println("Result of calling getObjects: " + results.size() + " results.");
-			// Loop over the results.
-			Hashtable wm = ((StatefulRuleSessionImpl) session).getWorkingMemory();
-			Enumeration en = wm.keys();
-			while(en.hasMoreElements()){
-				Object obj = en.nextElement();
-				System.out.println("Clause Found: " + obj + " " + wm.get(obj));
-			}
-		}
-		catch (FileNotFoundException e){
-			e.printStackTrace();
-		}
-		catch (InvalidRuleSessionException e){
-			e.printStackTrace();
-		}
-		catch (RemoteException e){
-			e.printStackTrace();
-		}
-		finally{
-			smie.finishSession(session);
-		}
-
+	InputStream inStream = null;
+	try {
+	    inStream = new FileInputStream(new File("res/rule/smartmeal.xml"));
+	} catch (FileNotFoundException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
 	}
+
+	Smie smie = new Smie();
+	StatefulRuleSession session = smie.setupSession(inStream);
+
+	// TODO Test rules here
+	try {
+	    // Add input
+	    ArrayList<Object> input = new ArrayList<Object>();
+	    input.add(user);
+	    session.addObject(user);
+
+	    // Execute rules
+	    List results = null;
+	    session.executeRules();
+	    results = session.getObjects();
+
+	    // Output
+	    System.out.println("Result of calling getObjects: " + results.size() + " results.");
+	    // Loop over the results.
+	    Hashtable wm = ((StatefulRuleSessionImpl) session).getWorkingMemory();
+	    Enumeration en = wm.keys();
+	    while (en.hasMoreElements()) {
+		Object obj = en.nextElement();
+		System.out.println("Clause Found: " + obj + " " + wm.get(obj));
+	    }
+	} catch (InvalidRuleSessionException e) {
+	    e.printStackTrace();
+	} catch (RemoteException e) {
+	    e.printStackTrace();
+	} finally {
+	    smie.finishSession(session);
+	}
+    }
 
 }

@@ -1,4 +1,4 @@
-package vn.hust.smie.engine;
+package vn.hust.smie;
 
 
 public class Ingredient {
