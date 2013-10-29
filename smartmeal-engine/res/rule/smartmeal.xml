@@ -8,6 +8,7 @@
     <synonymn name="user" class="vn.hust.smie.User" />
     <synonymn name="ener" class="vn.hust.smie.Energy" />
     <synonymn name="mealDist" class="vn.hust.smie.MealDist" />
+    <synonymn name="mnd" class="vn.hust.smie.MajorNutriDist" />
     
     <!-- Energy for basic metabolism per day in KCal -->
     <rule name="BMR1s0">
@@ -117,6 +118,21 @@
         <then method="mealDist.setLunchDist" arg1="0.4" />
         <then method="mealDist.setDinnerDist" arg1="0.25" />
         <!-- Auxiliary meal distribution is automatically calculated -->
+    </rule>
+    
+    <!-- Major nutrient distribution -->
+    <rule name="MNDR1">
+        <if leftTerm="user.getAge" op=">=" rightTerm="10" />
+        <if leftTerm="user.getAge" op="&lt;" rightTerm="19" />
+        <then method="mnd.setPro" arg1="0.15" />
+        <then method="mnd.setLip" arg1="0.3" />
+        <then method="mnd.setGlu" arg1="0.55" />
+    </rule>
+    <rule name="MNDR2">
+        <if leftTerm="user.getAge" op=">=" rightTerm="19" />
+        <then method="mnd.setPro" arg1="0.15" />
+        <then method="mnd.setLip" arg1="0.25" />
+        <then method="mnd.setGlu" arg1="0.6" />
     </rule>
 
 </rule-execution-set>

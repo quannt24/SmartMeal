@@ -17,8 +17,8 @@ public class MealDist {
     private double dinnerDist;
     
     public MealDist() {
-	breakfastDist = 0.25;
-	lunchDist = 0.25;
+	breakfastDist = 0.3;
+	lunchDist = 0.4;
 	dinnerDist = 0.25;
 	// Sum of all distributions should be 1
     }
@@ -34,7 +34,7 @@ public class MealDist {
      * @param breakfastDist the breakfastDist to set
      */
     public void setBreakfastDist(double breakfastDist) {
-        if (breakfastDist <= 1) this.breakfastDist = breakfastDist;
+        if (0 <= breakfastDist && breakfastDist <= 1) this.breakfastDist = breakfastDist;
     }
 
     /**
@@ -48,7 +48,7 @@ public class MealDist {
      * @param lunchDist the lunchDist to set
      */
     public void setLunchDist(double lunchDist) {
-	if (lunchDist <= 1) this.lunchDist = lunchDist;
+	if (0 <= lunchDist && lunchDist <= 1) this.lunchDist = lunchDist;
     }
 
     /**
@@ -62,7 +62,7 @@ public class MealDist {
      * @param dinnerDist the dinnerDist to set
      */
     public void setDinnerDist(double dinnerDist) {
-        if (dinnerDist <= 1) this.dinnerDist = dinnerDist;
+        if (0 <= dinnerDist && dinnerDist <= 1) this.dinnerDist = dinnerDist;
     }
     
     /**
