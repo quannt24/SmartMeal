@@ -1,9 +1,12 @@
 package com.example.smartmeal;
 
+import java.util.Calendar;
 import java.util.Locale;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,11 +15,15 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.RadioGroup;
 
+import com.example.smartmeal.fragment.AboutUs;
+import com.example.smartmeal.fragment.MenuSuggestion;
+import com.example.smartmeal.fragment.Setup;
+import com.example.smartmeal.fragment.UserProfile;
 import com.example.smartmeal.save.Save;
 
 public class MainActivity extends FragmentActivity {
@@ -94,15 +101,11 @@ public class MainActivity extends FragmentActivity {
 				fragment = new Setup();
 			}
 
-			// Bundle args = new Bundle();
-			// args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
-			// fragment.setArguments(args);
 			return fragment;
 		}
 
 		@Override
 		public int getCount() {
-			// Show 3 total pages.
 			if (Save.getSave().isSetup()) return 3;
 			else return 1;
 		}
@@ -112,7 +115,8 @@ public class MainActivity extends FragmentActivity {
 			Locale l = Locale.getDefault();
 			switch(position){
 			case 0:
-				return getString(R.string.title_section1).toUpperCase(l);
+				if (Save.getSave().isSetup()) return getString(R.string.title_section1).toUpperCase(l);
+				else return getString(R.string.title_section0).toUpperCase(l);
 			case 1:
 				return getString(R.string.title_section2).toUpperCase(l);
 			case 2:
@@ -127,55 +131,80 @@ public class MainActivity extends FragmentActivity {
 	 */
 	public void onSetup(View v) {
 		Log.d("Submit", "OK");
+
+		if (v.getId() == R.id.submit){
+
+			// collect info
+			String name = ((EditText) MAINACTIVITY.findViewById(R.id.editText1)).getText().toString();
+			RadioGroup radios = (RadioGroup) MAINACTIVITY.findViewById(R.id.radioGroup2);
+			int genderInt = radios.indexOfChild(MAINACTIVITY.findViewById(radios.getCheckedRadioButtonId()));
+			String birthStr = ((EditText) MAINACTIVITY.findViewById(R.id.editText4)).getText().toString();
+			String weightStr = ((EditText) MAINACTIVITY.findViewById(R.id.editText2)).getText().toString();
+			String heightStr = ((EditText) MAINACTIVITY.findViewById(R.id.editText3)).getText().toString();
+			radios = (RadioGroup) MAINACTIVITY.findViewById(R.id.radioGroup1);
+			int act = radios.indexOfChild(MAINACTIVITY.findViewById(radios.getCheckedRadioButtonId()));
+
+			Log.d("name", name);
+			Log.d("gender", "" + genderInt);
+			Log.d("birth", birthStr);
+			Log.d("weight", weightStr);
+			Log.d("height", heightStr);
+			Log.d("act", "" + act);
+
+			int step = 0;
+			try{
+				// validate info
+
+				step = 0;
+				int birth = Integer.parseInt(birthStr);
+				int year = Calendar.getInstance().get(Calendar.YEAR);
+				Log.d("Current", "" + year);
+				if ((((year - birth) < 10)) || (birth < 1900)) throw new NumberFormatException();
+
+				step = 1;
+				int weight = Integer.parseInt(weightStr);
+
+				step = 2;
+				int height = Integer.parseInt(heightStr);
+
+				// save info
+				Save.getSave().save(Save.NAME, name);
+				Save.getSave().save(Save.GENDER, genderInt);
+				Save.getSave().save(Save.BIRTH, birth);
+				Save.getSave().save(Save.WEIGHT, weight);
+				Save.getSave().save(Save.HEIGHT, height);
+				Save.getSave().save(Save.ACTIVITY, act);
+			}
+			catch (NumberFormatException e){
+				e.printStackTrace();
+
+				String error = "";
+				if (step == 0) error = "Bạn chưa đủ tuổi dùng sản phẩm (10 tuổi), hoặc nhập chưa đúng mẫu";
+				else if (step == 1) error = "Khối lượng nhâp chưa đúng mẫu";
+				else if (step == 2) error = "Chiều cao nhập chưa đúng mẫu";
+
+				AlertDialog alertDialog = new AlertDialog.Builder(MAINACTIVITY).setMessage(error).setPositiveButton("Sửa lại", new OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						dialog.dismiss();
+					}
+				})
+						.create();
+				alertDialog.show();
+
+				return;
+			}
+		}
+
+		// save setup
 		Save.getSave().save(Save.IS_SETUP, !Save.getSave().isSetup());
+
+		// start new activity
 		Intent i = new Intent(this, MainActivity.class);
 		i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(i);
 		MainActivity.this.finish();
-	}
-
-	@SuppressLint("ValidFragment")
-	public static class Setup extends Fragment {
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.setup, container, false);
-			return rootView;
-		}
-	}
-
-	@SuppressLint("ValidFragment")
-	public static class UserProfile extends Fragment {
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.user, container, false);
-			return rootView;
-		}
-	}
-
-	@SuppressLint("ValidFragment")
-	public static class MenuSuggestion extends Fragment {
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.menu, container, false);
-			return rootView;
-		}
-	}
-
-	@SuppressLint("ValidFragment")
-	public static class AboutUs extends Fragment {
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.about, container, false);
-			// (new Dummy()).setupKnowledgeBase(DummySectionFragment.activity)
-			return rootView;
-		}
 	}
 }
