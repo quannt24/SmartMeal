@@ -27,6 +27,10 @@ public class Smie {
     private RuleServiceProvider serviceProvider;
     private RuleAdministrator ruleAdministrator;
 
+    private Calculator calc;
+    private Energy ener;
+    private MealDist mealDist;
+
     public Smie() {
 	try {
 	    Class.forName("org.jruleengine.RuleServiceProviderImpl");
@@ -44,6 +48,11 @@ public class Smie {
 	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	}
+	
+	// Create built-in object
+	calc = new Calculator();
+	ener = new Energy();
+	mealDist = new MealDist();
     }
 
     /**
@@ -96,8 +105,9 @@ public class Smie {
 
 	// Pre-install some objects
 	try {
-	    statefulRuleSession.addObject(new Calculator()); // Calculator
-	    statefulRuleSession.addObject(new Energy()); // Energy fact
+	    statefulRuleSession.addObject(calc); // Calculator
+	    statefulRuleSession.addObject(ener); // Energy fact
+	    statefulRuleSession.addObject(mealDist); // Meal distribution
 	    System.out.println("Pre-installed some objects");
 	} catch (InvalidRuleSessionException | RemoteException e) {
 	    System.err.println("Error: Cannot add pre-installed objects");
