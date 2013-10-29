@@ -4,8 +4,10 @@
 package vn.hust.smie;
 
 import java.io.InputStream;
+import java.rmi.RemoteException;
 import java.util.HashMap;
 
+import javax.rules.InvalidRuleSessionException;
 import javax.rules.RuleRuntime;
 import javax.rules.RuleServiceProvider;
 import javax.rules.RuleServiceProviderManager;
@@ -92,6 +94,15 @@ public class Smie {
 	    return null;
 	}
 
+	// Pre-install some objects
+	try {
+	    statefulRuleSession.addObject(new Calculator()); // Calculator
+	    System.out.println("Pre-installed some objects");
+	} catch (InvalidRuleSessionException | RemoteException e) {
+	    System.err.println("Error: Cannot add pre-installed objects");
+	    return null;
+	}
+	
 	return statefulRuleSession;
     }
 

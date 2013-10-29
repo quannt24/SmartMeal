@@ -8,7 +8,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
@@ -51,8 +50,6 @@ public class Tester {
 	// TODO Test rules here
 	try {
 	    // Add input
-	    ArrayList<Object> input = new ArrayList<Object>();
-	    input.add(user);
 	    session.addObject(user);
 
 	    // Execute rules
