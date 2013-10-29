@@ -64,7 +64,7 @@
         <then method="ener.setBasicMetabolism" arg1="calc.getResult" />
     </rule>
     
-    <!-- Needed energy for one day (in KCal) -->
+    <!-- Needed energy for one day (in KCal). Based on basic metabolism multiply with activity parameter. -->
     <rule name="ERs0a0">
         <if leftTerm="user.getSex" op="=" rightTerm="0" />
         <if leftTerm="user.getActivity" op="=" rightTerm="0" />

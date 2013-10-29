@@ -27,7 +27,7 @@ public class Calculator {
     }
     
     /**
-     * First order polynomial
+     * First order polynomial in form "p = a * x + b"
      * @param a
      * @param x
      * @param b
