@@ -4,8 +4,8 @@
     <name>RESSmartMeal</name>
     <description>Rule Execution Set for SmartMeal Inference Engine</description>
 
-    <synonymn name="calc" class="vn.hust.smie.Calculator" />
     <synonymn name="user" class="vn.hust.smie.User" />
+    <synonymn name="calc" class="vn.hust.smie.Calculator" />
     <synonymn name="ener" class="vn.hust.smie.Energy" />
     <synonymn name="mealDist" class="vn.hust.smie.MealDist" />
     <synonymn name="mnd" class="vn.hust.smie.MajorNutriDist" />
