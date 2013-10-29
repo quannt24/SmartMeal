@@ -1,10 +1,11 @@
-package com.ict.ke.engine;
+package vn.hust.smie;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import org.apache.commons.io.FileUtils;
+
 
 public class Parser {
 	public static ArrayList<Ingredient> listIngredients = new ArrayList<Ingredient>();

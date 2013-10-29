@@ -1,3 +1,7 @@
+# Temp, log files
+*.log
+*.swp
+
 # built application files
 *.apk
 *.ap_

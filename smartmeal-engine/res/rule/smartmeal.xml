@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rule-execution-set>
+    
+    <name>RESSmartMeal</name>
+    <description>Rule Execution Set for SmartMeal Inference Engine</description>
+
+    <synonymn name="user" class="vn.hust.smie.User" />
+    <synonymn name="prop" class="org.jruleengine.Clause" /> 
+    
+    <!-- KCal per day. Reference to class User for some values. -->
+    <rule name="CR0">
+        <if leftTerm="user.getAge" op="&lt;" rightTerm="4" />
+        <then method="prop.setClause" arg1="kcalPerDay" arg2="1180" /> 
+    </rule>
+    
+    <rule name="CR1">
+        <if leftTerm="user.getAge" op=">=" rightTerm="4" />
+        <if leftTerm="user.getAge" op="&lt;" rightTerm="7" />
+        <then method="prop.setClause" arg1="kcalPerDay" arg2="1470" /> 
+    </rule>
+    
+    <rule name="CR2">
+        <if leftTerm="user.getAge" op=">=" rightTerm="7" />
+        <if leftTerm="user.getAge" op="&lt;" rightTerm="10" />
+        <then method="prop.setClause" arg1="kcalPerDay" arg2="1825" /> 
+    </rule>
+    
+    <rule name="CR3s0">
+        <if leftTerm="user.getAge" op=">=" rightTerm="10" />
+        <if leftTerm="user.getAge" op="&lt;" rightTerm="13" />
+        <if leftTerm="user.getSex" op="=" rightTerm="0" />
+        <then method="prop.setClause" arg1="kcalPerDay" arg2="2010" /> 
+    </rule>
+    <rule name="CR3s1">
+        <if leftTerm="user.getAge" op=">=" rightTerm="10" />
+        <if leftTerm="user.getAge" op="&lt;" rightTerm="13" />
+        <if leftTerm="user.getSex" op="=" rightTerm="1" />
+        <then method="prop.setClause" arg1="kcalPerDay" arg2="2110" /> 
+    </rule>
+    
+    <rule name="CR4s0">
+        <if leftTerm="user.getAge" op=">=" rightTerm="13" />
+        <if leftTerm="user.getAge" op="&lt;" rightTerm="16" />
+        <if leftTerm="user.getSex" op="=" rightTerm="0" />
+        <then method="prop.setClause" arg1="kcalPerDay" arg2="2205" /> 
+    </rule>
+    <rule name="CR4s1">
+        <if leftTerm="user.getAge" op=">=" rightTerm="13" />
+        <if leftTerm="user.getAge" op="&lt;" rightTerm="16" />
+        <if leftTerm="user.getSex" op="=" rightTerm="1" />
+        <then method="prop.setClause" arg1="kcalPerDay" arg2="2650" /> 
+    </rule>
+    
+    <rule name="CR5s0">
+        <if leftTerm="user.getAge" op=">=" rightTerm="16" />
+        <if leftTerm="user.getAge" op="&lt;" rightTerm="19" />
+        <if leftTerm="user.getSex" op="=" rightTerm="0" />
+        <then method="prop.setClause" arg1="kcalPerDay" arg2="2240" /> 
+    </rule>
+    <rule name="CR5s1">
+        <if leftTerm="user.getAge" op=">=" rightTerm="16" />
+        <if leftTerm="user.getAge" op="&lt;" rightTerm="19" />
+        <if leftTerm="user.getSex" op="=" rightTerm="1" />
+        <then method="prop.setClause" arg1="kcalPerDay" arg2="2980" /> 
+    </rule>
+    
+    <rule name="CR6s0a0">
+        <if leftTerm="user.getAge" op=">=" rightTerm="19" />
+        <if leftTerm="user.getAge" op="&lt;" rightTerm="31" />
+        <if leftTerm="user.getSex" op="=" rightTerm="0" />
+        <if leftTerm="user.getActivity" op="=" rightTerm="0" />
+        <then method="prop.setClause" arg1="kcalPerDay" arg2="1920" />
+    </rule>
+    <rule name="CR6s0a1">
+        <if leftTerm="user.getAge" op=">=" rightTerm="19" />
+        <if leftTerm="user.getAge" op="&lt;" rightTerm="31" />
+        <if leftTerm="user.getSex" op="=" rightTerm="0" />
+        <if leftTerm="user.getActivity" op="=" rightTerm="1" />
+        <then method="prop.setClause" arg1="kcalPerDay" arg2="2154" />
+    </rule>
+    <rule name="CR6s0a2">
+        <if leftTerm="user.getAge" op=">=" rightTerm="19" />
+        <if leftTerm="user.getAge" op="&lt;" rightTerm="31" />
+        <if leftTerm="user.getSex" op="=" rightTerm="0" />
+        <if leftTerm="user.getActivity" op="=" rightTerm="2" />
+        <then method="prop.setClause" arg1="kcalPerDay" arg2="2524" />
+    </rule>
+    <rule name="CR6s1a0">
+        <if leftTerm="user.getAge" op=">=" rightTerm="19" />
+        <if leftTerm="user.getAge" op="&lt;" rightTerm="31" />
+        <if leftTerm="user.getSex" op="=" rightTerm="1" />
+        <if leftTerm="user.getActivity" op="=" rightTerm="0" />
+        <then method="prop.setClause" arg1="kcalPerDay" arg2="2348" />
+    </rule>
+    <rule name="CR6s1a1">
+        <if leftTerm="user.getAge" op=">=" rightTerm="19" />
+        <if leftTerm="user.getAge" op="&lt;" rightTerm="31" />
+        <if leftTerm="user.getSex" op="=" rightTerm="1" />
+        <if leftTerm="user.getActivity" op="=" rightTerm="1" />
+        <then method="prop.setClause" arg1="kcalPerDay" arg2="2634" />
+    </rule>
+    <rule name="CR6s1a2">
+        <if leftTerm="user.getAge" op=">=" rightTerm="19" />
+        <if leftTerm="user.getAge" op="&lt;" rightTerm="31" />
+        <if leftTerm="user.getSex" op="=" rightTerm="1" />
+        <if leftTerm="user.getActivity" op="=" rightTerm="2" />
+        <then method="prop.setClause" arg1="kcalPerDay" arg2="3086" />
+    </rule>
+    
+    <rule name="CR7s0a0">
+        <if leftTerm="user.getAge" op=">=" rightTerm="31" />
+        <if leftTerm="user.getAge" op="&lt;" rightTerm="61" />
+        <if leftTerm="user.getSex" op="=" rightTerm="0" />
+        <if leftTerm="user.getActivity" op="=" rightTerm="0" />
+        <then method="prop.setClause" arg1="kcalPerDay" arg2="1972" /> 
+    </rule>
+    <rule name="CR7s0a1">
+        <if leftTerm="user.getAge" op=">=" rightTerm="31" />
+        <if leftTerm="user.getAge" op="&lt;" rightTerm="61" />
+        <if leftTerm="user.getSex" op="=" rightTerm="0" />
+        <if leftTerm="user.getActivity" op="=" rightTerm="1" />
+        <then method="prop.setClause" arg1="kcalPerDay" arg2="2212" /> 
+    </rule>
+    <rule name="CR7s0a2">
+        <if leftTerm="user.getAge" op=">=" rightTerm="31" />
+        <if leftTerm="user.getAge" op="&lt;" rightTerm="61" />
+        <if leftTerm="user.getSex" op="=" rightTerm="0" />
+        <if leftTerm="user.getActivity" op="=" rightTerm="2" />
+        <then method="prop.setClause" arg1="kcalPerDay" arg2="2591" /> 
+    </rule>
+    <rule name="CR7s1a0">
+        <if leftTerm="user.getAge" op=">=" rightTerm="31" />
+        <if leftTerm="user.getAge" op="&lt;" rightTerm="61" />
+        <if leftTerm="user.getSex" op="=" rightTerm="1" />
+        <if leftTerm="user.getActivity" op="=" rightTerm="0" />
+        <then method="prop.setClause" arg1="kcalPerDay" arg2="2348" /> 
+    </rule>
+    <rule name="CR7s1a1">
+        <if leftTerm="user.getAge" op=">=" rightTerm="31" />
+        <if leftTerm="user.getAge" op="&lt;" rightTerm="61" />
+        <if leftTerm="user.getSex" op="=" rightTerm="1" />
+        <if leftTerm="user.getActivity" op="=" rightTerm="1" />
+        <then method="prop.setClause" arg1="kcalPerDay" arg2="2634" /> 
+    </rule>
+    <rule name="CR7s1a2">
+        <if leftTerm="user.getAge" op=">=" rightTerm="31" />
+        <if leftTerm="user.getAge" op="&lt;" rightTerm="61" />
+        <if leftTerm="user.getSex" op="=" rightTerm="1" />
+        <if leftTerm="user.getActivity" op="=" rightTerm="2" />
+        <then method="prop.setClause" arg1="kcalPerDay" arg2="3086" /> 
+    </rule>
+    
+    <rule name="CR8s0a0">
+        <if leftTerm="user.getAge" op=">=" rightTerm="61" />
+        <if leftTerm="user.getSex" op="=" rightTerm="0" />
+        <if leftTerm="user.getActivity" op="=" rightTerm="0" />
+        <then method="prop.setClause" arg1="kcalPerDay" arg2="1749" /> 
+    </rule>
+    <rule name="CR8s0a1">
+        <if leftTerm="user.getAge" op=">=" rightTerm="61" />
+        <if leftTerm="user.getSex" op="=" rightTerm="0" />
+        <if leftTerm="user.getActivity" op="=" rightTerm="1" />
+        <then method="prop.setClause" arg1="kcalPerDay" arg2="1962" /> 
+    </rule>
+    <rule name="CR8s0a2">
+        <if leftTerm="user.getAge" op=">=" rightTerm="61" />
+        <if leftTerm="user.getSex" op="=" rightTerm="0" />
+        <if leftTerm="user.getActivity" op="=" rightTerm="2" />
+        <then method="prop.setClause" arg1="kcalPerDay" arg2="2298" /> 
+    </rule>
+    <rule name="CR8s1a0">
+        <if leftTerm="user.getAge" op=">=" rightTerm="61" />
+        <if leftTerm="user.getSex" op="=" rightTerm="1" />
+        <if leftTerm="user.getActivity" op="=" rightTerm="0" />
+        <then method="prop.setClause" arg1="kcalPerDay" arg2="1897" /> 
+    </rule>
+    <rule name="CR8s1a1">
+        <if leftTerm="user.getAge" op=">=" rightTerm="61" />
+        <if leftTerm="user.getSex" op="=" rightTerm="1" />
+        <if leftTerm="user.getActivity" op="=" rightTerm="1" />
+        <then method="prop.setClause" arg1="kcalPerDay" arg2="2128" /> 
+    </rule>
+    <rule name="CR8s1a2">
+        <if leftTerm="user.getAge" op=">=" rightTerm="61" />
+        <if leftTerm="user.getSex" op="=" rightTerm="1" />
+        <if leftTerm="user.getActivity" op="=" rightTerm="2" />
+        <then method="prop.setClause" arg1="kcalPerDay" arg2="2493" /> 
+    </rule>
+
+</rule-execution-set>
