@@ -4,17 +4,20 @@ import java.util.Locale;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+
+import com.example.smartmeal.save.Save;
 
 public class MainActivity extends FragmentActivity {
 
@@ -75,16 +78,20 @@ public class MainActivity extends FragmentActivity {
 			// below) with the page number as its lone argument.
 			Fragment fragment = null;
 
-			switch(position){
-			case 0:
-				fragment = new UserProfile();
-				break;
-			case 1:
-				fragment = new MenuSuggestion();
-				break;
-			case 2:
-				fragment = new AboutUs();
-				break;
+			if (Save.getSave().isSetup()){
+				switch(position){
+				case 0:
+					fragment = new UserProfile();
+					break;
+				case 1:
+					fragment = new MenuSuggestion();
+					break;
+				case 2:
+					fragment = new AboutUs();
+					break;
+				}
+			}else{
+				fragment = new Setup();
 			}
 
 			// Bundle args = new Bundle();
@@ -96,7 +103,8 @@ public class MainActivity extends FragmentActivity {
 		@Override
 		public int getCount() {
 			// Show 3 total pages.
-			return 3;
+			if (Save.getSave().isSetup()) return 3;
+			else return 1;
 		}
 
 		@Override
@@ -114,15 +122,36 @@ public class MainActivity extends FragmentActivity {
 		}
 	}
 
+	/**
+	 * TODO submit user profile
+	 */
+	public void onSetup(View v) {
+		Log.d("Submit", "OK");
+		Save.getSave().save(Save.IS_SETUP, !Save.getSave().isSetup());
+		Intent i = new Intent(this, MainActivity.class);
+		i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivity(i);
+		MainActivity.this.finish();
+	}
+
+	@SuppressLint("ValidFragment")
+	public static class Setup extends Fragment {
+
+		@Override
+		public View onCreateView(LayoutInflater inflater, ViewGroup container,
+				Bundle savedInstanceState) {
+			View rootView = inflater.inflate(R.layout.setup, container, false);
+			return rootView;
+		}
+	}
+
 	@SuppressLint("ValidFragment")
 	public static class UserProfile extends Fragment {
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_main_dummy, container, false);
-			TextView dummyTextView = (TextView) rootView.findViewById(R.id.section_label);
-			dummyTextView.setText("user");
+			View rootView = inflater.inflate(R.layout.user, container, false);
 			return rootView;
 		}
 	}
@@ -133,9 +162,7 @@ public class MainActivity extends FragmentActivity {
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_main_dummy, container, false);
-			TextView dummyTextView = (TextView) rootView.findViewById(R.id.section_label);
-			dummyTextView.setText("menu");
+			View rootView = inflater.inflate(R.layout.menu, container, false);
 			return rootView;
 		}
 	}
@@ -146,10 +173,8 @@ public class MainActivity extends FragmentActivity {
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_main_dummy, container, false);
-			TextView dummyTextView = (TextView) rootView.findViewById(R.id.section_label);
-			dummyTextView.setText("About us");
-			// dummyTextView.setText((new Dummy()).setupKnowledgeBase(DummySectionFragment.activity) + "/" + 12);
+			View rootView = inflater.inflate(R.layout.about, container, false);
+			// (new Dummy()).setupKnowledgeBase(DummySectionFragment.activity)
 			return rootView;
 		}
 	}
