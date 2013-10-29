@@ -18,6 +18,8 @@ import android.widget.TextView;
 
 public class MainActivity extends FragmentActivity {
 
+	public static Activity	MAINACTIVITY;
+
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
 	 * fragments for each of the sections. We use a {@link android.support.v4.app.FragmentPagerAdapter} derivative, which
@@ -37,6 +39,9 @@ public class MainActivity extends FragmentActivity {
 
 		setContentView(R.layout.activity_main);
 
+		// save reference
+		MAINACTIVITY = this;
+
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the app.
 		mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -44,7 +49,6 @@ public class MainActivity extends FragmentActivity {
 		// Set up the ViewPager with the sections adapter.
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
-
 	}
 
 	@Override
@@ -69,10 +73,23 @@ public class MainActivity extends FragmentActivity {
 			// getItem is called to instantiate the fragment for the given page.
 			// Return a DummySectionFragment (defined as a static inner class
 			// below) with the page number as its lone argument.
-			Fragment fragment = new DummySectionFragment(MainActivity.this);
-			Bundle args = new Bundle();
-			args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
-			fragment.setArguments(args);
+			Fragment fragment = null;
+
+			switch(position){
+			case 0:
+				fragment = new UserProfile();
+				break;
+			case 1:
+				fragment = new MenuSuggestion();
+				break;
+			case 2:
+				fragment = new AboutUs();
+				break;
+			}
+
+			// Bundle args = new Bundle();
+			// args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
+			// fragment.setArguments(args);
 			return fragment;
 		}
 
@@ -97,33 +114,43 @@ public class MainActivity extends FragmentActivity {
 		}
 	}
 
-	/**
-	 * A dummy fragment representing a section of the app, but that simply
-	 * displays dummy text.
-	 */
 	@SuppressLint("ValidFragment")
-	public static class DummySectionFragment extends Fragment {
-
-		/**
-		 * The fragment argument representing the section number for this
-		 * fragment.
-		 */
-		public static final String	ARG_SECTION_NUMBER	= "section_number";
-		public static Activity		activity;
-
-		public DummySectionFragment(Activity activity) {
-			DummySectionFragment.activity = activity;
-		}
+	public static class UserProfile extends Fragment {
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_main_dummy, container, false);
 			TextView dummyTextView = (TextView) rootView.findViewById(R.id.section_label);
-			dummyTextView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
-			dummyTextView.setText((new Dummy()).setupKnowledgeBase(DummySectionFragment.activity) + "/" + 12);
+			dummyTextView.setText("user");
 			return rootView;
 		}
 	}
 
+	@SuppressLint("ValidFragment")
+	public static class MenuSuggestion extends Fragment {
+
+		@Override
+		public View onCreateView(LayoutInflater inflater, ViewGroup container,
+				Bundle savedInstanceState) {
+			View rootView = inflater.inflate(R.layout.fragment_main_dummy, container, false);
+			TextView dummyTextView = (TextView) rootView.findViewById(R.id.section_label);
+			dummyTextView.setText("menu");
+			return rootView;
+		}
+	}
+
+	@SuppressLint("ValidFragment")
+	public static class AboutUs extends Fragment {
+
+		@Override
+		public View onCreateView(LayoutInflater inflater, ViewGroup container,
+				Bundle savedInstanceState) {
+			View rootView = inflater.inflate(R.layout.fragment_main_dummy, container, false);
+			TextView dummyTextView = (TextView) rootView.findViewById(R.id.section_label);
+			dummyTextView.setText("About us");
+			// dummyTextView.setText((new Dummy()).setupKnowledgeBase(DummySectionFragment.activity) + "/" + 12);
+			return rootView;
+		}
+	}
 }
