@@ -97,6 +97,7 @@ public class Smie {
 	// Pre-install some objects
 	try {
 	    statefulRuleSession.addObject(new Calculator()); // Calculator
+	    statefulRuleSession.addObject(new Energy()); // Energy fact
 	    System.out.println("Pre-installed some objects");
 	} catch (InvalidRuleSessionException | RemoteException e) {
 	    System.err.println("Error: Cannot add pre-installed objects");

@@ -125,4 +125,13 @@ public class User {
 	    return BMI_OBESE;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+	return "User [name=" + name + ", sex=" + sex + ", yearOfBirth=" + yearOfBirth + ", height="
+		+ height + ", weight=" + weight + ", activity=" + activity + "]";
+    }
+
 }
