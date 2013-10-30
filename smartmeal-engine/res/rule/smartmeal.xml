@@ -9,6 +9,7 @@
     <synonymn name="ener" class="vn.hust.smie.Energy" />
     <synonymn name="mealDist" class="vn.hust.smie.MealDist" />
     <synonymn name="mnd" class="vn.hust.smie.MajorNutriDist" />
+    <synonymn name="enerVal" class="vn.hust.smie.EnergyValue" />
     
     <!-- Energy for basic metabolism per day in KCal -->
     <rule name="BMR1s0">
@@ -120,19 +121,33 @@
         <!-- Auxiliary meal distribution is automatically calculated -->
     </rule>
     
-    <!-- Major nutrient distribution -->
+    <!-- Major nutrient distribution per day -->
     <rule name="MNDR1">
         <if leftTerm="user.getAge" op=">=" rightTerm="10" />
         <if leftTerm="user.getAge" op="&lt;" rightTerm="19" />
-        <then method="mnd.setPro" arg1="0.15" />
-        <then method="mnd.setLip" arg1="0.3" />
-        <then method="mnd.setGlu" arg1="0.55" />
+        <then method="mnd.setProDist" arg1="0.15" />
+        <then method="mnd.setLipDist" arg1="0.3" />
+        <then method="mnd.setGluDist" arg1="0.55" />
+        <!-- Calculate servings for nutrients -->
+        <then method="calc.muldiv" arg1="ener.getEnergy" arg2="mnd.getProDist" arg3="enerVal.getProEV" />
+        <then method="mnd.setProServing" arg1="calc.getResult" />
+        <then method="calc.muldiv" arg1="ener.getEnergy" arg2="mnd.getLipDist" arg3="enerVal.getLipEV" />
+        <then method="mnd.setLipServing" arg1="calc.getResult" />
+        <then method="calc.muldiv" arg1="ener.getEnergy" arg2="mnd.getGluDist" arg3="enerVal.getGluEV" />
+        <then method="mnd.setGluServing" arg1="calc.getResult" />
     </rule>
     <rule name="MNDR2">
         <if leftTerm="user.getAge" op=">=" rightTerm="19" />
-        <then method="mnd.setPro" arg1="0.15" />
-        <then method="mnd.setLip" arg1="0.25" />
-        <then method="mnd.setGlu" arg1="0.6" />
+        <then method="mnd.setProDist" arg1="0.15" />
+        <then method="mnd.setLipDist" arg1="0.25" />
+        <then method="mnd.setGluDist" arg1="0.6" />
+        <!-- Calculate servings for nutrients -->
+        <then method="calc.muldiv" arg1="ener.getEnergy" arg2="mnd.getProDist" arg3="enerVal.getProEV" />
+        <then method="mnd.setProServing" arg1="calc.getResult" />
+        <then method="calc.muldiv" arg1="ener.getEnergy" arg2="mnd.getLipDist" arg3="enerVal.getLipEV" />
+        <then method="mnd.setLipServing" arg1="calc.getResult" />
+        <then method="calc.muldiv" arg1="ener.getEnergy" arg2="mnd.getGluDist" arg3="enerVal.getGluEV" />
+        <then method="mnd.setGluServing" arg1="calc.getResult" />
     </rule>
 
 </rule-execution-set>

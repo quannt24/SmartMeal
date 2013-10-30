@@ -37,6 +37,7 @@ public class Smie {
     private Energy ener;
     private MealDist mealDist;
     private MajorNutriDist mnd;
+    private EnergyValue enerVal;
     
     public Smie() {
 	try {
@@ -61,6 +62,7 @@ public class Smie {
 	ener = new Energy();
 	mealDist = new MealDist();
 	mnd = new MajorNutriDist();
+	enerVal = new EnergyValue();
     }
 
     /**
@@ -115,6 +117,7 @@ public class Smie {
 	    session.addObject(ener); // Energy fact
 	    session.addObject(mealDist); // Meal distribution
 	    session.addObject(mnd); // Major nutrient distribution
+	    session.addObject(enerVal); // Energy value of nutrients
 	    System.out.println("Pre-installed some objects");
 	} catch (InvalidRuleSessionException | RemoteException e) {
 	    System.err.println("Error: Cannot add pre-installed objects");
