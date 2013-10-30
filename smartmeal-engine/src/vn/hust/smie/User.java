@@ -25,6 +25,8 @@ public class User {
     private double height; // in m
     private double weight; // in kg
     private int activity;
+    
+    private int bmiEval; // BMI evaluation
 
     public User() {
 	name = "User";
@@ -33,6 +35,7 @@ public class User {
 	height = 170;
 	weight = 55;
 	activity = ACTIVITY_NORMAL;
+	bmiEval = BMI_NORMAL;
     }
 
     public String getName() {
@@ -111,7 +114,22 @@ public class User {
     public double getBmi() {
 	return weight / height / height;
     }
+    
+    /**
+     * @return the bmiEval
+     */
+    public int getBmiEval() {
+        return bmiEval;
+    }
+    
+    /**
+     * @param bmiEval the bmiEval to set
+     */
+    public void setBmiEval(int bmiEval) {
+        this.bmiEval = bmiEval;
+    }
 
+    /* Deprecated. Use rules.
     public int evaluateBmi() {
 	if (getBmi() < 16.0)
 	    return BMI_SEVERELY_UNDERWEIGHT;
@@ -124,6 +142,7 @@ public class User {
 	else
 	    return BMI_OBESE;
     }
+    */
 
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
@@ -131,7 +150,8 @@ public class User {
     @Override
     public String toString() {
 	return "User [name=" + name + ", sex=" + sex + ", yearOfBirth=" + yearOfBirth + ", height="
-		+ height + ", weight=" + weight + ", activity=" + activity + "]";
+		+ height + ", weight=" + weight + ", activity=" + activity + ", bmiEval=" + bmiEval
+		+ "]";
     }
 
 }

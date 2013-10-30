@@ -20,6 +20,7 @@ public class Calculator {
     
     /**
      * Get most recent result
+     * 
      * @return Result
      */
     public double getResult() {
@@ -28,12 +29,24 @@ public class Calculator {
     
     /**
      * First order polynomial in form "p = a * x + b"
+     * 
      * @param a
      * @param x
      * @param b
      */
     public void poly1(double a, double x, double b) {
 	result = a * x + b;
+    }
+    
+    /**
+     * a * b / c
+     * 
+     * @param a
+     * @param b
+     * @param c
+     */
+    public void muldiv(double a, double b, double c) {
+	result = a * b / c;
     }
 
 }
