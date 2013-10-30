@@ -4,8 +4,13 @@
 package vn.hust.smie;
 
 import java.io.InputStream;
+import java.rmi.RemoteException;
+import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.List;
 
+import javax.rules.InvalidRuleSessionException;
 import javax.rules.RuleRuntime;
 import javax.rules.RuleServiceProvider;
 import javax.rules.RuleServiceProviderManager;
@@ -13,6 +18,8 @@ import javax.rules.RuleSession;
 import javax.rules.StatefulRuleSession;
 import javax.rules.admin.RuleAdministrator;
 import javax.rules.admin.RuleExecutionSet;
+
+import org.jruleengine.StatefulRuleSessionImpl;
 
 /**
  * Smart-meal Inference Engine
@@ -24,7 +31,13 @@ public class Smie {
 
     private RuleServiceProvider serviceProvider;
     private RuleAdministrator ruleAdministrator;
+    private StatefulRuleSession session;
 
+    private Calculator calc;
+    private Energy ener;
+    private MealDist mealDist;
+    private MajorNutriDist mnd;
+    
     public Smie() {
 	try {
 	    Class.forName("org.jruleengine.RuleServiceProviderImpl");
@@ -42,6 +55,12 @@ public class Smie {
 	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	}
+	
+	// Create built-in object
+	calc = new Calculator();
+	ener = new Energy();
+	mealDist = new MealDist();
+	mnd = new MajorNutriDist();
     }
 
     /**
@@ -50,13 +69,11 @@ public class Smie {
      * 
      * @param inRuleset
      *            InputStream of a XML rule set
-     * @return statefulRuleSession
      */
     @SuppressWarnings("rawtypes")
-    public StatefulRuleSession setupSession(InputStream inRuleset) {
+    public void setupSession(InputStream inRuleset) {
 	RuleExecutionSet res;
 	String uri;
-	StatefulRuleSession statefulRuleSession;
 
 	// Load ruleset from the XML document
 	try {
@@ -66,7 +83,7 @@ public class Smie {
 	    System.out.println("Loaded RuleExecutionSet: " + res);
 	} catch (Exception e) {
 	    System.err.println("Error: Cannot parse ruleset XML file");
-	    return null;
+	    return;
 	}
 
 	// Register the RuleExecutionSet
@@ -76,7 +93,7 @@ public class Smie {
 	    System.out.println("Bound RuleExecutionSet to URI: " + uri);
 	} catch (Exception e) {
 	    System.err.println("Error: Cannot register RuleExecutionSet");
-	    return null;
+	    return;
 	}
 
 	// Get a RuleRuntime and create session
@@ -85,26 +102,71 @@ public class Smie {
 	    System.out.println("Acquired RuleRuntime: " + ruleRuntime);
 
 	    // create a StatefulRuleSession
-	    statefulRuleSession = (StatefulRuleSession) ruleRuntime
+	    session = (StatefulRuleSession) ruleRuntime
 		    .createRuleSession(uri, new HashMap(), RuleRuntime.STATEFUL_SESSION_TYPE);
 	} catch (Exception e) {
 	    System.err.println("Error: Cannot create session");
-	    return null;
+	    return;
 	}
 
-	return statefulRuleSession;
+	// Pre-install some objects
+	try {
+	    session.addObject(calc); // Calculator
+	    session.addObject(ener); // Energy fact
+	    session.addObject(mealDist); // Meal distribution
+	    session.addObject(mnd); // Major nutrient distribution
+	    System.out.println("Pre-installed some objects");
+	} catch (InvalidRuleSessionException | RemoteException e) {
+	    System.err.println("Error: Cannot add pre-installed objects");
+	    return;
+	}
     }
 
     /**
-     * Release a rule session after finish with it.
+     * Input user information object
      * 
-     * @param session
+     * @param user
      */
-    public void finishSession(RuleSession session) {
+    public void inputUser(User user) {
+	try {
+	    session.addObject(user);
+	} catch (InvalidRuleSessionException | RemoteException e) {
+	    e.printStackTrace();
+	}
+    }
+    
+    /**
+     * Execute rules. Input should be added before calling this method.
+     */
+    public void executeRules() {
+	try {
+	    session.executeRules();
+
+	    // TODO Print out working memory for test
+	    List results = null;
+	    results = session.getObjects();
+
+	    // Output
+	    System.out.println("Result of calling getObjects: " + results.size() + " results.");
+	    // Loop over the results.
+	    Hashtable wm = ((StatefulRuleSessionImpl) session).getWorkingMemory();
+	    Enumeration en = wm.keys();
+	    while (en.hasMoreElements()) {
+		Object obj = en.nextElement();
+		System.out.println("Clause Found: " + obj + " " + wm.get(obj));
+	    }
+	} catch (InvalidRuleSessionException | RemoteException e) {
+	    e.printStackTrace();
+	}
+    }
+    
+    /**
+     * Release the session after finish with it.
+     */
+    public void finishSession() {
 	try {
 	    session.release();
-	} catch (Exception e) {
-	    // TODO Auto-generated catch block
+	} catch (InvalidRuleSessionException | RemoteException e) {
 	    e.printStackTrace();
 	}
     }

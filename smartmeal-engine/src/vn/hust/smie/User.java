@@ -11,7 +11,7 @@ public class User {
     public static final int ACTIVITY_NORMAL = 1;
     public static final int ACTIVITY_MANY = 2;
 
-    public static final int BMI_STARVE = -2;
+    public static final int BMI_SEVERELY_UNDERWEIGHT = -2;
     public static final int BMI_UNDERWEIGHT = -1;
     public static final int BMI_NORMAL = 0;
     public static final int BMI_OVERWEIGHT = 1;
@@ -113,8 +113,8 @@ public class User {
     }
 
     public int evaluateBmi() {
-	if (getBmi() < 15.0)
-	    return BMI_STARVE;
+	if (getBmi() < 16.0)
+	    return BMI_SEVERELY_UNDERWEIGHT;
 	else if (getBmi() < 18.5)
 	    return BMI_UNDERWEIGHT;
 	else if (getBmi() < 25.0)
@@ -123,6 +123,15 @@ public class User {
 	    return BMI_OVERWEIGHT;
 	else
 	    return BMI_OBESE;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+	return "User [name=" + name + ", sex=" + sex + ", yearOfBirth=" + yearOfBirth + ", height="
+		+ height + ", weight=" + weight + ", activity=" + activity + "]";
     }
 
 }

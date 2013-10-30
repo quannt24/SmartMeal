@@ -8,7 +8,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
@@ -46,36 +45,12 @@ public class Tester {
 	}
 
 	Smie smie = new Smie();
-	StatefulRuleSession session = smie.setupSession(inStream);
-
-	// TODO Test rules here
-	try {
-	    // Add input
-	    ArrayList<Object> input = new ArrayList<Object>();
-	    input.add(user);
-	    session.addObject(user);
-
-	    // Execute rules
-	    List results = null;
-	    session.executeRules();
-	    results = session.getObjects();
-
-	    // Output
-	    System.out.println("Result of calling getObjects: " + results.size() + " results.");
-	    // Loop over the results.
-	    Hashtable wm = ((StatefulRuleSessionImpl) session).getWorkingMemory();
-	    Enumeration en = wm.keys();
-	    while (en.hasMoreElements()) {
-		Object obj = en.nextElement();
-		System.out.println("Clause Found: " + obj + " " + wm.get(obj));
-	    }
-	} catch (InvalidRuleSessionException e) {
-	    e.printStackTrace();
-	} catch (RemoteException e) {
-	    e.printStackTrace();
-	} finally {
-	    smie.finishSession(session);
-	}
+	smie.setupSession(inStream);
+	
+	// Add input here
+	smie.inputUser(user);
+	smie.executeRules();
+	smie.finishSession();
     }
 
 }
