@@ -11,6 +11,31 @@
     <synonymn name="mnd" class="vn.hust.smie.MajorNutriDist" />
     <synonymn name="enerVal" class="vn.hust.smie.EnergyValue" />
     
+    <!-- Evaluate BMI -->
+    <rule name="BER1">
+        <if leftTerm="user.getBmi" op="&lt;" rightTerm="16" />
+        <then method="user.setBmiEval" arg1="-2" />
+    </rule>
+    <rule name="BER2">
+        <if leftTerm="user.getBmi" op=">=" rightTerm="16" />
+        <if leftTerm="user.getBmi" op="&lt;" rightTerm="18.5" />
+        <then method="user.setBmiEval" arg1="-1" />
+    </rule>
+    <rule name="BER3">
+        <if leftTerm="user.getBmi" op=">=" rightTerm="18.5" />
+        <if leftTerm="user.getBmi" op="&lt;" rightTerm="25" />
+        <then method="user.setBmiEval" arg1="0" />
+    </rule>
+    <rule name="BER4">
+        <if leftTerm="user.getBmi" op=">=" rightTerm="25" />
+        <if leftTerm="user.getBmi" op="&lt;" rightTerm="30" />
+        <then method="user.setBmiEval" arg1="1" />
+    </rule>
+    <rule name="BER5">
+        <if leftTerm="user.getBmi" op=">=" rightTerm="30" />
+        <then method="user.setBmiEval" arg1="2" />
+    </rule>
+    
     <!-- Energy for basic metabolism per day in KCal -->
     <rule name="BMR1s0">
         <if leftTerm="user.getAge" op=">=" rightTerm="10" />

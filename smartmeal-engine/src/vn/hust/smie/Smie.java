@@ -14,7 +14,6 @@ import javax.rules.InvalidRuleSessionException;
 import javax.rules.RuleRuntime;
 import javax.rules.RuleServiceProvider;
 import javax.rules.RuleServiceProviderManager;
-import javax.rules.RuleSession;
 import javax.rules.StatefulRuleSession;
 import javax.rules.admin.RuleAdministrator;
 import javax.rules.admin.RuleExecutionSet;
