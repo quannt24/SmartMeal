@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 
 import com.example.smartmeal.fragment.AboutUs;
+import com.example.smartmeal.fragment.History;
 import com.example.smartmeal.fragment.MenuSuggestion;
 import com.example.smartmeal.fragment.Setup;
 import com.example.smartmeal.fragment.UserProfile;
@@ -94,6 +95,9 @@ public class MainActivity extends FragmentActivity {
 					fragment = new MenuSuggestion();
 					break;
 				case 2:
+					fragment = new History();
+					break;
+				case 3:
 					fragment = new AboutUs();
 					break;
 				}
@@ -106,7 +110,7 @@ public class MainActivity extends FragmentActivity {
 
 		@Override
 		public int getCount() {
-			if (Save.getSave().isSetup()) return 3;
+			if (Save.getSave().isSetup()) return 4;
 			else return 1;
 		}
 
@@ -121,6 +125,8 @@ public class MainActivity extends FragmentActivity {
 				return getString(R.string.title_section2).toUpperCase(l);
 			case 2:
 				return getString(R.string.title_section3).toUpperCase(l);
+			case 3:
+				return getString(R.string.title_section4).toUpperCase(l);
 			}
 			return null;
 		}
@@ -154,7 +160,6 @@ public class MainActivity extends FragmentActivity {
 			int step = 0;
 			try{
 				// validate info
-
 				step = 0;
 				int birth = Integer.parseInt(birthStr);
 				int year = Calendar.getInstance().get(Calendar.YEAR);
@@ -163,9 +168,11 @@ public class MainActivity extends FragmentActivity {
 
 				step = 1;
 				int weight = Integer.parseInt(weightStr);
+				if (weight <= 0) throw new NumberFormatException();
 
 				step = 2;
 				int height = Integer.parseInt(heightStr);
+				if (weight <= 0) throw new NumberFormatException();
 
 				// save info
 				Save.getSave().save(Save.NAME, name);

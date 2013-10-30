@@ -6,6 +6,7 @@
     <string name="title_section0">Thiết lập</string>
     <string name="title_section1">Người dùng</string>
     <string name="title_section2">Thực đơn</string>
-    <string name="title_section3">Tác giả</string>
+    <string name="title_section3">Lịch sử</string>
+    <string name="title_section4">Tác giả</string>
 
 </resources>
