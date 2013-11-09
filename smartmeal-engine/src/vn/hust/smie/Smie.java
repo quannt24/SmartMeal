@@ -52,7 +52,6 @@ public class Smie {
 	    System.out.println("Engine "
 		    + "Error: The Rule Engine Implementation could not be found");
 	} catch (Exception e) {
-	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	}
 	
@@ -140,6 +139,7 @@ public class Smie {
     /**
      * Execute rules. Input should be added before calling this method.
      */
+    @SuppressWarnings("rawtypes")
     public void executeRules() {
 	try {
 	    session.executeRules();

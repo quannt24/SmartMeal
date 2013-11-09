@@ -1,65 +1,66 @@
 package vn.hust.smie;
 
-
 public class Ingredient {
 
-	private int		id;
+    private int id;
 
-	private String	name;
-	private String	kind;
+    private String name;
+    private String type;
 
-	private int		energy;
+    private float energy;
 
-	private float	protein;
-	private float	fat;
-	private float	carbon;
-	private float	cell;
+    private float protein;
+    private float fat;
+    private float carbon;
+    private float cell; // Celluloza
 
-	public Ingredient(int id, String name, String kind, String energy, String protein, String fat, String carbon, String cell) {
-		this.id = id;
-		this.name = name;
-		this.kind = kind;
+    public Ingredient(String id, String name, String type, String energy, String protein, String fat,
+		      String carbon, String cell) {
+	this.id = Integer.parseInt(id);
+	this.name = name;
+	this.type = type;
 
-		this.energy = Integer.parseInt(energy);
-		this.protein = Float.parseFloat(protein);
-		this.fat = Float.parseFloat(fat);
-		this.carbon = Float.parseFloat(carbon);
-		this.cell = Float.parseFloat(cell);
-	}
+	this.energy = Integer.parseInt(energy);
+	this.protein = Float.parseFloat(protein);
+	this.fat = Float.parseFloat(fat);
+	this.carbon = Float.parseFloat(carbon);
+	this.cell = Float.parseFloat(cell);
+    }
 
-	public void print(){
-		System.out.printf("%-3d %-13s %-10s %-5d %-5.1f  %-5.1f  %-5.1f  %-5.1f\n", id, name, kind, energy, protein, fat, carbon, cell);
-	}
-	
-	public int getId() {
-		return id;
-	}
+    public void print() {
+	System.out.printf("%-3d %-13s %-10s %-5.1f %-5.1f  %-5.1f  %-5.1f  %-5.1f\n", id, name,
+			  type, energy, protein, fat, carbon, cell);
+    }
 
-	public String getName() {
-		return name;
-	}
+    public int getId() {
+	return id;
+    }
 
-	public String getKind() {
-		return kind;
-	}
+    public String getName() {
+	return name;
+    }
 
-	public int getEnergy() {
-		return energy;
-	}
+    public String getType() {
+	return type;
+    }
 
-	public float getProtein() {
-		return protein;
-	}
+    public float getEnergy() {
+	return energy;
+    }
 
-	public float getFat() {
-		return fat;
-	}
+    public float getProtein() {
+	return protein;
+    }
 
-	public float getCarbon() {
-		return carbon;
-	}
+    public float getFat() {
+	return fat;
+    }
 
-	public float getCell() {
-		return cell;
-	}
+    public float getCarbon() {
+	return carbon;
+    }
+
+    public float getCell() {
+	return cell;
+    }
 }
