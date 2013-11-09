@@ -1,5 +1,5 @@
-# Form:
-# ID, Name, Type, Energy(KCal), Protein(g), Lipid(g), Glucid(g), Celluloza(g)
+# Format:
+# ID,Name,Type,Energy(KCal),Protein(g),Lipid(g),Glucid(g),Celluloza(g)
 
 1,gạo nếp,cereal,346,8.4,1.6,74.9,0.5
 2,gạo tẻ,cereal,344,7.9,1.0,75.9,0.4

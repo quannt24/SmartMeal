@@ -6,6 +6,12 @@ import java.io.IOException;
 
 public class Parser {
 
+    /**
+     * Parse data file and create an IngredientCollection
+     * 
+     * @param fileName
+     * @return
+     */
     public static IngredientCollection parseIngredient(String fileName) {
 	IngredientCollection ic = new IngredientCollection();
 	BufferedReader br = null;
@@ -30,12 +36,56 @@ public class Parser {
 	    if (br != null) try {
 		br.close();
 	    } catch (IOException e) {
-		// TODO Auto-generated catch block
 		e.printStackTrace();
 	    }
 	}
 	
 	return ic;
+    }
+    
+    public static DishCollection parseDish(String fileName) {
+	DishCollection dc = new DishCollection();
+	BufferedReader br = null;
+	String line;
+	char ch;
+	int i;
+	
+	try {
+	    br = new BufferedReader(new FileReader(fileName));
+	    while ((line = br.readLine()) != null) {
+		line = line.trim();
+		if (line.length() <= 0) continue;
+		ch = line.charAt(0);
+		if (ch == '\n' || ch == '#') continue;
+		
+		String[] pattern = line.split(",");
+		Dish dish = new Dish(pattern[0], pattern[1], pattern[2], pattern[3], pattern[4]);
+		
+		// Add components to dish
+		i = 5;
+		while (true) {
+		    try {
+			dish.addComponent(new DishComponent(pattern[i], pattern[i + 1]));
+			i += 2;
+		    } catch (Exception e) {
+			break;
+		    }
+		}
+		
+		// Add dish to collection
+		dc.addDish(dish);
+	    }
+	} catch (IOException e) {
+	    e.printStackTrace();
+	} finally {
+	    if (br != null) try {
+		br.close();
+	    } catch (IOException e) {
+		e.printStackTrace();
+	    }
+	}
+	
+	return dc;
     }
     
 }

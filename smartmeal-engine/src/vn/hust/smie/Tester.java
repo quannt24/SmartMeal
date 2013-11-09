@@ -6,7 +6,6 @@ package vn.hust.smie;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -30,6 +29,9 @@ public class Tester {
 
 	// Create ingredient collection from data
 	IngredientCollection ic = Parser.parseIngredient("res/data/ingredient.csv");
+	
+	// Create dish collection from data
+	DishCollection dc = Parser.parseDish("res/data/dish.csv");
 	
 	// Open rule file
 	InputStream inStream = null;

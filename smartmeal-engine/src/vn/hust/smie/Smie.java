@@ -46,8 +46,8 @@ public class Smie {
 
 	    ruleAdministrator = serviceProvider.getRuleAdministrator();
 
-	    System.out.println("Engine " + "\nAdministration API\n");
-	    System.out.println("Engine " + "Acquired RuleAdministrator: " + ruleAdministrator);
+	    System.out.println("Engine: " + "Administration API\n");
+	    System.out.println("Engine: " + "Acquired RuleAdministrator: " + ruleAdministrator);
 	} catch (ClassNotFoundException e) {
 	    System.out.println("Engine "
 		    + "Error: The Rule Engine Implementation could not be found");

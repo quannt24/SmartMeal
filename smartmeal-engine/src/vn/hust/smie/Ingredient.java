@@ -1,5 +1,11 @@
 package vn.hust.smie;
 
+/**
+ * Ingredient with its energy and nutrients per 100g
+ * 
+ * @author Quan T. Nguyen <br>
+ * Hanoi University of Science and Technology
+ */
 public class Ingredient {
 
     private int id;
