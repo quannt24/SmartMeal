@@ -17,8 +17,9 @@ public class Tester {
 
     /**
      * @param args
+     * @throws FileNotFoundException 
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
 	// Create user object
 	User user = new User();
 	user.setName("Tester");
@@ -29,10 +30,10 @@ public class Tester {
 	user.setActivity(User.ACTIVITY_NORMAL);
 
 	// Create ingredient collection from data
-	IngredientCollection ic = Parser.parseIngredient("res/data/ingredient.csv");
+	IngredientCollection ic = Parser.parseIngredient(new FileInputStream(new File("res/data/ingredient.csv")));
 	
 	// Create dish collection from data
-	DishCollection dc = Parser.parseDish(ic, "res/data/dish.csv");
+	DishCollection dc = Parser.parseDish(ic, new FileInputStream(new File("res/data/dish.csv")));
 	
 	// Open rule file
 	InputStream inStream = null;
