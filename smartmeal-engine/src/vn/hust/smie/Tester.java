@@ -7,15 +7,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.rmi.RemoteException;
-import java.util.Enumeration;
-import java.util.Hashtable;
-import java.util.List;
-
-import javax.rules.InvalidRuleSessionException;
-import javax.rules.StatefulRuleSession;
-
-import org.jruleengine.StatefulRuleSessionImpl;
 
 /**
  * @author Quan T. Nguyen <br>
@@ -27,7 +18,7 @@ public class Tester {
      * @param args
      */
     public static void main(String[] args) {
-	// TODO Auto-generated method stub
+	// Create user object
 	User user = new User();
 	user.setName("Le Quan");
 	user.setSex(User.SEX_MALE);
@@ -36,20 +27,34 @@ public class Tester {
 	user.setWeight(72);
 	user.setActivity(User.ACTIVITY_MANY);
 
+	// Create ingredient collection from data
+	IngredientCollection ic = Parser.parseIngredient("res/data/ingredient.csv");
+	
+	// Create dish collection from data
+	DishCollection dc = Parser.parseDish(ic, "res/data/dish.csv");
+	
+	// Open rule file
 	InputStream inStream = null;
 	try {
 	    inStream = new FileInputStream(new File("res/rule/smartmeal.xml"));
 	} catch (FileNotFoundException e) {
-	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	}
 
-	Smie smie = new Smie();
+	// Setup engine
+	Smie smie = new Smie(dc, ic);
 	smie.setupSession(inStream);
 	
 	// Add input here
 	smie.inputUser(user);
+	// Process user information
 	smie.executeRules();
+	
+	// Setup a meal
+	smie.setupMeal(Meal.TYPE_LUNCH); // TODO Example
+	smie.executeRules();
+	smie.printWorkingMemory();
+	
 	smie.finishSession();
     }
 
