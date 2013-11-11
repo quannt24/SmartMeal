@@ -80,7 +80,7 @@ public class DishCollection {
 	double minDiff = Double.MAX_VALUE;
 	double diff;
 	for (Dish d : tmp) {
-	    diff = d.getEnergy() - energy + d.getProAmount() - pro + d.getLipAmount() - lip + d.getGluAmount() - glu;
+	    diff = Math.abs(d.getEnergy() - energy + d.getProAmount() - pro + d.getLipAmount() - lip + d.getGluAmount() - glu);
 	    if (diff < minDiff) {
 		minDiff = diff;
 		best = d.getId();

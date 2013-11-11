@@ -199,8 +199,8 @@
         <then method="dc.selectRandom" arg1="2" />
         <then method="meal.addDish" arg1="dc.getSelected" />
         <!-- Select protein dish -->
-<!--         <then method="dc.selectBestMatch" arg1="3" arg2="meal.getShortedEnergy" arg3="meal.getShortedPro" arg4="meal.getshortedLip" arg5="meal.getShortedGlu" /> -->
-<!--         <then method="meal.addDish" arg1="dc.getSelected" /> -->
+        <then method="dc.selectBestMatch" arg1="3" arg2="meal.getShortedEnergy" arg3="meal.getShortedPro" arg4="meal.getShortedLip" arg5="meal.getShortedGlu" />
+        <then method="meal.addDish" arg1="dc.getSelected" />
     </rule>
     
     <!-- Select dishes for dinner -->

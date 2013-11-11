@@ -68,6 +68,8 @@ public class Tester {
 	for (Dish d : menu) {
 	    System.out.println(d);
 	}
+	System.out.println("Shorted E P L G: " + meal.getShortedEnergy() + " "
+		+ meal.getShortedPro() + " " + meal.getShortedLip() + " " + meal.getShortedGlu());
     }
 
 }
