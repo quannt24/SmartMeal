@@ -54,6 +54,10 @@ public class Meal {
 	return type;
     }
     
+    public ArrayList<Dish> getMenu() {
+	return menu;
+    }
+    
     public void addDish(int dishId) {
 	if (dishId == 0) return; // There is no such dish
 	

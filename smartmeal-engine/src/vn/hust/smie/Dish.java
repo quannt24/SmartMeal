@@ -89,4 +89,52 @@ public class Dish {
         return compList;
     }
     
+    /**
+     * Get total energy of this dish in KCal
+     * @return
+     */
+    public double getEnergy() {
+	double tmp = 0;
+	for (DishComponent c : compList) {
+	    tmp += c.getIngredient().getEnergy() * c.getAmount() / 100;
+	}
+	return tmp;
+    }
+    
+    /**
+     * Get total protein amount in gram
+     * @return
+     */
+    public double getProAmount() {
+	double tmp = 0;
+	for (DishComponent c : compList) {
+	    tmp += c.getIngredient().getProtein() * c.getAmount() / 100;
+	}
+	return tmp;
+    }
+    
+    /**
+     * Get total lipid amount in gram
+     * @return
+     */
+    public double getLipAmount() {
+	double tmp = 0;
+	for (DishComponent c : compList) {
+	    tmp += c.getIngredient().getLipid() * c.getAmount() / 100;
+	}
+	return tmp;
+    }
+    
+    /**
+     * Get total glucid amount in gram
+     * @return
+     */
+    public double getGluAmount() {
+	double tmp = 0;
+	for (DishComponent c : compList) {
+	    tmp += c.getIngredient().getGlucid() * c.getAmount() / 100;
+	}
+	return tmp;
+    }
+    
 }

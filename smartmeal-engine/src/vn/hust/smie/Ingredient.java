@@ -16,26 +16,26 @@ public class Ingredient {
     private float energy;
 
     private float protein;
-    private float fat;
-    private float carbon;
+    private float lipid;
+    private float glucid;
     private float cell; // Celluloza
 
-    public Ingredient(String id, String name, String type, String energy, String protein, String fat,
-		      String carbon, String cell) {
+    public Ingredient(String id, String name, String type, String energy, String protein, String lipid,
+		      String glucid, String celluloza) {
 	this.id = Integer.parseInt(id);
 	this.name = name;
 	this.type = type;
 
 	this.energy = Integer.parseInt(energy);
 	this.protein = Float.parseFloat(protein);
-	this.fat = Float.parseFloat(fat);
-	this.carbon = Float.parseFloat(carbon);
-	this.cell = Float.parseFloat(cell);
+	this.lipid = Float.parseFloat(lipid);
+	this.glucid = Float.parseFloat(glucid);
+	this.cell = Float.parseFloat(celluloza);
     }
 
     public void print() {
 	System.out.printf("%-3d %-13s %-10s %-5.1f %-5.1f  %-5.1f  %-5.1f  %-5.1f\n", id, name,
-			  type, energy, protein, fat, carbon, cell);
+			  type, energy, protein, lipid, glucid, cell);
     }
 
     public int getId() {
@@ -58,12 +58,12 @@ public class Ingredient {
 	return protein;
     }
 
-    public float getFat() {
-	return fat;
+    public float getLipid() {
+	return lipid;
     }
 
-    public float getCarbon() {
-	return carbon;
+    public float getGlucid() {
+	return glucid;
     }
 
     public float getCell() {
