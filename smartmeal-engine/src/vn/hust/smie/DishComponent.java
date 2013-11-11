@@ -10,39 +10,30 @@ package vn.hust.smie;
  */
 public class DishComponent {
 
-    private int ingredientId;
+    private Ingredient ingredient;
     private double amount; // Ingredient amount in gram
     
     /**
-     * @param ingredientId
+     * @param ingredient
      * @param amount
      */
-    public DishComponent(int ingredientId, double amount) {
-	this.ingredientId = ingredientId;
+    public DishComponent(Ingredient ingredient, double amount) {
+	this.ingredient = ingredient;
 	this.amount = amount;
     }
     
     /**
-     * @param ingredientId
-     * @param amount
+     * @return the ingredient
      */
-    public DishComponent(String ingredientId, String amount) {
-	this.ingredientId = Integer.parseInt(ingredientId);
-	this.amount = Double.parseDouble(amount);
+    public Ingredient getIngredient() {
+        return ingredient;
     }
     
     /**
-     * @return the ingredientId
+     * @param ingredient the ingredient to set
      */
-    public int getIngredientId() {
-        return ingredientId;
-    }
-    
-    /**
-     * @param ingredientId the ingredientId to set
-     */
-    public void setIngredientId(int ingredientId) {
-        this.ingredientId = ingredientId;
+    public void setIngredient(Ingredient ingredient) {
+        this.ingredient = ingredient;
     }
 
     /**

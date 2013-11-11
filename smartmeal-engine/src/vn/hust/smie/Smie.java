@@ -38,7 +38,10 @@ public class Smie {
     private MajorNutriDist mnd;
     private EnergyValue enerVal;
     
-    public Smie() {
+    private DishCollection dc;
+    private IngredientCollection ic;
+    
+    public Smie(DishCollection dc, IngredientCollection ic) {
 	try {
 	    Class.forName("org.jruleengine.RuleServiceProviderImpl");
 
@@ -61,6 +64,10 @@ public class Smie {
 	mealDist = new MealDist();
 	mnd = new MajorNutriDist();
 	enerVal = new EnergyValue();
+	
+	// Inputed collections
+	this.dc = dc;
+	this.ic = ic;
     }
 
     /**
@@ -116,6 +123,7 @@ public class Smie {
 	    session.addObject(mealDist); // Meal distribution
 	    session.addObject(mnd); // Major nutrient distribution
 	    session.addObject(enerVal); // Energy value of nutrients
+	    session.addObject(dc); // Dish collection
 	    System.out.println("Pre-installed some objects");
 	} catch (InvalidRuleSessionException | RemoteException e) {
 	    System.err.println("Error: Cannot add pre-installed objects");
@@ -137,28 +145,82 @@ public class Smie {
     }
     
     /**
+     * Setup a meal with requirements then add to working memory. This method should only be called
+     * after the engine executes rules with input User object. To setup the meal's menu, execute
+     * rules again. 
+     * 
+     * @param type
+     */
+    public void setupMeal(int type) {
+	double dist; // Energy distribution of this meal
+	double reqEnergy; // Total energy of this meal
+	double reqProAmount; // Protein amount in gram
+	double reqLipAmount; // Lipid amount in gram
+	double reqGluAmount; // Glucid amount in gram
+	
+	switch (type) {
+	case Meal.TYPE_BREAKFAST:
+	    dist = mealDist.getBreakfastDist();
+	    break;
+	    
+	case Meal.TYPE_LUNCH:
+	    dist = mealDist.getLunchDist();
+	    break;
+	    
+	case Meal.TYPE_DINNER:
+	    dist = mealDist.getDinnerDist();
+	    break;
+
+	default:
+	    dist = mealDist.getAuxiliaryDist();
+	    break;
+	}
+	
+	// Setup meal's requirements
+	reqEnergy = ener.getEnergy() * dist;
+	reqProAmount = mnd.getProServing() * dist;
+	reqLipAmount = mnd.getLipServing() * dist;
+	reqGluAmount = mnd.getGluServing() * dist;
+	
+	// Add meal to working memory
+	try {
+	    session.addObject(new Meal(dc, type, reqEnergy, reqProAmount, reqLipAmount, reqGluAmount));
+	} catch (InvalidRuleSessionException | RemoteException e) {
+	    e.printStackTrace();
+	}
+    }
+    
+    /**
      * Execute rules. Input should be added before calling this method.
      */
-    @SuppressWarnings("rawtypes")
     public void executeRules() {
 	try {
 	    session.executeRules();
-
-	    // TODO Print out working memory for test
-	    List results = null;
-	    results = session.getObjects();
-
-	    // Output
-	    System.out.println("Result of calling getObjects: " + results.size() + " results.");
-	    // Loop over the results.
-	    Hashtable wm = ((StatefulRuleSessionImpl) session).getWorkingMemory();
-	    Enumeration en = wm.keys();
-	    while (en.hasMoreElements()) {
-		Object obj = en.nextElement();
-		System.out.println("Clause Found: " + obj + " " + wm.get(obj));
-	    }
 	} catch (InvalidRuleSessionException | RemoteException e) {
 	    e.printStackTrace();
+	}
+    }
+    
+    /**
+     * Output working memory to standard output
+     */
+    @SuppressWarnings("rawtypes")
+    public void printWorkingMemory() {
+	List results = null;
+	try {
+	    results = session.getObjects();
+	} catch (InvalidRuleSessionException | RemoteException e) {
+	    e.printStackTrace();
+	}
+
+	// Output
+	System.out.println("\nResult of calling getObjects: " + results.size() + " results.");
+	// Loop over the results.
+	Hashtable wm = ((StatefulRuleSessionImpl) session).getWorkingMemory();
+	Enumeration en = wm.keys();
+	while (en.hasMoreElements()) {
+	    Object obj = en.nextElement();
+	    System.out.println("Clause Found: " + obj + " " + wm.get(obj));
 	}
     }
     

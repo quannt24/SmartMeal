@@ -10,6 +10,8 @@
     <synonymn name="mealDist" class="vn.hust.smie.MealDist" />
     <synonymn name="mnd" class="vn.hust.smie.MajorNutriDist" />
     <synonymn name="enerVal" class="vn.hust.smie.EnergyValue" />
+    <synonymn name="meal" class="vn.hust.smie.Meal" />
+    <synonymn name="dc" class="vn.hust.smie.DishCollection" />
     
     <!-- Evaluate BMI -->
     <rule name="BER1">
@@ -173,6 +175,18 @@
         <then method="mnd.setLipServing" arg1="calc.getResult" />
         <then method="calc.muldiv" arg1="ener.getEnergy" arg2="mnd.getGluDist" arg3="enerVal.getGluEV" />
         <then method="mnd.setGluServing" arg1="calc.getResult" />
+    </rule>
+    
+    <!-- Select dishes for a meal -->
+    <rule name="MLR1">
+        <!-- Lunch -->
+        <if leftTerm="meal.getType" op="=" rightTerm="2" />
+        <!-- Select a grain dish randomly -->
+        <then method="dc.selectRandom" arg1="1" />
+        <then method="meal.addDish" arg1="dc.getSelected" />
+        <!-- Select a vegetable dish randomly -->
+        <then method="dc.selectRandom" arg1="2" />
+        <then method="meal.addDish" arg1="dc.getSelected" />
     </rule>
 
 </rule-execution-set>

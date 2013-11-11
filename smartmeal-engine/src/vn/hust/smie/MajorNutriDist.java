@@ -13,13 +13,13 @@ package vn.hust.smie;
  */
 public class MajorNutriDist {
 
-    private double proDist; // Protit distribution
-    private double lipDist; // Lipit distribution
-    private double gluDist; // Gluxit distribution
+    private double proDist; // Protein distribution
+    private double lipDist; // Lipid distribution
+    private double gluDist; // Glucid distribution
     
-    private double proServing; // Protit serving in gram
-    private double lipServing; // Lipit serving in gram
-    private double gluServing; // Gluxit serving in gram
+    private double proServing; // Protein serving in gram
+    private double lipServing; // Lipid serving in gram
+    private double gluServing; // Glucid serving in gram
     
     public MajorNutriDist() {
 	proDist = 0.15;

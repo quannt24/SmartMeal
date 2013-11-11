@@ -43,7 +43,7 @@ public class Parser {
 	return ic;
     }
     
-    public static DishCollection parseDish(String fileName) {
+    public static DishCollection parseDish(IngredientCollection ic, String fileName) {
 	DishCollection dc = new DishCollection();
 	BufferedReader br = null;
 	String line;
@@ -65,7 +65,9 @@ public class Parser {
 		i = 5;
 		while (true) {
 		    try {
-			dish.addComponent(new DishComponent(pattern[i], pattern[i + 1]));
+			Ingredient ing = ic.getIngredient(Integer.parseInt(pattern[i]));
+			double amount = Double.parseDouble(pattern[i+ 1]);
+			dish.addComponent(new DishComponent(ing, amount));
 			i += 2;
 		    } catch (Exception e) {
 			break;

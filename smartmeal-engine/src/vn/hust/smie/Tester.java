@@ -31,7 +31,7 @@ public class Tester {
 	IngredientCollection ic = Parser.parseIngredient("res/data/ingredient.csv");
 	
 	// Create dish collection from data
-	DishCollection dc = Parser.parseDish("res/data/dish.csv");
+	DishCollection dc = Parser.parseDish(ic, "res/data/dish.csv");
 	
 	// Open rule file
 	InputStream inStream = null;
@@ -42,14 +42,19 @@ public class Tester {
 	}
 
 	// Setup engine
-	Smie smie = new Smie();
+	Smie smie = new Smie(dc, ic);
 	smie.setupSession(inStream);
 	
 	// Add input here
 	smie.inputUser(user);
-	
-	// Execute rules
+	// Process user information
 	smie.executeRules();
+	
+	// Setup a meal
+	smie.setupMeal(Meal.TYPE_LUNCH); // TODO Example
+	smie.executeRules();
+	smie.printWorkingMemory();
+	
 	smie.finishSession();
     }
 
