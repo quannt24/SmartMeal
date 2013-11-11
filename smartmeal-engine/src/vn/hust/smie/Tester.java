@@ -21,12 +21,12 @@ public class Tester {
     public static void main(String[] args) {
 	// Create user object
 	User user = new User();
-	user.setName("Le Quan");
-	user.setSex(User.SEX_MALE);
+	user.setName("Tester");
+	user.setSex(User.SEX_FEMALE);
 	user.setYearOfBirth(1991);
 	user.setHeight(1.65);
-	user.setWeight(72);
-	user.setActivity(User.ACTIVITY_MANY);
+	user.setWeight(60);
+	user.setActivity(User.ACTIVITY_NORMAL);
 
 	// Create ingredient collection from data
 	IngredientCollection ic = Parser.parseIngredient("res/data/ingredient.csv");
