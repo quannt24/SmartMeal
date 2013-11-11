@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 /**
  * @author Quan T. Nguyen <br>
@@ -55,7 +56,18 @@ public class Tester {
 	smie.executeRules();
 	smie.printWorkingMemory();
 	
+	// Get result
+	Meal meal = smie.getMeal();
+	
+	// Finish session
 	smie.finishSession();
+	
+	// Print result
+	System.out.println("Result meal:");
+	ArrayList<Dish> menu = meal.getMenu();
+	for (Dish d : menu) {
+	    System.out.println(d);
+	}
     }
 
 }

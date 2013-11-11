@@ -64,6 +64,54 @@ public class Meal {
 	Dish dish = dc.getDish(dishId);
 	if (dish != null) menu.add(dish);
     }
+    
+    /**
+     * Get currently shorted energy in KCal
+     * @return
+     */
+    public double getShortedEnergy() {
+	double tmp = 0;
+	for (Dish dish : menu) {
+	    tmp += dish.getEnergy();
+	}
+	return reqEnergy - tmp;
+    }
+    
+    /**
+     * Get currently shorted amount of protein in gram
+     * @return
+     */
+    public double getShortedPro() {
+	double tmp = 0;
+	for (Dish dish : menu) {
+	    tmp += dish.getProAmount();
+	}
+	return reqProAmount - tmp;
+    }
+    
+    /**
+     * Get currently shorted amount of lipid in gram
+     * @return
+     */
+    public double getShortedLip() {
+	double tmp = 0;
+	for (Dish dish : menu) {
+	    tmp += dish.getLipAmount();
+	}
+	return reqLipAmount - tmp;
+    }
+    
+    /**
+     * Get currently shorted amount of glucid in gram
+     * @return
+     */
+    public double getShortedGlu() {
+	double tmp = 0;
+	for (Dish dish : menu) {
+	    tmp += dish.getGluAmount();
+	}
+	return reqGluAmount - tmp;
+    }
 
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
