@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 
+import javax.rules.Handle;
+import javax.rules.InvalidHandleException;
 import javax.rules.InvalidRuleSessionException;
 import javax.rules.RuleRuntime;
 import javax.rules.RuleServiceProvider;
@@ -41,6 +43,8 @@ public class Smie {
     private DishCollection dc;
     private IngredientCollection ic;
     
+    private Handle mealHandle;
+    
     public Smie(DishCollection dc, IngredientCollection ic) {
 	try {
 	    Class.forName("org.jruleengine.RuleServiceProviderImpl");
@@ -68,6 +72,8 @@ public class Smie {
 	// Inputed collections
 	this.dc = dc;
 	this.ic = ic;
+	
+	this.mealHandle = null;
     }
 
     /**
@@ -125,7 +131,7 @@ public class Smie {
 	    session.addObject(enerVal); // Energy value of nutrients
 	    session.addObject(dc); // Dish collection
 	    System.out.println("Pre-installed some objects");
-	} catch (InvalidRuleSessionException | RemoteException e) {
+	} catch (Exception e) {
 	    System.err.println("Error: Cannot add pre-installed objects");
 	    return;
 	}
@@ -139,7 +145,9 @@ public class Smie {
     public void inputUser(User user) {
 	try {
 	    session.addObject(user);
-	} catch (InvalidRuleSessionException | RemoteException e) {
+	} catch (InvalidRuleSessionException e) {
+	    e.printStackTrace();
+	} catch (RemoteException e) {
 	    e.printStackTrace();
 	}
     }
@@ -184,8 +192,11 @@ public class Smie {
 	
 	// Add meal to working memory
 	try {
-	    session.addObject(new Meal(dc, type, reqEnergy, reqProAmount, reqLipAmount, reqGluAmount));
-	} catch (InvalidRuleSessionException | RemoteException e) {
+	    mealHandle = session.addObject(new Meal(dc, type, reqEnergy, reqProAmount,
+		    reqLipAmount, reqGluAmount));
+	} catch (InvalidRuleSessionException e) {
+	    e.printStackTrace();
+	} catch (RemoteException e) {
 	    e.printStackTrace();
 	}
     }
@@ -196,9 +207,33 @@ public class Smie {
     public void executeRules() {
 	try {
 	    session.executeRules();
-	} catch (InvalidRuleSessionException | RemoteException e) {
+	} catch (InvalidRuleSessionException e) {
+	    e.printStackTrace();
+	} catch (RemoteException e) {
 	    e.printStackTrace();
 	}
+    }
+    
+    /**
+     * Get generated meal. This method should only be called after all necessary inference steps
+     * complete and before the session is released (by calling finishSession()).
+     * 
+     * @return
+     */
+    public Meal getMeal() {
+	if (mealHandle == null) return null;
+	
+	try {
+	    return (Meal) session.getObject(mealHandle);
+	} catch (InvalidHandleException e) {
+	    e.printStackTrace();
+	} catch (InvalidRuleSessionException e) {
+	    e.printStackTrace();
+	} catch (RemoteException e) {
+	    e.printStackTrace();
+	}
+	
+	return null;
     }
     
     /**
@@ -209,7 +244,9 @@ public class Smie {
 	List results = null;
 	try {
 	    results = session.getObjects();
-	} catch (InvalidRuleSessionException | RemoteException e) {
+	} catch (InvalidRuleSessionException e) {
+	    e.printStackTrace();
+	} catch (RemoteException e) {
 	    e.printStackTrace();
 	}
 
@@ -230,7 +267,9 @@ public class Smie {
     public void finishSession() {
 	try {
 	    session.release();
-	} catch (InvalidRuleSessionException | RemoteException e) {
+	} catch (InvalidRuleSessionException e) {
+	    e.printStackTrace();
+	} catch (RemoteException e) {
 	    e.printStackTrace();
 	}
     }

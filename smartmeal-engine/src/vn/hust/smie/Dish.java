@@ -136,5 +136,16 @@ public class Dish {
 	}
 	return tmp;
     }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+	return "Dish [id=" + id + ", name=" + name + ", type=" + type + ", quantity=" + quantity
+		+ ", unit=" + unit + ", getEnergy()=" + getEnergy() + ", getProAmount()="
+		+ getProAmount() + ", getLipAmount()=" + getLipAmount() + ", getGluAmount()="
+		+ getGluAmount() + "]";
+    }
     
 }
