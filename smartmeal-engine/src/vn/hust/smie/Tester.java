@@ -22,12 +22,12 @@ public class Tester {
     public static void main(String[] args) throws FileNotFoundException {
 	// Create user object
 	User user = new User();
-	user.setName("Le Quan");
-	user.setSex(User.SEX_MALE);
+	user.setName("Tester");
+	user.setSex(User.SEX_FEMALE);
 	user.setYearOfBirth(1991);
 	user.setHeight(1.65);
-	user.setWeight(72);
-	user.setActivity(User.ACTIVITY_MANY);
+	user.setWeight(60);
+	user.setActivity(User.ACTIVITY_NORMAL);
 
 	// Create ingredient collection from data
 	IngredientCollection ic = Parser.parseIngredient(new FileInputStream(new File("res/data/ingredient.csv")));
@@ -69,6 +69,8 @@ public class Tester {
 	for (Dish d : menu) {
 	    System.out.println(d);
 	}
+	System.out.println("Shorted E P L G: " + meal.getShortedEnergy() + " "
+		+ meal.getShortedPro() + " " + meal.getShortedLip() + " " + meal.getShortedGlu());
     }
 
 }

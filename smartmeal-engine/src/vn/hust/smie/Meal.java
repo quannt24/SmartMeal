@@ -21,10 +21,16 @@ public class Meal {
     private int type;
     
     // Required (input information) total energy and nutrients
-    private double reqEnergy; // In KCal
+    private double reqEnergy; // Energy In KCal
     private double reqProAmount; // Protein amount in gram
     private double reqLipAmount; // Lipid amount in gram
     private double reqGluAmount; // Glucid amount in gram
+    
+    // Shorted nutrients
+    private double shortedEnergy; // Shorted Energy In KCal
+    private double shortedPro; // Shorted Protein amount in gram
+    private double shortedLip; // Shorted Lipid amount in gram
+    private double shortedGlu; // Shorted Glucid amount in gram
     
     private ArrayList<Dish> menu;
     
@@ -39,10 +45,10 @@ public class Meal {
 		double reqGluAmount) {
 	this.dc = dc;
 	this.type = type;
-	this.reqEnergy = reqEnergy;
-	this.reqProAmount = reqProAmount;
-	this.reqLipAmount = reqLipAmount;
-	this.reqGluAmount = reqGluAmount;
+	this.shortedEnergy = this.reqEnergy = reqEnergy;
+	this.shortedPro = this.reqProAmount = reqProAmount;
+	this.shortedLip = this.reqLipAmount = reqLipAmount;
+	this.shortedGlu = this.reqGluAmount = reqGluAmount;
 	
 	menu = new ArrayList<Dish>();
     }
@@ -62,7 +68,13 @@ public class Meal {
 	if (dishId == 0) return; // There is no such dish
 	
 	Dish dish = dc.getDish(dishId);
-	if (dish != null) menu.add(dish);
+	if (dish != null) {
+	    menu.add(dish);
+	    shortedEnergy -= dish.getEnergy();
+	    shortedPro -= dish.getProAmount();
+	    shortedLip -= dish.getLipAmount();
+	    shortedGlu -= dish.getGluAmount();
+	}
     }
     
     /**
@@ -70,11 +82,7 @@ public class Meal {
      * @return
      */
     public double getShortedEnergy() {
-	double tmp = 0;
-	for (Dish dish : menu) {
-	    tmp += dish.getEnergy();
-	}
-	return reqEnergy - tmp;
+	return shortedEnergy;
     }
     
     /**
@@ -82,11 +90,7 @@ public class Meal {
      * @return
      */
     public double getShortedPro() {
-	double tmp = 0;
-	for (Dish dish : menu) {
-	    tmp += dish.getProAmount();
-	}
-	return reqProAmount - tmp;
+	return shortedPro;
     }
     
     /**
@@ -94,11 +98,7 @@ public class Meal {
      * @return
      */
     public double getShortedLip() {
-	double tmp = 0;
-	for (Dish dish : menu) {
-	    tmp += dish.getLipAmount();
-	}
-	return reqLipAmount - tmp;
+	return shortedLip;
     }
     
     /**
@@ -106,11 +106,7 @@ public class Meal {
      * @return
      */
     public double getShortedGlu() {
-	double tmp = 0;
-	for (Dish dish : menu) {
-	    tmp += dish.getGluAmount();
-	}
-	return reqGluAmount - tmp;
+	return shortedGlu;
     }
 
     /* (non-Javadoc)

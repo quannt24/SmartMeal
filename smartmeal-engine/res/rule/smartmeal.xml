@@ -179,49 +179,79 @@
     
     <!-- Select dishes for breakfast -->
     <rule name="MBR1">
-        <!-- Lunch -->
         <if leftTerm="meal.getType" op="=" rightTerm="1" />
-        <!-- Select a grain dish randomly -->
-        <then method="dc.selectRandom" arg1="1" />
-        <then method="meal.addDish" arg1="dc.getSelected" />
-        <!-- Select a vegetable dish randomly -->
+        
+        <!-- Select vegetable dish -->
         <then method="dc.selectRandom" arg1="2" />
+        <then method="meal.addDish" arg1="dc.getSelected" />
+        <!-- Select fruit dish -->
+        <then method="dc.selectRandom" arg1="4" />
+        <then method="meal.addDish" arg1="dc.getSelected" />
+        
+        <!-- Select protein dish -->
+        <then method="dc.selectBestMatch" arg1="3" arg2="meal.getShortedEnergy" arg3="meal.getShortedPro" arg4="meal.getShortedLip" arg5="meal.getShortedGlu" />
+        <then method="meal.addDish" arg1="dc.getSelected" />
+        <!-- Select mixed dish -->
+        <then method="dc.selectBestMatch" arg1="5" arg2="meal.getShortedEnergy" arg3="meal.getShortedPro" arg4="meal.getShortedLip" arg5="meal.getShortedGlu" />
+        <then method="meal.addDish" arg1="dc.getSelected" />
+        <!-- Select grain dish -->
+        <then method="dc.selectBestMatch" arg1="1" arg2="meal.getShortedEnergy" arg3="meal.getShortedPro" arg4="meal.getShortedLip" arg5="meal.getShortedGlu" />
         <then method="meal.addDish" arg1="dc.getSelected" />
     </rule>
     
     <!-- Select dishes for lunch -->
     <rule name="MLR1">
         <if leftTerm="meal.getType" op="=" rightTerm="2" />
-        <!-- Select a grain dish randomly -->
-        <then method="dc.selectRandom" arg1="1" />
-        <then method="meal.addDish" arg1="dc.getSelected" />
-        <!-- Select a vegetable dish randomly -->
+        
+        <!-- Select vegetable dish -->
         <then method="dc.selectRandom" arg1="2" />
         <then method="meal.addDish" arg1="dc.getSelected" />
+        <!-- Select fruit dish -->
+        <then method="dc.selectRandom" arg1="4" />
+        <then method="meal.addDish" arg1="dc.getSelected" />
+        
         <!-- Select protein dish -->
-<!--         <then method="dc.selectBestMatch" arg1="3" arg2="meal.getShortedEnergy" arg3="meal.getShortedPro" arg4="meal.getshortedLip" arg5="meal.getShortedGlu" /> -->
-<!--         <then method="meal.addDish" arg1="dc.getSelected" /> -->
+        <then method="dc.selectBestMatch" arg1="3" arg2="meal.getShortedEnergy" arg3="meal.getShortedPro" arg4="meal.getShortedLip" arg5="meal.getShortedGlu" />
+        <then method="meal.addDish" arg1="dc.getSelected" />
+        <!-- Select mixed dish -->
+        <then method="dc.selectBestMatch" arg1="5" arg2="meal.getShortedEnergy" arg3="meal.getShortedPro" arg4="meal.getShortedLip" arg5="meal.getShortedGlu" />
+        <then method="meal.addDish" arg1="dc.getSelected" />
+        <!-- Select grain dish -->
+        <then method="dc.selectBestMatch" arg1="1" arg2="meal.getShortedEnergy" arg3="meal.getShortedPro" arg4="meal.getShortedLip" arg5="meal.getShortedGlu" />
+        <then method="meal.addDish" arg1="dc.getSelected" />
     </rule>
     
     <!-- Select dishes for dinner -->
     <rule name="MDR1">
         <if leftTerm="meal.getType" op="=" rightTerm="3" />
-        <!-- Select a grain dish randomly -->
-        <then method="dc.selectRandom" arg1="1" />
-        <then method="meal.addDish" arg1="dc.getSelected" />
-        <!-- Select a vegetable dish randomly -->
+        
+        <!-- Select vegetable dish -->
         <then method="dc.selectRandom" arg1="2" />
+        <then method="meal.addDish" arg1="dc.getSelected" />
+        <!-- Select fruit dish -->
+        <then method="dc.selectRandom" arg1="4" />
+        <then method="meal.addDish" arg1="dc.getSelected" />
+        
+        <!-- Select protein dish -->
+        <then method="dc.selectBestMatch" arg1="3" arg2="meal.getShortedEnergy" arg3="meal.getShortedPro" arg4="meal.getShortedLip" arg5="meal.getShortedGlu" />
+        <then method="meal.addDish" arg1="dc.getSelected" />
+        <!-- Select mixed dish -->
+        <then method="dc.selectBestMatch" arg1="5" arg2="meal.getShortedEnergy" arg3="meal.getShortedPro" arg4="meal.getShortedLip" arg5="meal.getShortedGlu" />
+        <then method="meal.addDish" arg1="dc.getSelected" />
+        <!-- Select grain dish -->
+        <then method="dc.selectBestMatch" arg1="1" arg2="meal.getShortedEnergy" arg3="meal.getShortedPro" arg4="meal.getShortedLip" arg5="meal.getShortedGlu" />
         <then method="meal.addDish" arg1="dc.getSelected" />
     </rule>
     
     <!-- Select dishes for auxiliary meal -->
     <rule name="MAR1">
         <if leftTerm="meal.getType" op="=" rightTerm="4" />
-        <!-- Select a grain dish randomly -->
-        <then method="dc.selectRandom" arg1="1" />
+        
+        <!-- Select fruit dish -->
+        <then method="dc.selectRandom" arg1="4" />
         <then method="meal.addDish" arg1="dc.getSelected" />
-        <!-- Select a vegetable dish randomly -->
-        <then method="dc.selectRandom" arg1="2" />
+        <!-- Select protein dish -->
+        <then method="dc.selectBestMatch" arg1="3" arg2="meal.getShortedEnergy" arg3="meal.getShortedPro" arg4="meal.getShortedLip" arg5="meal.getShortedGlu" />
         <then method="meal.addDish" arg1="dc.getSelected" />
     </rule>
 
