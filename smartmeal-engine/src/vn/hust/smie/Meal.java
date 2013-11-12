@@ -77,6 +77,16 @@ public class Meal {
 	}
     }
     
+    public void addDish(Dish dish) {
+	if (dish != null) {
+	    menu.add(dish);
+	    shortedEnergy -= dish.getEnergy();
+	    shortedPro -= dish.getProAmount();
+	    shortedLip -= dish.getLipAmount();
+	    shortedGlu -= dish.getGluAmount();
+	}
+    }
+    
     public void removeDish(int dishId) {
 	if (dishId == 0) return; // There is no such dish
 	
