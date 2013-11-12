@@ -77,6 +77,34 @@ public class Meal {
 	}
     }
     
+    public void removeDish(int dishId) {
+	if (dishId == 0) return; // There is no such dish
+	
+	Dish dish = null;
+	for (Dish d : menu) {
+	    if (d.getId() == dishId) {
+		dish = d;
+		break;
+	    }
+	}
+	
+	removeDish(dish);
+    }
+    
+    public void removeDish(Dish dish) {
+	if (dish != null && menu.contains(dish)) {
+	    shortedEnergy += dish.getEnergy();
+	    shortedPro += dish.getProAmount();
+	    shortedLip += dish.getLipAmount();
+	    shortedGlu += dish.getGluAmount();
+	    if (shortedEnergy > reqEnergy) shortedEnergy = reqEnergy;
+	    if (shortedPro > reqProAmount) shortedPro = reqProAmount;
+	    if (shortedLip > reqLipAmount) shortedLip = reqLipAmount;
+	    if (shortedGlu > reqGluAmount) shortedGlu = reqGluAmount;
+	    menu.remove(dish);
+	}
+    }
+    
     /**
      * Get currently shorted energy in KCal
      * @return
