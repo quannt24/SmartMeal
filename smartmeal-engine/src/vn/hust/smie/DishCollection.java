@@ -48,11 +48,39 @@ public class DishCollection {
 	    }
 	}
 	
-	if (tmp.size() <= 0) selected = 0;
+	if (tmp.size() <= 0) {
+	    selected = 0;
+	    return;
+	}
 	
 	Random rand = new Random();
 	int i = rand.nextInt(tmp.size());
 	
+	selected = tmp.get(i).getId();
+    }
+    
+    /**
+     * Select a dish randomly which belongs to one of inputed types
+     * @param type1
+     * @param type2
+     */
+    public void selectRandom(int type1, int type2) {
+	ArrayList<Dish> tmp = new ArrayList<Dish>();
+
+	for (Dish d : dishList) {
+	    if (d.getType() == type1 || d.getType() == type2) {
+		tmp.add(d);
+	    }
+	}
+
+	if (tmp.size() <= 0) {
+	    selected = 0;
+	    return;
+	}
+
+	Random rand = new Random();
+	int i = rand.nextInt(tmp.size());
+
 	selected = tmp.get(i).getId();
     }
 
@@ -70,6 +98,32 @@ public class DishCollection {
 
 	for (Dish d : dishList) {
 	    if (d.getType() == type) {
+		tmp.add(d);
+	    }
+	}
+	
+	if (tmp.size() <= 0) selected = 0;
+	
+	int best = 0; // ID of best match dish
+	double minDiff = Double.MAX_VALUE;
+	double diff;
+	for (Dish d : tmp) {
+	    diff = Math.abs(d.getEnergy() - energy + d.getProAmount() - pro + d.getLipAmount() - lip + d.getGluAmount() - glu);
+	    if (diff < minDiff) {
+		minDiff = diff;
+		best = d.getId();
+		System.out.println("minDiff " + minDiff + " best " + best);
+	    }
+	}
+	
+	selected = best;
+    }
+    
+    public void selectBestMatch(int type1, int type2, double energy, double pro, double lip, double glu) {
+	ArrayList<Dish> tmp = new ArrayList<Dish>();
+
+	for (Dish d : dishList) {
+	    if (d.getType() == type1 || d.getType() == type2) {
 		tmp.add(d);
 	    }
 	}
