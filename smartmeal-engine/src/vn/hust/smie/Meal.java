@@ -4,6 +4,7 @@
 package vn.hust.smie;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 
 /**
@@ -33,6 +34,7 @@ public class Meal {
     private double shortedGlu; // Shorted Glucid amount in gram
     
     private ArrayList<Dish> menu;
+    private Date date;
     
     /**
      * @param type
@@ -51,6 +53,7 @@ public class Meal {
 	this.shortedGlu = this.reqGluAmount = reqGluAmount;
 	
 	menu = new ArrayList<Dish>();
+	date = new Date();
     }
     
     /**
@@ -64,20 +67,24 @@ public class Meal {
 	return menu;
     }
     
+    /**
+     * @return the date
+     */
+    public Date getDate() {
+        return date;
+    }
+
+    /**
+     * @param date the date to set
+     */
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
     public void addDish(int dishId) {
 	if (dishId == 0) return; // There is no such dish
 	
 	Dish dish = dc.getDish(dishId);
-	if (dish != null) {
-	    menu.add(dish);
-	    shortedEnergy -= dish.getEnergy();
-	    shortedPro -= dish.getProAmount();
-	    shortedLip -= dish.getLipAmount();
-	    shortedGlu -= dish.getGluAmount();
-	}
-    }
-    
-    public void addDish(Dish dish) {
 	if (dish != null) {
 	    menu.add(dish);
 	    shortedEnergy -= dish.getEnergy();
@@ -98,10 +105,6 @@ public class Meal {
 	    }
 	}
 	
-	removeDish(dish);
-    }
-    
-    public void removeDish(Dish dish) {
 	if (dish != null && menu.contains(dish)) {
 	    shortedEnergy += dish.getEnergy();
 	    shortedPro += dish.getProAmount();
