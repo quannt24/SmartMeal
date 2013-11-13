@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rule-execution-set>
+    
+    <name>RESSmartMeal</name>
+    <description>Rule Execution Set for SmartMeal Inference Engine</description>
+
+    <synonymn name="user" class="vn.hust.smie.User" />
+    <synonymn name="calc" class="vn.hust.smie.Calculator" />
+    <synonymn name="ener" class="vn.hust.smie.Energy" />
+    <synonymn name="mealDist" class="vn.hust.smie.MealDist" />
+    <synonymn name="mnd" class="vn.hust.smie.MajorNutriDist" />
+    <synonymn name="enerVal" class="vn.hust.smie.EnergyValue" />
+    <synonymn name="meal" class="vn.hust.smie.Meal" />
+    <synonymn name="dc" class="vn.hust.smie.DishCollection" />
+    
+    <!-- Evaluate BMI -->
+    <rule name="BER1">
+        <if leftTerm="user.getBmi" op="&lt;" rightTerm="16" />
+        <then method="user.setBmiEval" arg1="-2" />
+    </rule>
+    <rule name="BER2">
+        <if leftTerm="user.getBmi" op=">=" rightTerm="16" />
+        <if leftTerm="user.getBmi" op="&lt;" rightTerm="18.5" />
+        <then method="user.setBmiEval" arg1="-1" />
+    </rule>
+    <rule name="BER3">
+        <if leftTerm="user.getBmi" op=">=" rightTerm="18.5" />
+        <if leftTerm="user.getBmi" op="&lt;" rightTerm="25" />
+        <then method="user.setBmiEval" arg1="0" />
+    </rule>
+    <rule name="BER4">
+        <if leftTerm="user.getBmi" op=">=" rightTerm="25" />
+        <if leftTerm="user.getBmi" op="&lt;" rightTerm="30" />
+        <then method="user.setBmiEval" arg1="1" />
+    </rule>
+    <rule name="BER5">
+        <if leftTerm="user.getBmi" op=">=" rightTerm="30" />
+        <then method="user.setBmiEval" arg1="2" />
+    </rule>
+    
+    <!-- Energy for basic metabolism per day in KCal -->
+    <rule name="BMR1s0">
+        <if leftTerm="user.getAge" op=">=" rightTerm="10" />
+        <if leftTerm="user.getAge" op="&lt;" rightTerm="19" />
+        <if leftTerm="user.getSex" op="=" rightTerm="0" />
+        <then method="calc.poly1" arg1="12.2" arg2="user.getWeight" arg3="746" />
+        <then method="ener.setBasicMetabolism" arg1="calc.getResult" />
+    </rule>
+    <rule name="BMR1s1">
+        <if leftTerm="user.getAge" op=">=" rightTerm="10" />
+        <if leftTerm="user.getAge" op="&lt;" rightTerm="19" />
+        <if leftTerm="user.getSex" op="=" rightTerm="1" />
+        <then method="calc.poly1" arg1="17.5" arg2="user.getWeight" arg3="651" />
+        <then method="ener.setBasicMetabolism" arg1="calc.getResult" />
+    </rule>
+    <rule name="BMR2s0">
+        <if leftTerm="user.getAge" op=">=" rightTerm="19" />
+        <if leftTerm="user.getAge" op="&lt;" rightTerm="31" />
+        <if leftTerm="user.getSex" op="=" rightTerm="0" />
+        <then method="calc.poly1" arg1="14.7" arg2="user.getWeight" arg3="946" />
+        <then method="ener.setBasicMetabolism" arg1="calc.getResult" />
+    </rule>
+    <rule name="BMR2s1">
+        <if leftTerm="user.getAge" op=">=" rightTerm="10" />
+        <if leftTerm="user.getAge" op="&lt;" rightTerm="31" />
+        <if leftTerm="user.getSex" op="=" rightTerm="1" />
+        <then method="calc.poly1" arg1="15.3" arg2="user.getWeight" arg3="679" />
+        <then method="ener.setBasicMetabolism" arg1="calc.getResult" />
+    </rule>
+    <rule name="BMR3s0">
+        <if leftTerm="user.getAge" op=">=" rightTerm="31" />
+        <if leftTerm="user.getAge" op="&lt;" rightTerm="61" />
+        <if leftTerm="user.getSex" op="=" rightTerm="0" />
+        <then method="calc.poly1" arg1="8.7" arg2="user.getWeight" arg3="892" />
+        <then method="ener.setBasicMetabolism" arg1="calc.getResult" />
+    </rule>
+    <rule name="BMR3s1">
+        <if leftTerm="user.getAge" op=">=" rightTerm="31" />
+        <if leftTerm="user.getAge" op="&lt;" rightTerm="61" />
+        <if leftTerm="user.getSex" op="=" rightTerm="1" />
+        <then method="calc.poly1" arg1="11.6" arg2="user.getWeight" arg3="879" />
+        <then method="ener.setBasicMetabolism" arg1="calc.getResult" />
+    </rule>
+    <rule name="BMR4s0">
+        <if leftTerm="user.getAge" op=">=" rightTerm="61" />
+        <if leftTerm="user.getSex" op="=" rightTerm="0" />
+        <then method="calc.poly1" arg1="10.5" arg2="user.getWeight" arg3="596" />
+        <then method="ener.setBasicMetabolism" arg1="calc.getResult" />
+    </rule>
+    <rule name="BMR4s1">
+        <if leftTerm="user.getAge" op=">=" rightTerm="61" />
+        <if leftTerm="user.getSex" op="=" rightTerm="1" />
+        <then method="calc.poly1" arg1="13.5" arg2="user.getWeight" arg3="547" />
+        <then method="ener.setBasicMetabolism" arg1="calc.getResult" />
+    </rule>
+    
+    <!-- Needed energy for one day (in KCal). Based on basic metabolism multiply with activity parameter. -->
+    <rule name="ERs0a0">
+        <if leftTerm="user.getSex" op="=" rightTerm="0" />
+        <if leftTerm="user.getActivity" op="=" rightTerm="0" />
+        <then method="calc.poly1" arg1="1.56" arg2="ener.getBasicMetabolism" arg3="0" />
+        <then method="ener.setEnergy" arg1="calc.getResult" />
+    </rule>
+    <rule name="ERs0a1">
+        <if leftTerm="user.getSex" op="=" rightTerm="0" />
+        <if leftTerm="user.getActivity" op="=" rightTerm="1" />
+        <then method="calc.poly1" arg1="1.61" arg2="ener.getBasicMetabolism" arg3="0" />
+        <then method="ener.setEnergy" arg1="calc.getResult" />
+    </rule>
+    <rule name="ERs0a2">
+        <if leftTerm="user.getSex" op="=" rightTerm="0" />
+        <if leftTerm="user.getActivity" op="=" rightTerm="2" />
+        <then method="calc.poly1" arg1="1.82" arg2="ener.getBasicMetabolism" arg3="0" />
+        <then method="ener.setEnergy" arg1="calc.getResult" />
+    </rule>
+    <rule name="ERs1a0">
+        <if leftTerm="user.getSex" op="=" rightTerm="1" />
+        <if leftTerm="user.getActivity" op="=" rightTerm="0" />
+        <then method="calc.poly1" arg1="1.55" arg2="ener.getBasicMetabolism" arg3="0" />
+        <then method="ener.setEnergy" arg1="calc.getResult" />
+    </rule>
+    <rule name="ERs1a1">
+        <if leftTerm="user.getSex" op="=" rightTerm="1" />
+        <if leftTerm="user.getActivity" op="=" rightTerm="1" />
+        <then method="calc.poly1" arg1="1.78" arg2="ener.getBasicMetabolism" arg3="0" />
+        <then method="ener.setEnergy" arg1="calc.getResult" />
+    </rule>
+    <rule name="ERs1a2">
+        <if leftTerm="user.getSex" op="=" rightTerm="1" />
+        <if leftTerm="user.getActivity" op="=" rightTerm="2" />
+        <then method="calc.poly1" arg1="2.1" arg2="ener.getBasicMetabolism" arg3="0" />
+        <then method="ener.setEnergy" arg1="calc.getResult" />
+    </rule>
+    
+    <!-- Meal distribution -->
+    <rule name="MDR1">
+        <if leftTerm="user.getAge" op="&lt;" rightTerm="19" />
+        <then method="mealDist.setBreakfastDist" arg1="0.3" />
+        <then method="mealDist.setLunchDist" arg1="0.35" />
+        <then method="mealDist.setDinnerDist" arg1="0.25" />
+        <!-- Auxiliary meal distribution is automatically calculated -->
+    </rule>
+    <rule name="MDR2">
+        <if leftTerm="user.getAge" op=">=" rightTerm="19" />
+        <then method="mealDist.setBreakfastDist" arg1="0.3" />
+        <then method="mealDist.setLunchDist" arg1="0.4" />
+        <then method="mealDist.setDinnerDist" arg1="0.25" />
+        <!-- Auxiliary meal distribution is automatically calculated -->
+    </rule>
+    
+    <!-- Major nutrient distribution per day -->
+    <rule name="MNDR1">
+        <if leftTerm="user.getAge" op=">=" rightTerm="10" />
+        <if leftTerm="user.getAge" op="&lt;" rightTerm="19" />
+        <then method="mnd.setProDist" arg1="0.15" />
+        <then method="mnd.setLipDist" arg1="0.3" />
+        <then method="mnd.setGluDist" arg1="0.55" />
+        <!-- Calculate servings for nutrients -->
+        <then method="calc.muldiv" arg1="ener.getEnergy" arg2="mnd.getProDist" arg3="enerVal.getProEV" />
+        <then method="mnd.setProServing" arg1="calc.getResult" />
+        <then method="calc.muldiv" arg1="ener.getEnergy" arg2="mnd.getLipDist" arg3="enerVal.getLipEV" />
+        <then method="mnd.setLipServing" arg1="calc.getResult" />
+        <then method="calc.muldiv" arg1="ener.getEnergy" arg2="mnd.getGluDist" arg3="enerVal.getGluEV" />
+        <then method="mnd.setGluServing" arg1="calc.getResult" />
+    </rule>
+    <rule name="MNDR2">
+        <if leftTerm="user.getAge" op=">=" rightTerm="19" />
+        <then method="mnd.setProDist" arg1="0.15" />
+        <then method="mnd.setLipDist" arg1="0.25" />
+        <then method="mnd.setGluDist" arg1="0.6" />
+        <!-- Calculate servings for nutrients -->
+        <then method="calc.muldiv" arg1="ener.getEnergy" arg2="mnd.getProDist" arg3="enerVal.getProEV" />
+        <then method="mnd.setProServing" arg1="calc.getResult" />
+        <then method="calc.muldiv" arg1="ener.getEnergy" arg2="mnd.getLipDist" arg3="enerVal.getLipEV" />
+        <then method="mnd.setLipServing" arg1="calc.getResult" />
+        <then method="calc.muldiv" arg1="ener.getEnergy" arg2="mnd.getGluDist" arg3="enerVal.getGluEV" />
+        <then method="mnd.setGluServing" arg1="calc.getResult" />
+    </rule>
+    
+    <!-- Select dishes for breakfast -->
+    <rule name="MBR1">
+        <!-- Lunch -->
+        <if leftTerm="meal.getType" op="=" rightTerm="1" />
+        <!-- Select a grain dish randomly -->
+        <then method="dc.selectRandom" arg1="1" />
+        <then method="meal.addDish" arg1="dc.getSelected" />
+        <!-- Select a vegetable dish randomly -->
+        <then method="dc.selectRandom" arg1="2" />
+        <then method="meal.addDish" arg1="dc.getSelected" />
+    </rule>
+    
+    <!-- Select dishes for lunch -->
+    <rule name="MLR1">
+        <if leftTerm="meal.getType" op="=" rightTerm="2" />
+        <!-- Select a grain dish randomly -->
+        <then method="dc.selectRandom" arg1="1" />
+        <then method="meal.addDish" arg1="dc.getSelected" />
+        <!-- Select a vegetable dish randomly -->
+        <then method="dc.selectRandom" arg1="2" />
+        <then method="meal.addDish" arg1="dc.getSelected" />
+        <!-- Select protein dish -->
+<!--         <then method="dc.selectBestMatch" arg1="3" arg2="meal.getShortedEnergy" arg3="meal.getShortedPro" arg4="meal.getshortedLip" arg5="meal.getShortedGlu" /> -->
+<!--         <then method="meal.addDish" arg1="dc.getSelected" /> -->
+    </rule>
+    
+    <!-- Select dishes for dinner -->
+    <rule name="MDR1">
+        <if leftTerm="meal.getType" op="=" rightTerm="3" />
+        <!-- Select a grain dish randomly -->
+        <then method="dc.selectRandom" arg1="1" />
+        <then method="meal.addDish" arg1="dc.getSelected" />
+        <!-- Select a vegetable dish randomly -->
+        <then method="dc.selectRandom" arg1="2" />
+        <then method="meal.addDish" arg1="dc.getSelected" />
+    </rule>
+    
+    <!-- Select dishes for auxiliary meal -->
+    <rule name="MAR1">
+        <if leftTerm="meal.getType" op="=" rightTerm="4" />
+        <!-- Select a grain dish randomly -->
+        <then method="dc.selectRandom" arg1="1" />
+        <then method="meal.addDish" arg1="dc.getSelected" />
+        <!-- Select a vegetable dish randomly -->
+        <then method="dc.selectRandom" arg1="2" />
+        <then method="meal.addDish" arg1="dc.getSelected" />
+    </rule>
+
+</rule-execution-set>

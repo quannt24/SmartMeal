@@ -17,10 +17,10 @@ public class MyAdapter extends BaseExpandableListAdapter {
 	public LayoutInflater				inflater;
 	public Activity						activity;
 
-	public MyAdapter(Activity act, SparseArray<Group> groups) {
-		activity = act;
+	public MyAdapter(Activity activity, SparseArray<Group> groups) {
+		this.activity = activity;
 		this.groups = groups;
-		inflater = act.getLayoutInflater();
+		inflater = activity.getLayoutInflater();
 	}
 
 	@Override

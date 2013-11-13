@@ -1,0 +1,93 @@
+# Types:
+# TYPE_GRAIN = 1;
+# TYPE_VEGETABLE = 2;
+# TYPE_PROTEIN = 3;
+# TYPE_FRUIT = 4;
+# TYPE_MIXED = 5;
+#
+# Format:
+# id,name,type,quantity,unit,ingredientID,ingredientAmount(g),...
+
+# nước
+#1,bún bò,1,1,bát,6,250,36,200,14,100
+#2,bún ốc,1,1,bát,6,250,53,100,14,100
+#3,bún cá,1,1,bát,6,250,49,200,14,100
+#4,phở bò,1,1,bát,5,250,36,200
+#5,phở gà,1,1,bát,5,250,28,200
+#6,mỳ bò,1,1,bát,7,250,26,200
+#7,mỳ gà,1,1,bát,7,250,28,200
+
+# khô
+#8,xôi trứng,2,1,gói,1,50,54,50
+#9,xôi chả,2,1,gói,1,50,43,100
+#10,xôi thịt,2,1,gói,1,39,100
+#11,xôi lạp xưởng,2,1,gói,1,50,45,100
+
+#12,bánh mỳ trứng,2,1,cái,4,50,54,100
+#13,bánh mỳ chả,2,1,cái,4,50,43,100
+#14,trứng vịt lộn,2,2,quả,55,200
+
+# cơm 2 bát
+15,cơm,1,2,bát,2,100
+
+#mặn
+16,trứng luộc,3,2,quả,54,200
+17,bò xào,3,1,đĩa,36,200
+18,bò kho,3,1,bát,36,200
+19,lợn tẩm bột,3,1,đĩa,39,200
+20,lợn luộc,3,1,đĩa,39,200
+21,lợn kho tàu,3,1,bát,39,200
+22,lợn rang,3,1,bát,39,200
+23,gà rang,3,1,bát,38,200
+24,gà luộc,3,1,đĩa,38,200
+25,vịt luộc,3,1,đĩa,40,200
+26,vịt rang,3,1,bát,40,200
+27,sườn lợn rán,3,1,đĩa,41,300
+28,chả,3,1,đĩa,43,200
+29,lạp xưởng,3,1,đĩa,45,200
+30,cá rô phi rán,3,1,đĩa,49,200
+31,cá trắm kho tộ,3,1,bát,51,200
+32,cá nục rán,3,2,con,48,200
+33,cá ngừ kho tộ,3,1,bát,47,200
+34,cá thu kho tộ,3,1,bát,50,200
+35,mực tẩm bột,3,1,đĩa,52,200
+
+#ăn kèm
+#36,dưa muối,6,1,đĩa,25,100
+#37,cá pháo muối,6,1,bát,15,100
+#38,măng chua,6,1,bát,18,100
+#39,khoai tây chiên,6,1,đĩa,9,100
+40,đậu phụ luộc,3,1,đĩa,13,100
+41,đậu phụ rán,3,1,đĩa,13,100
+
+#canh + rau
+42,đậu đũa luộc + canh,2,1,bát,10,100
+43,đậu hà lan luộc + canh,2,1,bát,11,100
+44,bắp cải luộc + canh,2,1,bát,17,100
+45,su hào luộc + canh,2,1,bát,22,100
+46,rau muống luộc + canh,2,1,đĩa,20,100
+47,rau muống xào + canh,2,1,đĩa,20,100
+48,cà rốt luộc + canh,2,1,bát,16,100
+49,mướp đắng luộc + canh,2,1,bát,19,100
+50,su hào luộc + canh,2,1,bát,22,100
+51,su su luộc + canh,2,1,bát,23,100
+52,súp lơ luộc + canh,2,1,bát,24,100
+53,canh ốc nấu chuối xanh,5,1,bát,53,200
+54,canh cá chép,5,1,bát,46,200,14,100
+55,cà chua nấu thịt bò,5,1,bát,14,100
+56,rau muống nấu,5,1,bát,20,100,14,100
+57,canh rau ngót,5,1,bát,21,100
+
+# hoa quả tráng miệng
+58,bưởi,4,1,múi,26,50
+59,chuối,4,1,quả,28,50
+60,dưa hấu,4,1,lát,29,50
+61,đu đủ,4,1,miếng,30,50
+62,mắc coọc,4,1,quả,31,50
+63,mít,4,1,đĩa,32,50
+64,quít,4,1,quả,33,50
+65,táo,4,1,quả,34,50
+66,xoài,4,1,quả,35,50
+
+# Thêm
+#67,bánh mỳ patê,2,1,cái,4,50,42,100

@@ -95,6 +95,7 @@
             <zipgroupfileset dir="${jar.libs.absolute.dir}" includes="*.jar" />
             <rule pattern="javax.rules.**" result="androidjavax.rules.@1"/>
             <rule pattern="java.rmi.**" result="androidjavax.rmi.@1"/>
+            <rule pattern="org.apache.**" result="androidorg.apache.@1"/>
         </jarjar>
     </target>
     <import file="${sdk.dir}/tools/ant/build.xml" />
