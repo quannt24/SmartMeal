@@ -112,7 +112,6 @@ public class DishCollection {
 	    if (diff < minDiff) {
 		minDiff = diff;
 		best = d.getId();
-		System.out.println("minDiff " + minDiff + " best " + best);
 	    }
 	}
 	
@@ -138,7 +137,6 @@ public class DishCollection {
 	    if (diff < minDiff) {
 		minDiff = diff;
 		best = d.getId();
-		System.out.println("minDiff " + minDiff + " best " + best);
 	    }
 	}
 	

@@ -45,10 +45,11 @@ public class Tester {
 
 	// Setup engine
 	Smie smie = new Smie(dc, ic);
+	smie.setHistory(null); // History object can be set at any time
 	smie.setupSession(inStream);
 	
 	// Add input here
-	smie.inputUser(user);
+	smie.inputUser(user); // User information
 	// Process user information
 	smie.executeRules();
 	

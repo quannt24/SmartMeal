@@ -40,7 +40,7 @@ public class Smie {
     private EnergyValue enerVal;
     
     private DishCollection dc;
-    private IngredientCollection ic;
+    private History history;
     
     private Handle mealHandle;
     
@@ -70,9 +70,26 @@ public class Smie {
 	
 	// Inputed collections
 	this.dc = dc;
-	this.ic = ic;
 	
+	// History
+	this.history = null;
+	
+	// Handle of Meal object in engine's working memory
 	this.mealHandle = null;
+    }
+    
+    /**
+     * @return the history
+     */
+    public History getHistory() {
+        return history;
+    }
+
+    /**
+     * @param history the history to set
+     */
+    public void setHistory(History history) {
+        this.history = history;
     }
 
     /**
@@ -188,6 +205,12 @@ public class Smie {
 	reqProAmount = mnd.getProServing() * dist;
 	reqLipAmount = mnd.getLipServing() * dist;
 	reqGluAmount = mnd.getGluServing() * dist;
+	if (history != null) {
+	    reqEnergy += history.getShortedEnergy();
+	    reqProAmount += history.getShortedPro();
+	    reqLipAmount += history.getShortedLip();
+	    reqGluAmount += history.getShortedGlu();
+	}
 	
 	// Add meal to working memory
 	try {
