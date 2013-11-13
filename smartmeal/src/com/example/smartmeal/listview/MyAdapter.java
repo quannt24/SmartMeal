@@ -13,11 +13,11 @@ import com.example.smartmeal.R;
 
 public class MyAdapter extends BaseExpandableListAdapter {
 
-	private final SparseArray<Group>	groups;
+	private final SparseArray<MealMeanu>	groups;
 	public LayoutInflater				inflater;
 	public Activity						activity;
 
-	public MyAdapter(Activity activity, SparseArray<Group> groups) {
+	public MyAdapter(Activity activity, SparseArray<MealMeanu> groups) {
 		this.activity = activity;
 		this.groups = groups;
 		inflater = activity.getLayoutInflater();
@@ -90,7 +90,7 @@ public class MyAdapter extends BaseExpandableListAdapter {
 		if (convertView == null){
 			convertView = inflater.inflate(R.layout.group, null);
 		}
-		Group group = (Group) getGroup(groupPosition);
+		MealMeanu group = (MealMeanu) getGroup(groupPosition);
 		((CheckedTextView) convertView).setText(group.string);
 		((CheckedTextView) convertView).setChecked(isExpanded);
 		return convertView;

@@ -16,6 +16,7 @@ import vn.hust.smie.Parser;
 import vn.hust.smie.Smie;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,16 +26,15 @@ import android.widget.TextView;
 
 import com.example.smartmeal.MainActivity;
 import com.example.smartmeal.R;
-import com.example.smartmeal.listview.Group;
+import com.example.smartmeal.listview.MealMeanu;
 import com.example.smartmeal.listview.MyAdapter;
 import com.example.smartmeal.save.Save;
 
 public class MenuSuggestion extends Fragment {
 
 	// more efficient than HashMap for mapping integers to objects
-	SparseArray<Group>	groups	= new SparseArray<Group>();
+	SparseArray<MealMeanu>	groups	= new SparseArray<MealMeanu>();
 	ArrayList<Dish>		menuBreakfast, menuLunch, menuDinner;
-	Meal				buffer;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,20 +53,21 @@ public class MenuSuggestion extends Fragment {
 			menuLunch = new ArrayList<Dish>();
 			menuDinner = new ArrayList<Dish>();
 		}else{
-			buffer = MenuSuggestion.getMeal(Meal.TYPE_BREAKFAST);
-			menuBreakfast = buffer.getMenu();
+			menuBreakfast = MenuSuggestion.getMeal(Meal.TYPE_BREAKFAST).getMenu();
 
-			buffer = MenuSuggestion.getMeal(Meal.TYPE_LUNCH);
-			menuLunch = buffer.getMenu();
+			menuLunch = MenuSuggestion.getMeal(Meal.TYPE_LUNCH).getMenu();
 
-			buffer = MenuSuggestion.getMeal(Meal.TYPE_DINNER);
-			menuDinner = buffer.getMenu();
+			menuDinner = MenuSuggestion.getMeal(Meal.TYPE_DINNER).getMenu();
+
+			Log.d("Check", "" + menuBreakfast.size());
+			Log.d("Check", "" + menuLunch.size());
+			Log.d("Check", "" + menuDinner.size());
 		}
 
 		// initialize
-		Group breakfast = new Group("Bữa sáng");
-		Group lunch = new Group("Bữa trưa");
-		Group dinner = new Group("Bữa tối");
+		MealMeanu breakfast = new MealMeanu("Bữa sáng");
+		MealMeanu lunch = new MealMeanu("Bữa trưa");
+		MealMeanu dinner = new MealMeanu("Bữa tối");
 
 		// append data
 		for (Dish d : menuBreakfast)
@@ -103,7 +104,6 @@ public class MenuSuggestion extends Fragment {
 			dc = Parser.parseDish(ic, MainActivity.MAINACTIVITY.getResources().getAssets().open("data/dish.csv"));
 			// Open rule file
 			inStream = MainActivity.MAINACTIVITY.getResources().getAssets().open("rule/smartmeal.xml");
-
 		}
 		catch (IOException e1){
 			e1.printStackTrace();
