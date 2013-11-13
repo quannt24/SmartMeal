@@ -29,11 +29,7 @@ public class History {
     
     public History(ArrayList<Meal> mealList) {
 	this.mealList = mealList;
-	
-	shortedEnergy = 0; // Shorted Energy In KCal
-	shortedPro = 0; // Shorted Protein amount in gram
-	shortedLip = 0; // Shorted Lipid amount in gram
-	shortedGlu = 0; // Shorted Glucid amount in gram
+	calcShortedNutri();
     }
     
     /**
@@ -43,6 +39,14 @@ public class History {
 	return mealList;
     }
     
+    /**
+     * @param mealList the mealList to set
+     */
+    public void setMealList(ArrayList<Meal> mealList) {
+        this.mealList = mealList;
+        calcShortedNutri();
+    }
+
     /**
      * @return the shortedEnergy
      */
@@ -81,24 +85,63 @@ public class History {
     public void addMeal(Meal meal) {
 	if (meal == null) return;
 
+	if (mealList == null) mealList = new ArrayList<Meal>();
 	mealList.add(meal);
-	
-	Date now = new Date();
-	long dayDiff = (now.getTime() - meal.getDate().getTime()) / 86400000;
-	double w = 1 / Math.pow(2, dayDiff); // Weighing parameter for the role of this added meal
-	shortedEnergy += meal.getShortedEnergy() * w;
-	shortedPro += meal.getShortedPro() * w;
-	shortedLip += meal.getShortedLip() * w;
-	shortedGlu += meal.getShortedGlu() * w;
+	calcShortedNutri();
     }
     
+    /**
+     * Delete history prior to specific date.
+     * 
+     * @param keepDays Number of recent days that the history will be kept
+     */
+    public void cleanUp(int keptDays) {
+	if (mealList == null) return;
+
+	Date now = new Date();
+	long dayDiff = 0;
+	for (Meal meal : mealList) {
+	    dayDiff = (now.getTime() - meal.getDate().getTime()) / 86400000;
+	    if (dayDiff > keptDays) mealList.remove(meal);
+	}
+	
+	calcShortedNutri();
+    }
+    
+    /**
+     * Clear all history
+     */
     public void clear() {
-	mealList.clear();
+	if (mealList != null) mealList.clear();
 	
 	shortedEnergy = 0; // Shorted Energy In KCal
 	shortedPro = 0; // Shorted Protein amount in gram
 	shortedLip = 0; // Shorted Lipid amount in gram
 	shortedGlu = 0; // Shorted Glucid amount in gram
+    }
+    
+    /**
+     * Calculate shorted nutrients and energy of previous meals
+     */
+    private void calcShortedNutri() {
+	shortedEnergy = 0; // Shorted Energy In KCal
+	shortedPro = 0; // Shorted Protein amount in gram
+	shortedLip = 0; // Shorted Lipid amount in gram
+	shortedGlu = 0; // Shorted Glucid amount in gram
+	if (mealList == null) return;
+	
+	Date now = new Date();
+	long dayDiff = 0;
+	double w = 1; // Weighing parameter for the role of this added meal
+	
+	for (Meal meal : mealList) {
+	    dayDiff = (now.getTime() - meal.getDate().getTime()) / 86400000;
+	    w = 1 / Math.pow(2, dayDiff);
+	    shortedEnergy += meal.getShortedEnergy() * w;
+	    shortedPro += meal.getShortedPro() * w;
+	    shortedLip += meal.getShortedLip() * w;
+	    shortedGlu += meal.getShortedGlu() * w;
+	}
     }
     
 }
