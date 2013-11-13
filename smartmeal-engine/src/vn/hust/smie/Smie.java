@@ -212,6 +212,14 @@ public class Smie {
 	    reqGluAmount += history.getShortedGlu();
 	}
 	
+	// Remove old meal in working memory
+	try {
+	    if (mealHandle != null && session.containsObject(mealHandle)) {
+	        session.removeObject(mealHandle);
+	    }
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
 	// Add meal to working memory
 	try {
 	    mealHandle = session.addObject(new Meal(dc, type, reqEnergy, reqProAmount,
