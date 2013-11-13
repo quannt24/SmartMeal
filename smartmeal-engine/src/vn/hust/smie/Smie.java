@@ -4,7 +4,6 @@
 package vn.hust.smie;
 
 import java.io.InputStream;
-import java.rmi.RemoteException;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -147,7 +146,7 @@ public class Smie {
 	    session.addObject(user);
 	} catch (InvalidRuleSessionException e) {
 	    e.printStackTrace();
-	} catch (RemoteException e) {
+	} catch (Exception e) {
 	    e.printStackTrace();
 	}
     }
@@ -196,7 +195,7 @@ public class Smie {
 		    reqLipAmount, reqGluAmount));
 	} catch (InvalidRuleSessionException e) {
 	    e.printStackTrace();
-	} catch (RemoteException e) {
+	} catch (Exception e) {
 	    e.printStackTrace();
 	}
     }
@@ -209,7 +208,7 @@ public class Smie {
 	    session.executeRules();
 	} catch (InvalidRuleSessionException e) {
 	    e.printStackTrace();
-	} catch (RemoteException e) {
+	} catch (Exception e) {
 	    e.printStackTrace();
 	}
     }
@@ -229,7 +228,7 @@ public class Smie {
 	    e.printStackTrace();
 	} catch (InvalidRuleSessionException e) {
 	    e.printStackTrace();
-	} catch (RemoteException e) {
+	} catch (Exception e) {
 	    e.printStackTrace();
 	}
 	
@@ -246,7 +245,7 @@ public class Smie {
 	    results = session.getObjects();
 	} catch (InvalidRuleSessionException e) {
 	    e.printStackTrace();
-	} catch (RemoteException e) {
+	} catch (Exception e) {
 	    e.printStackTrace();
 	}
 
@@ -269,7 +268,7 @@ public class Smie {
 	    session.release();
 	} catch (InvalidRuleSessionException e) {
 	    e.printStackTrace();
-	} catch (RemoteException e) {
+	} catch (Exception e) {
 	    e.printStackTrace();
 	}
     }

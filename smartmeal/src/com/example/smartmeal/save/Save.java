@@ -1,5 +1,6 @@
 package com.example.smartmeal.save;
 
+import vn.hust.smie.User;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -21,9 +22,6 @@ public class Save {
 
 	public static final String	IS_SETUP	= "setup";
 
-	public static final int		MALE		= 0;
-	public static final int		FEMALE		= 1;
-
 	private SharedPreferences	preference;
 
 	private Save(Activity activity) {
@@ -39,6 +37,18 @@ public class Save {
 	public static Save getSave() {
 		if (save == null) save = new Save(MainActivity.MAINACTIVITY);
 		return save;
+	}
+	
+	public User getUser(){
+		User user = new User();
+		user.setName(getString(Save.NAME));
+		user.setSex(getInt(Save.GENDER));
+		user.setYearOfBirth(getInt(Save.BIRTH));
+		user.setHeight(getInt(Save.HEIGHT));
+		user.setWeight(getInt(Save.WEIGHT));
+		user.setActivity(getInt(Save.ACTIVITY));
+		
+		return user;
 	}
 
 	public boolean isSetup() {
