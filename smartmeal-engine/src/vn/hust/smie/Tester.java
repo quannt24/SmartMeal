@@ -45,32 +45,42 @@ public class Tester {
 
 	// Setup engine
 	Smie smie = new Smie(dc, ic);
+	smie.setHistory(null); // History object can be set at any time
 	smie.setupSession(inStream);
 	
 	// Add input here
-	smie.inputUser(user);
+	smie.inputUser(user); // User information
 	// Process user information
 	smie.executeRules();
 	
-	// Setup a meal
-	smie.setupMeal(Meal.TYPE_LUNCH); // TODO Example
+	// TODO Setup meal 1
+	smie.setupMeal(Meal.TYPE_BREAKFAST);
 	smie.executeRules();
-	smie.printWorkingMemory();
-	
 	// Get result
-	Meal meal = smie.getMeal();
-	
-	// Finish session
-	smie.finishSession();
-	
+	Meal meal1 = smie.getMeal();
 	// Print result
-	System.out.println("Result meal:");
-	ArrayList<Dish> menu = meal.getMenu();
-	for (Dish d : menu) {
+	System.out.println("Result meal 1:");
+	ArrayList<Dish> menu1 = meal1.getMenu();
+	for (Dish d : menu1) {
 	    System.out.println(d);
 	}
-	System.out.println("Shorted E P L G: " + meal.getShortedEnergy() + " "
-		+ meal.getShortedPro() + " " + meal.getShortedLip() + " " + meal.getShortedGlu());
+	System.out.println("Shorted E P L G: " + meal1.getShortedEnergy() + " "
+		+ meal1.getShortedPro() + " " + meal1.getShortedLip() + " " + meal1.getShortedGlu());
+
+	// TODO Setup meal 2
+	smie.setupMeal(Meal.TYPE_LUNCH);
+	smie.executeRules();
+	Meal meal2 = smie.getMeal();
+	System.out.println("Result meal 2:");
+	ArrayList<Dish> menu2 = meal2.getMenu();
+	for (Dish d : menu2) {
+	    System.out.println(d);
+	}
+	System.out.println("Shorted E P L G: " + meal2.getShortedEnergy() + " "
+		+ meal2.getShortedPro() + " " + meal2.getShortedLip() + " " + meal2.getShortedGlu());
+
+	// Finish session
+	smie.finishSession();
     }
 
 }
