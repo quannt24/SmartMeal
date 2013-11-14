@@ -16,7 +16,6 @@ import vn.hust.smie.Parser;
 import vn.hust.smie.Smie;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,19 +25,25 @@ import android.widget.TextView;
 
 import com.example.smartmeal.MainActivity;
 import com.example.smartmeal.R;
-import com.example.smartmeal.listview.MealMeanu;
+import com.example.smartmeal.listview.MealMenu;
 import com.example.smartmeal.listview.MyAdapter;
 import com.example.smartmeal.save.Save;
 
 public class MenuSuggestion extends Fragment {
 
 	// more efficient than HashMap for mapping integers to objects
-	SparseArray<MealMeanu>	groups	= new SparseArray<MealMeanu>();
-	ArrayList<Dish>		menuBreakfast, menuLunch, menuDinner;
+	static SparseArray<MealMenu>	groups		= new SparseArray<MealMenu>();
+
+	// initialize
+	static MealMenu					menu[]		= new MealMenu[] { new MealMenu("Bữa sáng"), new MealMenu("Bữa trưa"), new MealMenu("Bữa tối") };
+	static ArrayList<Dish>			menuBreakfast, menuLunch, menuDinner;
+
+	// is generated today
+	boolean							detected	= false;
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		// construct view
 		View rootView = inflater.inflate(R.layout.menu, container, false);
 
 		// set up time
@@ -47,49 +52,57 @@ public class MenuSuggestion extends Fragment {
 		day.setText("Thực đơn ngày " + (new SimpleDateFormat("dd/MM/yyyy", Locale.US)).format(calendar.getTime()));
 
 		// TODO look up history
-		boolean detected = false;
 		if (detected){
-			menuBreakfast = new ArrayList<Dish>();
-			menuLunch = new ArrayList<Dish>();
-			menuDinner = new ArrayList<Dish>();
+			// menuBreakfast = new ArrayList<Dish>();
+			// menuLunch = new ArrayList<Dish>();
+			// menuDinner = new ArrayList<Dish>();
 		}else{
+			detected = true;
+
+			// clear
+			menu[0].clear();
+			menu[1].clear();
+			menu[2].clear();
+
+			// generate
 			menuBreakfast = MenuSuggestion.getMeal(Meal.TYPE_BREAKFAST).getMenu();
 
 			menuLunch = MenuSuggestion.getMeal(Meal.TYPE_LUNCH).getMenu();
 
 			menuDinner = MenuSuggestion.getMeal(Meal.TYPE_DINNER).getMenu();
 
-			Log.d("Check", "" + menuBreakfast.size());
-			Log.d("Check", "" + menuLunch.size());
-			Log.d("Check", "" + menuDinner.size());
+			// append data
+			for (Dish d : menuBreakfast)
+				menu[0].add(d);
+
+			for (Dish d : menuLunch)
+				menu[1].add(d);
+
+			for (Dish d : menuDinner)
+				menu[2].add(d);
 		}
 
-		// initialize
-		MealMeanu breakfast = new MealMeanu("Bữa sáng");
-		MealMeanu lunch = new MealMeanu("Bữa trưa");
-		MealMeanu dinner = new MealMeanu("Bữa tối");
-
-		// append data
-		for (Dish d : menuBreakfast)
-			breakfast.children.add(d.getName());
-
-		for (Dish d : menuLunch)
-			lunch.children.add(d.getName());
-
-		for (Dish d : menuDinner)
-			dinner.children.add(d.getName());
-
 		// append all
-		groups.append(0, breakfast);
-		groups.append(1, lunch);
-		groups.append(2, dinner);
+		groups.append(0, menu[0]);
+		groups.append(1, menu[1]);
+		groups.append(2, menu[2]);
 
-		// List View
 		ExpandableListView listView = (ExpandableListView) rootView.findViewById(R.id.expandableListView1);
-		MyAdapter adapter = new MyAdapter(getActivity(), groups);
+		MyAdapter adapter = new MyAdapter(getActivity(), this, groups);
 		listView.setAdapter(adapter);
 
 		return rootView;
+	}
+
+	public MealMenu getMenu(int type) {
+		return menu[type];
+	}
+
+	public static void loadMealMenu(MenuSuggestion menuSuggestion) {
+		menuSuggestion.getFragmentManager().beginTransaction()
+				.detach(menuSuggestion)
+				.attach(menuSuggestion)
+				.commit();
 	}
 
 	public static Meal getMeal(int type) {
