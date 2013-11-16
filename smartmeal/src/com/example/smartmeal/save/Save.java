@@ -12,6 +12,7 @@ import vn.hust.smie.User;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.smartmeal.MainActivity;
@@ -89,7 +90,9 @@ public class Save {
 		catch (ClassNotFoundException e){
 			Toast.makeText(MainActivity.MAINACTIVITY, "Class not found", Toast.LENGTH_SHORT).show();
 		}
-
+		finally{
+			if (history == null) history = new History();
+		}
 		return history;
 	}
 
@@ -127,14 +130,15 @@ public class Save {
 		try{
 			FileOutputStream fos = MainActivity.MAINACTIVITY.openFileOutput("history", Context.MODE_PRIVATE);
 			ObjectOutputStream os = new ObjectOutputStream(fos);
-			os.writeObject(this);
+			os.writeObject(history);
 			os.close();
 		}
 		catch (FileNotFoundException e){
 			Toast.makeText(MainActivity.MAINACTIVITY, "File not found", Toast.LENGTH_SHORT).show();
 		}
 		catch (IOException e){
-			Toast.makeText(MainActivity.MAINACTIVITY, "IO failure", Toast.LENGTH_SHORT).show();
+			Toast.makeText(MainActivity.MAINACTIVITY, "SDcard missing", Toast.LENGTH_SHORT).show();
+			e.printStackTrace();
 		}
 	}
 }

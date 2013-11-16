@@ -22,7 +22,7 @@ import android.widget.TextView;
 import com.example.smartmeal.MainActivity;
 import com.example.smartmeal.R;
 import com.example.smartmeal.listview.MealMenu;
-import com.example.smartmeal.listview.MyAdapter;
+import com.example.smartmeal.listview.MenuAdapter;
 import com.example.smartmeal.save.Save;
 
 public class MenuSuggestion extends Fragment {
@@ -40,7 +40,7 @@ public class MenuSuggestion extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// construct view
-		View rootView = inflater.inflate(R.layout.menu, container, false);
+		View rootView = inflater.inflate(R.layout.list, container, false);
 
 		// set up time
 		TextView day = (TextView) rootView.findViewById(R.id.day);
@@ -82,7 +82,7 @@ public class MenuSuggestion extends Fragment {
 		groups.append(2, menu[2]);
 
 		ExpandableListView listView = (ExpandableListView) rootView.findViewById(R.id.expandableListView1);
-		MyAdapter adapter = new MyAdapter(getActivity(), this, groups);
+		MenuAdapter adapter = new MenuAdapter(getActivity(), this, groups);
 		listView.setAdapter(adapter);
 
 		return rootView;
@@ -144,5 +144,6 @@ public class MenuSuggestion extends Fragment {
 		}
 		MainActivity.smie.setHistory(history);
 		Save.getSave().save(history);
+		Submitted.reloadHistory();
 	}
 }

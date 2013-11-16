@@ -17,14 +17,14 @@ import android.widget.TextView;
 import com.example.smartmeal.R;
 import com.example.smartmeal.fragment.MenuSuggestion;
 
-public class MyAdapter extends BaseExpandableListAdapter {
+public class MenuAdapter extends BaseExpandableListAdapter {
 
 	private final SparseArray<MealMenu>	groups;
 	public LayoutInflater				inflater;
 	public Activity						activity;
 	public final MenuSuggestion			menuSuggestion;
 
-	public MyAdapter(Activity activity, MenuSuggestion menuSuggestion, SparseArray<MealMenu> groups) {
+	public MenuAdapter(Activity activity, MenuSuggestion menuSuggestion, SparseArray<MealMenu> groups) {
 		this.activity = activity;
 		this.groups = groups;
 		this.menuSuggestion = menuSuggestion;
@@ -77,8 +77,8 @@ public class MyAdapter extends BaseExpandableListAdapter {
 
 								@Override
 								public void onClick(DialogInterface dialog, int which) {
-									// TODO submit
-									MyAdapter.this.groups.get(groupPosition).accept();
+									MenuAdapter.this.groups.get(groupPosition).accept();
+									MenuSuggestion.submitMeal(groupPosition+1);
 									MenuSuggestion.loadMealMenu(menuSuggestion);
 									dialog.dismiss();
 								}
@@ -138,7 +138,7 @@ public class MyAdapter extends BaseExpandableListAdapter {
 
 								@Override
 								public void onClick(DialogInterface dialog, int which) {
-									MyAdapter.this.groups.get(groupPosition).remove(dish);
+									MenuAdapter.this.groups.get(groupPosition).remove(dish);
 									MenuSuggestion.getMeal(groupPosition).removeDish(dish.getId());
 									MenuSuggestion.loadMealMenu(menuSuggestion);
 									dialog.dismiss();

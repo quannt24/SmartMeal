@@ -26,9 +26,9 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 
 import com.example.smartmeal.fragment.AboutUs;
-import com.example.smartmeal.fragment.History;
 import com.example.smartmeal.fragment.MenuSuggestion;
 import com.example.smartmeal.fragment.Setup;
+import com.example.smartmeal.fragment.Submitted;
 import com.example.smartmeal.fragment.UserProfile;
 import com.example.smartmeal.save.Save;
 
@@ -42,6 +42,8 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		// save reference
+		MAINACTIVITY = this;
 
 		// set up engine
 		IngredientCollection ic = null;
@@ -49,9 +51,9 @@ public class MainActivity extends FragmentActivity {
 
 		try{
 			// Create ingredient collection from data
-			ic = Parser.parseIngredient(MainActivity.MAINACTIVITY.getResources().getAssets().open("data/ingredient.csv"));
+			ic = Parser.parseIngredient(getResources().getAssets().open("data/ingredient.csv"));
 			// Create dish collection from data
-			dc = Parser.parseDish(ic, MainActivity.MAINACTIVITY.getResources().getAssets().open("data/dish.csv"));
+			dc = Parser.parseDish(ic, getResources().getAssets().open("data/dish.csv"));
 			// Setup engine
 			MainActivity.smie = new Smie(dc, ic);
 			MainActivity.smie.setHistory(Save.getSave().getHistory());
@@ -61,9 +63,6 @@ public class MainActivity extends FragmentActivity {
 		}
 
 		setContentView(R.layout.activity_main);
-
-		// save reference
-		MAINACTIVITY = this;
 
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the app.
@@ -107,7 +106,7 @@ public class MainActivity extends FragmentActivity {
 					fragment = new MenuSuggestion();
 					break;
 				case 2:
-					fragment = new History();
+					fragment = new Submitted();
 					break;
 				case 3:
 					fragment = new AboutUs();
