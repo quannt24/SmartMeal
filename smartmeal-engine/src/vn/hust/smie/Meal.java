@@ -3,6 +3,7 @@
  */
 package vn.hust.smie;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -11,12 +12,13 @@ import java.util.Date;
  * @author Quan T. Nguyen <br>
  * Hanoi University of Science and Technology
  */
-public class Meal {
-
-    public static final int TYPE_BREAKFAST = 1;
-    public static final int TYPE_LUNCH = 2;
-    public static final int TYPE_DINNER = 3;
-    public static final int TYPE_AUXILIARY = 4;
+public class Meal implements Serializable{
+	private static final long	serialVersionUID	= 6905673432531282644L;
+	
+	public transient static final int TYPE_BREAKFAST = 1;
+    public transient static final int TYPE_LUNCH = 2;
+    public transient static final int TYPE_DINNER = 3;
+    public transient static final int TYPE_AUXILIARY = 4;
     
     private DishCollection dc;
     private int type;
