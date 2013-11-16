@@ -1,8 +1,13 @@
 package com.example.smartmeal;
 
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Locale;
 
+import vn.hust.smie.DishCollection;
+import vn.hust.smie.IngredientCollection;
+import vn.hust.smie.Parser;
+import vn.hust.smie.Smie;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -30,18 +35,36 @@ import com.example.smartmeal.save.Save;
 public class MainActivity extends FragmentActivity {
 
 	public static Activity	MAINACTIVITY;
+	public static Smie		smie;
 	SectionsPagerAdapter	mSectionsPagerAdapter;
 	ViewPager				mViewPager;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		// set up engine
+		IngredientCollection ic = null;
+		DishCollection dc = null;
+
+		try{
+			// Create ingredient collection from data
+			ic = Parser.parseIngredient(MainActivity.MAINACTIVITY.getResources().getAssets().open("data/ingredient.csv"));
+			// Create dish collection from data
+			dc = Parser.parseDish(ic, MainActivity.MAINACTIVITY.getResources().getAssets().open("data/dish.csv"));
+			// Setup engine
+			MainActivity.smie = new Smie(dc, ic);
+			MainActivity.smie.setHistory(Save.getSave().getHistory());
+		}
+		catch (IOException e1){
+			e1.printStackTrace();
+		}
 
 		setContentView(R.layout.activity_main);
 
 		// save reference
 		MAINACTIVITY = this;
-		
+
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the app.
 		mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -50,7 +73,7 @@ public class MainActivity extends FragmentActivity {
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.

@@ -3,17 +3,13 @@ package com.example.smartmeal.fragment;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.TimeZone;
 
 import vn.hust.smie.Dish;
-import vn.hust.smie.DishCollection;
-import vn.hust.smie.IngredientCollection;
+import vn.hust.smie.History;
 import vn.hust.smie.Meal;
-import vn.hust.smie.Parser;
-import vn.hust.smie.Smie;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.SparseArray;
@@ -36,7 +32,7 @@ public class MenuSuggestion extends Fragment {
 
 	// initialize
 	static MealMenu					menu[]		= new MealMenu[] { new MealMenu("Bữa sáng"), new MealMenu("Bữa trưa"), new MealMenu("Bữa tối") };
-	static ArrayList<Dish>			menuBreakfast, menuLunch, menuDinner;
+	static Meal						menuBreakfast, menuLunch, menuDinner;
 
 	// is generated today
 	static boolean					detected	= false;
@@ -65,18 +61,18 @@ public class MenuSuggestion extends Fragment {
 			menu[2].clear();
 
 			// generate
-			menuBreakfast = MenuSuggestion.getMeal(Meal.TYPE_BREAKFAST).getMenu();
-			menuLunch = MenuSuggestion.getMeal(Meal.TYPE_LUNCH).getMenu();
-			menuDinner = MenuSuggestion.getMeal(Meal.TYPE_DINNER).getMenu();
+			menuBreakfast = MenuSuggestion.getMeal(Meal.TYPE_BREAKFAST);
+			menuLunch = MenuSuggestion.getMeal(Meal.TYPE_LUNCH);
+			menuDinner = MenuSuggestion.getMeal(Meal.TYPE_DINNER);
 
 			// append data
-			for (Dish d : menuBreakfast)
+			for (Dish d : menuBreakfast.getMenu())
 				menu[0].add(d);
 
-			for (Dish d : menuLunch)
+			for (Dish d : menuLunch.getMenu())
 				menu[1].add(d);
 
-			for (Dish d : menuDinner)
+			for (Dish d : menuDinner.getMenu())
 				menu[2].add(d);
 		}
 
@@ -104,43 +100,49 @@ public class MenuSuggestion extends Fragment {
 	}
 
 	public static Meal getMeal(int type) {
-		IngredientCollection ic = null;
-		DishCollection dc = null;
 		InputStream inStream = null;
-
 		try{
-			// Create ingredient collection from data
-			ic = Parser.parseIngredient(MainActivity.MAINACTIVITY.getResources().getAssets().open("data/ingredient.csv"));
-			// Create dish collection from data
-			dc = Parser.parseDish(ic, MainActivity.MAINACTIVITY.getResources().getAssets().open("data/dish.csv"));
 			// Open rule file
 			inStream = MainActivity.MAINACTIVITY.getResources().getAssets().open("rule/smartmeal.xml");
 		}
 		catch (IOException e1){
 			e1.printStackTrace();
 		}
-
-		// Setup engine
-		Smie smie = new Smie(dc, ic);
-
-		smie.setupSession(inStream);
+		MainActivity.smie.setupSession(inStream);
 
 		// Add input here
-		smie.inputUser(Save.getSave().getUser());
+		MainActivity.smie.inputUser(Save.getSave().getUser());
 		// Process user information
-		smie.executeRules();
+		MainActivity.smie.executeRules();
 
 		// Setup a meal
-		smie.setupMeal(type);
-		smie.executeRules();
-		smie.printWorkingMemory();
+		MainActivity.smie.setupMeal(type);
+		MainActivity.smie.executeRules();
+		MainActivity.smie.printWorkingMemory();
 
 		// Get result
-		Meal meal = smie.getMeal();
+		Meal meal = MainActivity.smie.getMeal();
 
 		// Finish session
-		smie.finishSession();
+		MainActivity.smie.finishSession();
 
 		return meal;
+	}
+
+	public static void submitMeal(int type) {
+		History history = MainActivity.smie.getHistory();
+		switch(type){
+		case Meal.TYPE_BREAKFAST:
+			history.addMeal(menuBreakfast);
+			break;
+		case Meal.TYPE_LUNCH:
+			history.addMeal(menuLunch);
+			break;
+		case Meal.TYPE_DINNER:
+			history.addMeal(menuDinner);
+			break;
+		}
+		MainActivity.smie.setHistory(history);
+		Save.getSave().save(history);
 	}
 }

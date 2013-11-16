@@ -1,10 +1,18 @@
 package com.example.smartmeal.save;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
+import vn.hust.smie.History;
 import vn.hust.smie.User;
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.widget.Toast;
 
 import com.example.smartmeal.MainActivity;
 
@@ -24,8 +32,8 @@ public class Save {
 
 	private SharedPreferences	preference;
 
-	private Save(Activity activity) {
-		preference = activity.getPreferences(Context.MODE_PRIVATE);
+	private Save() {
+		preference = MainActivity.MAINACTIVITY.getPreferences(Context.MODE_PRIVATE);
 
 		// initialize user
 		preference.getInt(Save.BIRTH, 0);
@@ -35,11 +43,11 @@ public class Save {
 	}
 
 	public static Save getSave() {
-		if (save == null) save = new Save(MainActivity.MAINACTIVITY);
+		if (save == null) save = new Save();
 		return save;
 	}
-	
-	public User getUser(){
+
+	public User getUser() {
 		User user = new User();
 		user.setName(getString(Save.NAME));
 		user.setSex(getInt(Save.GENDER));
@@ -47,7 +55,7 @@ public class Save {
 		user.setHeight(getInt(Save.HEIGHT));
 		user.setWeight(getInt(Save.WEIGHT));
 		user.setActivity(getInt(Save.ACTIVITY));
-		
+
 		return user;
 	}
 
@@ -61,6 +69,28 @@ public class Save {
 
 	public String getString(String type) {
 		return save.preference.getString(type, "");
+	}
+
+	public History getHistory() {
+		FileInputStream fis;
+		History history = null;
+		try{
+			fis = MainActivity.MAINACTIVITY.openFileInput("history");
+			ObjectInputStream is = new ObjectInputStream(fis);
+			history = (History) is.readObject();
+			is.close();
+		}
+		catch (FileNotFoundException e){
+			Toast.makeText(MainActivity.MAINACTIVITY, "File not found", Toast.LENGTH_SHORT).show();
+		}
+		catch (IOException e){
+			Toast.makeText(MainActivity.MAINACTIVITY, "IOException", Toast.LENGTH_SHORT).show();
+		}
+		catch (ClassNotFoundException e){
+			Toast.makeText(MainActivity.MAINACTIVITY, "Class not found", Toast.LENGTH_SHORT).show();
+		}
+
+		return history;
 	}
 
 	public void save(String type, boolean value) {
@@ -91,5 +121,20 @@ public class Save {
 			editor.commit();
 		}
 
+	}
+
+	public void save(History history) {
+		try{
+			FileOutputStream fos = MainActivity.MAINACTIVITY.openFileOutput("history", Context.MODE_PRIVATE);
+			ObjectOutputStream os = new ObjectOutputStream(fos);
+			os.writeObject(this);
+			os.close();
+		}
+		catch (FileNotFoundException e){
+			Toast.makeText(MainActivity.MAINACTIVITY, "File not found", Toast.LENGTH_SHORT).show();
+		}
+		catch (IOException e){
+			Toast.makeText(MainActivity.MAINACTIVITY, "IO failure", Toast.LENGTH_SHORT).show();
+		}
 	}
 }
