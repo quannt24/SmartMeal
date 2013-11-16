@@ -12,7 +12,6 @@ import vn.hust.smie.User;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.example.smartmeal.MainActivity;

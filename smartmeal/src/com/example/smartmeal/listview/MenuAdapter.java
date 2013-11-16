@@ -78,7 +78,7 @@ public class MenuAdapter extends BaseExpandableListAdapter {
 								@Override
 								public void onClick(DialogInterface dialog, int which) {
 									MenuAdapter.this.groups.get(groupPosition).accept();
-									MenuSuggestion.submitMeal(groupPosition+1);
+									MenuSuggestion.submitMeal(groupPosition + 1);
 									MenuSuggestion.loadMealMenu(menuSuggestion);
 									dialog.dismiss();
 								}
@@ -139,6 +139,7 @@ public class MenuAdapter extends BaseExpandableListAdapter {
 								@Override
 								public void onClick(DialogInterface dialog, int which) {
 									MenuAdapter.this.groups.get(groupPosition).remove(dish);
+									//TODO remove ???
 									MenuSuggestion.getMeal(groupPosition).removeDish(dish.getId());
 									MenuSuggestion.loadMealMenu(menuSuggestion);
 									dialog.dismiss();
