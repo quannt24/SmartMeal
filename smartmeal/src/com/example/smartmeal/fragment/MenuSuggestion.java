@@ -32,10 +32,8 @@ public class MenuSuggestion extends Fragment {
 
 	// initialize
 	static MealMenu					menu[]		= new MealMenu[] { new MealMenu("Bữa sáng"), new MealMenu("Bữa trưa"), new MealMenu("Bữa tối") };
-	static Meal						menuBreakfast, menuLunch, menuDinner;
-
-	// is generated today
-	static boolean					detected	= false;
+	static Meal						meal[]		= new Meal[3];
+	static boolean					detected[]	= new boolean[] { false, false, false };
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,40 +45,37 @@ public class MenuSuggestion extends Fragment {
 		Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+07"));
 		day.setText("Thực đơn ngày " + (new SimpleDateFormat("dd/MM/yyyy", Locale.US)).format(calendar.getTime()));
 
-		// TODO look up history
-		if (detected){
-			// menuBreakfast = new ArrayList<Dish>();
-			// menuLunch = new ArrayList<Dish>();
-			// menuDinner = new ArrayList<Dish>();
-		}else{
-			MenuSuggestion.detected = true;
+		// look up history
+		for (int i = 0; i < 3; i++){
+			if (detected[i]) continue;
 
-			// clear
-			menu[0].clear();
-			menu[1].clear();
-			menu[2].clear();
+			for (Meal m : MainActivity.smie.getHistory().getMealList()){
+				if (m.getDate().equals(calendar.getTime()) && (m.getType() == i + 1)){
+					meal[i] = m;
+					menu[i].accept();
+					break;
+				}
+			}
 
-			// generate
-			menuBreakfast = MenuSuggestion.getMeal(Meal.TYPE_BREAKFAST);
-			menuLunch = MenuSuggestion.getMeal(Meal.TYPE_LUNCH);
-			menuDinner = MenuSuggestion.getMeal(Meal.TYPE_DINNER);
+			// load new meal
+			if (!detected[i]) meal[i] = MenuSuggestion.generateMeal(i + 1);
+
+			// refresh menu
+			menu[i].clear();
 
 			// append data
-			for (Dish d : menuBreakfast.getMenu())
-				menu[0].add(d);
+			for (Dish d : meal[i].getMenu())
+				menu[i].add(d);
 
-			for (Dish d : menuLunch.getMenu())
-				menu[1].add(d);
-
-			for (Dish d : menuDinner.getMenu())
-				menu[2].add(d);
+			detected[i] = true;
 		}
 
-		// append all
+		// append list
 		groups.append(0, menu[0]);
 		groups.append(1, menu[1]);
 		groups.append(2, menu[2]);
 
+		// create list view
 		ExpandableListView listView = (ExpandableListView) rootView.findViewById(R.id.expandableListView1);
 		MenuAdapter adapter = new MenuAdapter(getActivity(), this, groups);
 		listView.setAdapter(adapter);
@@ -92,14 +87,18 @@ public class MenuSuggestion extends Fragment {
 		return menu[type];
 	}
 
-	public static void loadMealMenu(MenuSuggestion menuSuggestion) {
-		menuSuggestion.getFragmentManager().beginTransaction()
-				.detach(menuSuggestion)
-				.attach(menuSuggestion)
+	public Meal getMeal(int type) {
+		return meal[type];
+	}
+
+	public void loadMealMenu() {
+		this.getFragmentManager().beginTransaction()
+				.detach(this)
+				.attach(this)
 				.commit();
 	}
 
-	public static Meal getMeal(int type) {
+	public static Meal generateMeal(int type) {
 		InputStream inStream = null;
 		try{
 			// Open rule file
@@ -129,19 +128,9 @@ public class MenuSuggestion extends Fragment {
 		return meal;
 	}
 
-	public static void submitMeal(int type) {
+	public void submitMeal(int type) {
 		History history = MainActivity.smie.getHistory();
-		switch(type){
-		case Meal.TYPE_BREAKFAST:
-			history.addMeal(menuBreakfast);
-			break;
-		case Meal.TYPE_LUNCH:
-			history.addMeal(menuLunch);
-			break;
-		case Meal.TYPE_DINNER:
-			history.addMeal(menuDinner);
-			break;
-		}
+		history.addMeal(meal[type]);
 		MainActivity.smie.setHistory(history);
 		Save.getSave().save(history);
 		Submitted.reloadHistory();
