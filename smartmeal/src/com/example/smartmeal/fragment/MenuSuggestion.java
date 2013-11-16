@@ -39,7 +39,7 @@ public class MenuSuggestion extends Fragment {
 	static ArrayList<Dish>			menuBreakfast, menuLunch, menuDinner;
 
 	// is generated today
-	boolean							detected	= false;
+	static boolean					detected	= false;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -57,7 +57,7 @@ public class MenuSuggestion extends Fragment {
 			// menuLunch = new ArrayList<Dish>();
 			// menuDinner = new ArrayList<Dish>();
 		}else{
-			detected = true;
+			MenuSuggestion.detected = true;
 
 			// clear
 			menu[0].clear();
@@ -66,9 +66,7 @@ public class MenuSuggestion extends Fragment {
 
 			// generate
 			menuBreakfast = MenuSuggestion.getMeal(Meal.TYPE_BREAKFAST).getMenu();
-
 			menuLunch = MenuSuggestion.getMeal(Meal.TYPE_LUNCH).getMenu();
-
 			menuDinner = MenuSuggestion.getMeal(Meal.TYPE_DINNER).getMenu();
 
 			// append data

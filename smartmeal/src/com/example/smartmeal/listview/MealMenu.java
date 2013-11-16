@@ -8,12 +8,21 @@ import vn.hust.smie.Dish;
 public class MealMenu {
 
 	public String				string;
+	public boolean isAccepted = false;
 	private final List<Dish>	menu	= new ArrayList<Dish>();
 
 	public MealMenu(String string) {
 		this.string = string;
 	}
 
+	public boolean getAccept(){
+		return this.isAccepted;
+	}
+	
+	public void accept(){
+		this.isAccepted = true;
+	}
+	
 	public List<Dish> getMenu(){
 		return menu;
 	}

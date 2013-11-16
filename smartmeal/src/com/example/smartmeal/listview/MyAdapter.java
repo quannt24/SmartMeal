@@ -4,7 +4,6 @@ import vn.hust.smie.Dish;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,8 +22,8 @@ public class MyAdapter extends BaseExpandableListAdapter {
 	private final SparseArray<MealMenu>	groups;
 	public LayoutInflater				inflater;
 	public Activity						activity;
-	public final MenuSuggestion menuSuggestion;
-	
+	public final MenuSuggestion			menuSuggestion;
+
 	public MyAdapter(Activity activity, MenuSuggestion menuSuggestion, SparseArray<MealMenu> groups) {
 		this.activity = activity;
 		this.groups = groups;
@@ -51,9 +50,9 @@ public class MyAdapter extends BaseExpandableListAdapter {
 		text = (TextView) convertView.findViewById(R.id.textView1);
 
 		// before last row: add new meal
-		Log.d("Out", "" + getChildrenCount(groupPosition));
-		if (childPosition == getChildrenCount(groupPosition) - 2){
+		if (childPosition == getChildrenCount(groupPosition) - 2 && !this.groups.get(groupPosition).isAccepted){
 			text.setText("+");
+			((Button) convertView.findViewById(R.id.button1)).setVisibility(View.INVISIBLE);
 			convertView.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -61,24 +60,48 @@ public class MyAdapter extends BaseExpandableListAdapter {
 					// TODO choice list
 				}
 			});
-			((Button) convertView.findViewById(R.id.button1)).setVisibility(View.INVISIBLE);
 		}
 		// last row: accept
-		else if (isLastChild){
+		else if (childPosition == getChildrenCount(groupPosition) - 1 && !this.groups.get(groupPosition).isAccepted){
+			if (this.groups.get(groupPosition).isAccepted) convertView.setVisibility(View.INVISIBLE);
+
 			text.setText("!");
+			((Button) convertView.findViewById(R.id.button1)).setVisibility(View.INVISIBLE);
 			convertView.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
-					// TODO submit
+					AlertDialog alertDialog = new AlertDialog.Builder(activity)
+							.setMessage("UIAGSKUYGAK")
+							.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									// TODO submit
+									MyAdapter.this.groups.get(groupPosition).accept();
+									MenuSuggestion.loadMealMenu(menuSuggestion);
+									dialog.dismiss();
+								}
+							})
+							.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									dialog.dismiss();
+								}
+							})
+							.create();
+					alertDialog.show();
 				}
 			});
-			((Button) convertView.findViewById(R.id.button1)).setVisibility(View.INVISIBLE);
 		}else{
 			final Dish dish = (Dish) getChild(groupPosition, childPosition);
 
 			text.setText(dish.getName());
-			// TODO show info
+			if (this.groups.get(groupPosition).isAccepted) ((Button) convertView.findViewById(R.id.button1)).setVisibility(View.INVISIBLE);
+			else ((Button) convertView.findViewById(R.id.button1)).setVisibility(View.VISIBLE);
+
+			// show info
 			convertView.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -115,7 +138,7 @@ public class MyAdapter extends BaseExpandableListAdapter {
 
 								@Override
 								public void onClick(DialogInterface dialog, int which) {
-									groups.get(groupPosition).remove(dish);
+									MyAdapter.this.groups.get(groupPosition).remove(dish);
 									MenuSuggestion.getMeal(groupPosition).removeDish(dish.getId());
 									MenuSuggestion.loadMealMenu(menuSuggestion);
 									dialog.dismiss();
@@ -131,7 +154,8 @@ public class MyAdapter extends BaseExpandableListAdapter {
 
 	@Override
 	public int getChildrenCount(int groupPosition) {
-		return groups.get(groupPosition).getMenu().size() + 2;
+		if (this.groups.get(groupPosition).isAccepted) return groups.get(groupPosition).getMenu().size();
+		else return groups.get(groupPosition).getMenu().size() + 2;
 	}
 
 	@Override
