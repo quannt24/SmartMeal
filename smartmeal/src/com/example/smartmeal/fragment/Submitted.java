@@ -17,8 +17,8 @@ import android.widget.TextView;
 
 import com.example.smartmeal.MainActivity;
 import com.example.smartmeal.R;
-import com.example.smartmeal.listview.HistoryAdapter;
-import com.example.smartmeal.listview.MealMenu;
+import com.example.smartmeal.adapter.HistoryAdapter;
+import com.example.smartmeal.menu.MealMenu;
 
 public class Submitted extends Fragment {
 

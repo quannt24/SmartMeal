@@ -21,8 +21,8 @@ import android.widget.TextView;
 
 import com.example.smartmeal.MainActivity;
 import com.example.smartmeal.R;
-import com.example.smartmeal.listview.MealMenu;
-import com.example.smartmeal.listview.MenuAdapter;
+import com.example.smartmeal.adapter.MenuAdapter;
+import com.example.smartmeal.menu.MealMenu;
 import com.example.smartmeal.save.Save;
 
 public class MenuSuggestion extends Fragment {

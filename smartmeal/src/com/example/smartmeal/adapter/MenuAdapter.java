@@ -1,21 +1,27 @@
-package com.example.smartmeal.listview;
+package com.example.smartmeal.adapter;
+
+import java.util.ArrayList;
 
 import vn.hust.smie.Dish;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.TextView;
 
+import com.example.smartmeal.MainActivity;
 import com.example.smartmeal.R;
 import com.example.smartmeal.fragment.MenuSuggestion;
+import com.example.smartmeal.menu.MealMenu;
 
 public class MenuAdapter extends BaseExpandableListAdapter {
 
@@ -50,20 +56,82 @@ public class MenuAdapter extends BaseExpandableListAdapter {
 		text = (TextView) convertView.findViewById(R.id.textView1);
 
 		// before last row: add new meal
-		if (childPosition == getChildrenCount(groupPosition) - 2 && !this.groups.get(groupPosition).isAccepted){
+		if (childPosition == getChildrenCount(groupPosition) - 2 && !this.groups.get(groupPosition).isAccept()){
 			text.setText("+");
 			((Button) convertView.findViewById(R.id.button1)).setVisibility(View.INVISIBLE);
 			convertView.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
-					// TODO choice list
+					// choice list
+					final ArrayList<Dish> dishes = MainActivity.smie.getDishes();
+					Log.d("Number","" + dishes.size());
+					// remove already chosen dish
+					for (Dish d : MenuAdapter.this.groups.get(groupPosition).getMenu()){
+						Log.d("Remove","" + d.getName());
+						dishes.remove(d);
+					}
+					
+					// dish name
+					final ArrayList<String> values = new ArrayList<String>();
+					for (Dish d : dishes)
+						values.add(d.getName());
+
+					ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.MAINACTIVITY, android.R.layout.simple_list_item_1, values);
+
+					AlertDialog choices = new AlertDialog.Builder(activity)
+							.setAdapter(adapter, new DialogInterface.OnClickListener() {
+
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									// info + submit + cancel
+									final Dish dish = dishes.get(which);
+									AlertDialog info = new AlertDialog.Builder(activity)
+											.setTitle(dish.getName())
+											.setMessage(dish.getQuantity() + " " + dish.getUnit()
+													+ "\n" + dish.getEnergy() + " Kcal"
+													+ "\n" + (int) dish.getProAmount() + " gram"
+													+ "\n" + (int) dish.getGluAmount() + " gram "
+													+ "\n" + (int) dish.getLipAmount() + " gram")
+											.setPositiveButton("Thêm", new DialogInterface.OnClickListener() {
+
+												@Override
+												public void onClick(DialogInterface dialog, int which) {
+													// submit
+													MenuAdapter.this.groups.get(groupPosition).add(dish);
+													menuSuggestion.getMeal(groupPosition).addDish(dish.getId());
+													menuSuggestion.loadMealMenu();
+													dialog.dismiss();
+												}
+											})
+											.setNegativeButton("Không thêm", new DialogInterface.OnClickListener() {
+
+												@Override
+												public void onClick(DialogInterface dialog, int which) {
+													// cancel
+													dialog.dismiss();
+												}
+											})
+											.create();
+									info.show();
+								}
+							})
+							.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									// cancel
+									dialog.dismiss();
+								}
+							})
+							.create();
+					choices.show();
 				}
 			});
 		}
 		// last row: accept
-		else if (childPosition == getChildrenCount(groupPosition) - 1 && !this.groups.get(groupPosition).isAccepted){
-			if (this.groups.get(groupPosition).isAccepted) convertView.setVisibility(View.INVISIBLE);
+		else if (childPosition == getChildrenCount(groupPosition) - 1 && !this.groups.get(groupPosition).isAccept()){
+			if (this.groups.get(groupPosition).isAccept()) convertView.setVisibility(View.INVISIBLE);
 
 			text.setText("!");
 			((Button) convertView.findViewById(R.id.button1)).setVisibility(View.INVISIBLE);
@@ -72,8 +140,8 @@ public class MenuAdapter extends BaseExpandableListAdapter {
 				@Override
 				public void onClick(View v) {
 					AlertDialog alertDialog = new AlertDialog.Builder(activity)
-							.setMessage("UIAGSKUYGAK")
-							.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+							.setMessage("Bạn chấp nhận thực đơn này")
+							.setPositiveButton("Có", new DialogInterface.OnClickListener() {
 
 								@Override
 								public void onClick(DialogInterface dialog, int which) {
@@ -83,7 +151,7 @@ public class MenuAdapter extends BaseExpandableListAdapter {
 									dialog.dismiss();
 								}
 							})
-							.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+							.setNegativeButton("Không", new DialogInterface.OnClickListener() {
 
 								@Override
 								public void onClick(DialogInterface dialog, int which) {
@@ -98,7 +166,7 @@ public class MenuAdapter extends BaseExpandableListAdapter {
 			final Dish dish = (Dish) getChild(groupPosition, childPosition);
 
 			text.setText(dish.getName());
-			if (this.groups.get(groupPosition).isAccepted) ((Button) convertView.findViewById(R.id.button1)).setVisibility(View.INVISIBLE);
+			if (this.groups.get(groupPosition).isAccept()) ((Button) convertView.findViewById(R.id.button1)).setVisibility(View.INVISIBLE);
 			else ((Button) convertView.findViewById(R.id.button1)).setVisibility(View.VISIBLE);
 
 			// show info
@@ -125,22 +193,30 @@ public class MenuAdapter extends BaseExpandableListAdapter {
 				}
 			});
 
-			// TODO remove this dish
+			// remove this dish
 			((Button) convertView.findViewById(R.id.button1)).setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
-					// TODO alert dialog to confirm
+					// alert dialog to confirm
 					AlertDialog alertDialog = new AlertDialog.Builder(activity)
 							.setTitle(dish.getName())
-							.setMessage("UIAGSKUYGAK")
-							.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+							.setMessage("Bạn chuẩn bị loại món này ra khỏi thực đơn")
+							.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
 
 								@Override
 								public void onClick(DialogInterface dialog, int which) {
+									// remove
 									MenuAdapter.this.groups.get(groupPosition).remove(dish);
 									menuSuggestion.getMeal(groupPosition).removeDish(dish.getId());
 									menuSuggestion.loadMealMenu();
+									dialog.dismiss();
+								}
+							})
+							.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
 									dialog.dismiss();
 								}
 							})
@@ -154,7 +230,7 @@ public class MenuAdapter extends BaseExpandableListAdapter {
 
 	@Override
 	public int getChildrenCount(int groupPosition) {
-		if (this.groups.get(groupPosition).isAccepted) return groups.get(groupPosition).getMenu().size();
+		if (this.groups.get(groupPosition).isAccept()) return groups.get(groupPosition).getMenu().size();
 		else return groups.get(groupPosition).getMenu().size() + 2;
 	}
 

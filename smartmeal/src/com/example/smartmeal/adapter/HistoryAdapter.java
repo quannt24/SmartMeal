@@ -1,4 +1,4 @@
-package com.example.smartmeal.listview;
+package com.example.smartmeal.adapter;
 
 import vn.hust.smie.Dish;
 import android.app.Activity;
@@ -14,6 +14,7 @@ import android.widget.CheckedTextView;
 import android.widget.TextView;
 
 import com.example.smartmeal.R;
+import com.example.smartmeal.menu.MealMenu;
 
 public class HistoryAdapter extends BaseExpandableListAdapter {
 
