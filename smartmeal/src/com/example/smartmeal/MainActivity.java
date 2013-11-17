@@ -64,11 +64,7 @@ public class MainActivity extends FragmentActivity {
 
 		setContentView(R.layout.activity_main);
 
-		// Create the adapter that will return a fragment for each of the three
-		// primary sections of the app.
 		mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
-		// Set up the ViewPager with the sections adapter.
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
 	}
@@ -92,9 +88,6 @@ public class MainActivity extends FragmentActivity {
 
 		@Override
 		public Fragment getItem(int position) {
-			// getItem is called to instantiate the fragment for the given page.
-			// Return a DummySectionFragment (defined as a static inner class
-			// below) with the page number as its lone argument.
 			Fragment fragment = null;
 
 			if (Save.getSave().isSetup()){
@@ -144,7 +137,7 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	/**
-	 * TODO submit user profile
+	 * submit user profile
 	 */
 	public void onSetup(View v) {
 		Log.d("Submit", "OK");

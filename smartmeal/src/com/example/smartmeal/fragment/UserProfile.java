@@ -4,14 +4,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Calendar;
 
-import vn.hust.smie.DishCollection;
-import vn.hust.smie.IngredientCollection;
-import vn.hust.smie.Parser;
-import vn.hust.smie.Smie;
 import vn.hust.smie.User;
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,54 +31,45 @@ public class UserProfile extends Fragment {
 		((TextView) rootView.findViewById(R.id.textView2)).setText("Tuổi bạn là " + age);
 		((TextView) rootView.findViewById(R.id.textView4)).setText("Cân Nặng " + Save.getSave().getInt(Save.WEIGHT) + " kg");
 		((TextView) rootView.findViewById(R.id.textView3)).setText("Chiều cao " + Save.getSave().getInt(Save.HEIGHT) + " cm");
-		((TextView) rootView.findViewById(R.id.textView5)).setText("Mức vận động " + Save.getSave().getInt(Save.ACTIVITY));
+		((TextView) rootView.findViewById(R.id.textView5)).setText("Mức vận động: cấp " + Save.getSave().getInt(Save.ACTIVITY));
 
-		// TODO BMI evaluation
-		UserProfile.getBMIeval();
-		((TextView) rootView.findViewById(R.id.textView5)).setText(getBMIeval());
+		// BMI evaluation
+		((TextView) rootView.findViewById(R.id.textView7)).setText(getBMIeval());
 
 		return rootView;
 	}
 
 	public static String getBMIeval() {
-		IngredientCollection ic = null;
-		DishCollection dc = null;
 		InputStream inStream = null;
 
 		try{
-			// Create ingredient collection from data
-			ic = Parser.parseIngredient(MainActivity.MAINACTIVITY.getResources().getAssets().open("data/ingredient.csv"));
-			// Create dish collection from data
-			dc = Parser.parseDish(ic, MainActivity.MAINACTIVITY.getResources().getAssets().open("data/dish.csv"));
-			// Open rule file
 			inStream = MainActivity.MAINACTIVITY.getResources().getAssets().open("rule/smartmeal.xml");
 		}
 		catch (IOException e1){
 			e1.printStackTrace();
 		}
 
-		// Setup engine
-		Smie smie = new Smie(dc, ic);
-
-		smie.setupSession(inStream);
+		MainActivity.smie.setupSession(inStream);
 
 		// Add input here
 		User user = Save.getSave().getUser();
-		smie.inputUser(user);
+		MainActivity.smie.inputUser(user);
 		// Process user information
-		smie.executeRules();
+		MainActivity.smie.executeRules();
+		MainActivity.smie.finishSession();
 
+		Log.d("BMI", "" + user.getBmiEval());
 		switch(user.getBmiEval()){
 		case User.BMI_UNDERWEIGHT:
-			return "";
+			return "thân hình da bọc xương";
 		case User.BMI_SEVERELY_UNDERWEIGHT:
-			return "";
+			return "thân hình hơi gầy một tí";
 		case User.BMI_NORMAL:
-			return "thân hình hoàn toàn bình thường, đề nghị ăn uống giữ sức khỏe, cảm ơn...";
+			return "thân hình hoàn toàn bình thường";
 		case User.BMI_OVERWEIGHT:
-			return "";
+			return "thân hình hơi béo một tí";
 		case User.BMI_OBESE:
-			return "";
+			return "thân hình quá đồ sộ";
 		}
 
 		return "Chưa xếp loại";
