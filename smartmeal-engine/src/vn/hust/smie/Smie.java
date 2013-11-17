@@ -4,6 +4,7 @@
 package vn.hust.smie;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -76,6 +77,10 @@ public class Smie {
 	
 	// Handle of Meal object in engine's working memory
 	this.mealHandle = null;
+    }
+    
+    public ArrayList<Dish> getDishes(){
+    	return dc.getDishList();
     }
     
     /**

@@ -152,5 +152,10 @@ public class DishCollection implements Serializable{
     public int getSelected() {
 	return selected;
     }
+
+	
+	public ArrayList<Dish> getDishList() {
+		return dishList;
+	}
     
 }
