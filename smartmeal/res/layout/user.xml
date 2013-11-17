@@ -83,9 +83,10 @@
                     android:id="@+id/button1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
                     android:layout_gravity="center_horizontal"
                     android:onClick="onSetup"
-                    android:text="Thay đổi" />
+                    android:text="Thay đổi chỉ số" />
             </LinearLayout>
         </RelativeLayout>
     </ScrollView>
