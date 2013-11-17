@@ -3,20 +3,15 @@ package com.example.smartmeal.fragment;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.TimeZone;
 
 import vn.hust.smie.Dish;
-import vn.hust.smie.DishCollection;
-import vn.hust.smie.IngredientCollection;
+import vn.hust.smie.History;
 import vn.hust.smie.Meal;
-import vn.hust.smie.Parser;
-import vn.hust.smie.Smie;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,110 +21,118 @@ import android.widget.TextView;
 
 import com.example.smartmeal.MainActivity;
 import com.example.smartmeal.R;
-import com.example.smartmeal.listview.MealMeanu;
-import com.example.smartmeal.listview.MyAdapter;
+import com.example.smartmeal.listview.MealMenu;
+import com.example.smartmeal.listview.MenuAdapter;
 import com.example.smartmeal.save.Save;
 
 public class MenuSuggestion extends Fragment {
 
 	// more efficient than HashMap for mapping integers to objects
-	SparseArray<MealMeanu>	groups	= new SparseArray<MealMeanu>();
-	ArrayList<Dish>		menuBreakfast, menuLunch, menuDinner;
+	static SparseArray<MealMenu>	groups		= new SparseArray<MealMenu>();
+
+	// initialize
+	static MealMenu					menu[]		= new MealMenu[] { new MealMenu("Bữa sáng"), new MealMenu("Bữa trưa"), new MealMenu("Bữa tối") };
+	static Meal						meal[]		= new Meal[3];
+	static boolean					detected[]	= new boolean[] { false, false, false };
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.menu, container, false);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		// construct view
+		View rootView = inflater.inflate(R.layout.list, container, false);
 
 		// set up time
 		TextView day = (TextView) rootView.findViewById(R.id.day);
 		Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+07"));
 		day.setText("Thực đơn ngày " + (new SimpleDateFormat("dd/MM/yyyy", Locale.US)).format(calendar.getTime()));
 
-		// TODO look up history
-		boolean detected = false;
-		if (detected){
-			menuBreakfast = new ArrayList<Dish>();
-			menuLunch = new ArrayList<Dish>();
-			menuDinner = new ArrayList<Dish>();
-		}else{
-			menuBreakfast = MenuSuggestion.getMeal(Meal.TYPE_BREAKFAST).getMenu();
+		// look up history
+		for (int i = 0; i < 3; i++){
+			if (detected[i]) continue;
 
-			menuLunch = MenuSuggestion.getMeal(Meal.TYPE_LUNCH).getMenu();
+			for (Meal m : MainActivity.smie.getHistory().getMealList()){
+				if (m.getDate().equals(calendar.getTime()) && (m.getType() == i + 1)){
+					meal[i] = m;
+					menu[i].accept();
+					break;
+				}
+			}
 
-			menuDinner = MenuSuggestion.getMeal(Meal.TYPE_DINNER).getMenu();
+			// load new meal
+			if (!detected[i]) meal[i] = MenuSuggestion.generateMeal(i + 1);
 
-			Log.d("Check", "" + menuBreakfast.size());
-			Log.d("Check", "" + menuLunch.size());
-			Log.d("Check", "" + menuDinner.size());
+			// refresh menu
+			menu[i].clear();
+
+			// append data
+			for (Dish d : meal[i].getMenu())
+				menu[i].add(d);
+
+			detected[i] = true;
 		}
 
-		// initialize
-		MealMeanu breakfast = new MealMeanu("Bữa sáng");
-		MealMeanu lunch = new MealMeanu("Bữa trưa");
-		MealMeanu dinner = new MealMeanu("Bữa tối");
+		// append list
+		groups.append(0, menu[0]);
+		groups.append(1, menu[1]);
+		groups.append(2, menu[2]);
 
-		// append data
-		for (Dish d : menuBreakfast)
-			breakfast.children.add(d.getName());
-
-		for (Dish d : menuLunch)
-			lunch.children.add(d.getName());
-
-		for (Dish d : menuDinner)
-			dinner.children.add(d.getName());
-
-		// append all
-		groups.append(0, breakfast);
-		groups.append(1, lunch);
-		groups.append(2, dinner);
-
-		// List View
+		// create list view
 		ExpandableListView listView = (ExpandableListView) rootView.findViewById(R.id.expandableListView1);
-		MyAdapter adapter = new MyAdapter(getActivity(), groups);
+		MenuAdapter adapter = new MenuAdapter(getActivity(), this, groups);
 		listView.setAdapter(adapter);
 
 		return rootView;
 	}
 
-	public static Meal getMeal(int type) {
-		IngredientCollection ic = null;
-		DishCollection dc = null;
-		InputStream inStream = null;
+	public MealMenu getMenu(int type) {
+		return menu[type];
+	}
 
+	public Meal getMeal(int type) {
+		return meal[type];
+	}
+
+	public void loadMealMenu() {
+		this.getFragmentManager().beginTransaction()
+				.detach(this)
+				.attach(this)
+				.commit();
+	}
+
+	public static Meal generateMeal(int type) {
+		InputStream inStream = null;
 		try{
-			// Create ingredient collection from data
-			ic = Parser.parseIngredient(MainActivity.MAINACTIVITY.getResources().getAssets().open("data/ingredient.csv"));
-			// Create dish collection from data
-			dc = Parser.parseDish(ic, MainActivity.MAINACTIVITY.getResources().getAssets().open("data/dish.csv"));
 			// Open rule file
 			inStream = MainActivity.MAINACTIVITY.getResources().getAssets().open("rule/smartmeal.xml");
 		}
 		catch (IOException e1){
 			e1.printStackTrace();
 		}
-
-		// Setup engine
-		Smie smie = new Smie(dc, ic);
-
-		smie.setupSession(inStream);
+		MainActivity.smie.setupSession(inStream);
 
 		// Add input here
-		smie.inputUser(Save.getSave().getUser());
+		MainActivity.smie.inputUser(Save.getSave().getUser());
 		// Process user information
-		smie.executeRules();
+		MainActivity.smie.executeRules();
 
 		// Setup a meal
-		smie.setupMeal(type);
-		smie.executeRules();
-		smie.printWorkingMemory();
+		MainActivity.smie.setupMeal(type);
+		MainActivity.smie.executeRules();
+		MainActivity.smie.printWorkingMemory();
 
 		// Get result
-		Meal meal = smie.getMeal();
+		Meal meal = MainActivity.smie.getMeal();
 
 		// Finish session
-		smie.finishSession();
+		MainActivity.smie.finishSession();
 
 		return meal;
+	}
+
+	public void submitMeal(int type) {
+		History history = MainActivity.smie.getHistory();
+		history.addMeal(meal[type]);
+		MainActivity.smie.setHistory(history);
+		Save.getSave().save(history);
+		Submitted.reloadHistory();
 	}
 }

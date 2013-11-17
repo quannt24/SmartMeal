@@ -3,6 +3,7 @@
  */
 package vn.hust.smie;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -11,10 +12,11 @@ import java.util.Random;
  * @author Quan T. Nguyen <br>
  * Hanoi University of Science and Technology
  */
-public class DishCollection {
-
-    private ArrayList<Dish> dishList;
-    private int selected; // ID of most recently selected dish
+public class DishCollection implements Serializable{
+	private static final long	serialVersionUID	= 5803768276010584455L;
+	
+	private ArrayList<Dish> dishList;
+    private transient int selected; // ID of most recently selected dish
 
     /**
      * Constructor

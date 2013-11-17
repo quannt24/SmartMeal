@@ -3,6 +3,7 @@
  */
 package vn.hust.smie;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -13,15 +14,16 @@ import java.util.Date;
  * @author Quan T. Nguyen <br>
  * Hanoi University of Science and Technology
  */
-public class History {
+public class History implements Serializable{
+	private transient static final long	serialVersionUID	= -2546753231872963195L;
 
-    private ArrayList<Meal> mealList;
+	private ArrayList<Meal> mealList;
     
     // Shorted nutrients of previous meals
-    private double shortedEnergy; // Shorted Energy In KCal
-    private double shortedPro; // Shorted Protein amount in gram
-    private double shortedLip; // Shorted Lipid amount in gram
-    private double shortedGlu; // Shorted Glucid amount in gram
+    private transient double shortedEnergy; // Shorted Energy In KCal
+    private transient double shortedPro; // Shorted Protein amount in gram
+    private transient double shortedLip; // Shorted Lipid amount in gram
+    private transient double shortedGlu; // Shorted Glucid amount in gram
     
     public History() {
 	this(new ArrayList<Meal>());
