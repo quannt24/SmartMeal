@@ -81,7 +81,7 @@ public class Save {
 			is.close();
 		}
 		catch (FileNotFoundException e){
-			Toast.makeText(MainActivity.MAINACTIVITY, "File not found", Toast.LENGTH_SHORT).show();
+			// Toast.makeText(MainActivity.MAINACTIVITY, "History is empty", Toast.LENGTH_SHORT).show();
 		}
 		catch (IOException e){
 			Toast.makeText(MainActivity.MAINACTIVITY, "IOException", Toast.LENGTH_SHORT).show();
@@ -133,10 +133,10 @@ public class Save {
 			os.close();
 		}
 		catch (FileNotFoundException e){
-			Toast.makeText(MainActivity.MAINACTIVITY, "File not found", Toast.LENGTH_SHORT).show();
+			Toast.makeText(MainActivity.MAINACTIVITY, "Can not save", Toast.LENGTH_SHORT).show();
 		}
 		catch (IOException e){
-			Toast.makeText(MainActivity.MAINACTIVITY, "SDcard missing", Toast.LENGTH_SHORT).show();
+			Toast.makeText(MainActivity.MAINACTIVITY, "IOException", Toast.LENGTH_SHORT).show();
 			e.printStackTrace();
 		}
 	}
