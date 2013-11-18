@@ -6,7 +6,6 @@ import vn.hust.smie.Dish;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,12 +64,6 @@ public class MenuAdapter extends BaseExpandableListAdapter {
 				public void onClick(View v) {
 					// choice list
 					final ArrayList<Dish> dishes = MainActivity.smie.getDishes();
-					Log.d("Number","" + dishes.size());
-					// remove already chosen dish
-					for (Dish d : MenuAdapter.this.groups.get(groupPosition).getMenu()){
-						Log.d("Remove","" + d.getName());
-						dishes.remove(d);
-					}
 					
 					// dish name
 					final ArrayList<String> values = new ArrayList<String>();

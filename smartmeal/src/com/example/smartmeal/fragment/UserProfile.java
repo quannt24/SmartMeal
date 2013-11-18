@@ -58,11 +58,11 @@ public class UserProfile extends Fragment {
 		MainActivity.smie.executeRules();
 		MainActivity.smie.finishSession();
 
-		Log.d("BMI", "" + user.getBmiEval());
+		Log.d("BMI", "" + user.getWeight() + "/" + user.getHeight() + user.getBmiEval());
 		switch(user.getBmiEval()){
-		case User.BMI_UNDERWEIGHT:
-			return "thân hình da bọc xương";
 		case User.BMI_SEVERELY_UNDERWEIGHT:
+			return "thân hình da bọc xương";
+		case User.BMI_UNDERWEIGHT:
 			return "thân hình hơi gầy một tí";
 		case User.BMI_NORMAL:
 			return "thân hình hoàn toàn bình thường";
