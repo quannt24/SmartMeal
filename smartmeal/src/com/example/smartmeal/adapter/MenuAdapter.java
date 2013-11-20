@@ -139,7 +139,7 @@ public class MenuAdapter extends BaseExpandableListAdapter {
 
 								@Override
 								public void onClick(DialogInterface dialog, int which) {
-									// TODO regenerate
+									// regenerate
 									Meal newMeal = MenuSuggestion.generateOneMeal(groupPosition + 1);
 									MenuSuggestion.meal[groupPosition] = newMeal;
 									// refresh menu
