@@ -31,8 +31,8 @@ public class MenuSuggestion extends Fragment {
 	static SparseArray<MealMenu>	groups		= new SparseArray<MealMenu>();
 
 	// initialize
-	static MealMenu					menu[]		= new MealMenu[] { new MealMenu("Bữa sáng"), new MealMenu("Bữa trưa"), new MealMenu("Bữa tối") };
-	static Meal						meal[]		= new Meal[3];
+	public static MealMenu					menu[]		= new MealMenu[] { new MealMenu("Bữa sáng"), new MealMenu("Bữa trưa"), new MealMenu("Bữa tối") };
+	public static Meal						meal[]		= new Meal[3];
 	static boolean					detected[]	= new boolean[] { false, false, false };
 
 	@Override
@@ -49,6 +49,7 @@ public class MenuSuggestion extends Fragment {
 		for (int i = 0; i < 3; i++){
 			if (detected[i]) continue;
 
+			// load from history
 			for (Meal m : MainActivity.smie.getHistory().getMealList()){
 				if (m.getDate().equals(calendar.getTime()) && (m.getType() == i + 1)){
 					meal[i] = m;

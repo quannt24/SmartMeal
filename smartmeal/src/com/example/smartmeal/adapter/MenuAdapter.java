@@ -3,6 +3,7 @@ package com.example.smartmeal.adapter;
 import java.util.ArrayList;
 
 import vn.hust.smie.Dish;
+import vn.hust.smie.Meal;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -55,8 +56,8 @@ public class MenuAdapter extends BaseExpandableListAdapter {
 		text = (TextView) convertView.findViewById(R.id.textView1);
 
 		// before last row: add new meal
-		if (childPosition == getChildrenCount(groupPosition) - 2 && !this.groups.get(groupPosition).isAccept()){
-			text.setText("+");
+		if (childPosition == getChildrenCount(groupPosition) - 3 && !this.groups.get(groupPosition).isAccept()){
+			text.setText("Thêm món...");
 			((Button) convertView.findViewById(R.id.button1)).setVisibility(View.INVISIBLE);
 			convertView.setOnClickListener(new OnClickListener() {
 
@@ -64,7 +65,7 @@ public class MenuAdapter extends BaseExpandableListAdapter {
 				public void onClick(View v) {
 					// choice list
 					final ArrayList<Dish> dishes = MainActivity.smie.getDishes();
-					
+
 					// dish name
 					final ArrayList<String> values = new ArrayList<String>();
 					for (Dish d : dishes)
@@ -122,11 +123,53 @@ public class MenuAdapter extends BaseExpandableListAdapter {
 				}
 			});
 		}
+		// regenerate meal
+		else if (childPosition == getChildrenCount(groupPosition) - 2 && !this.groups.get(groupPosition).isAccept()){
+			if (this.groups.get(groupPosition).isAccept()) convertView.setVisibility(View.INVISIBLE);
+
+			text.setText("Ngẫu nhiên");
+			((Button) convertView.findViewById(R.id.button1)).setVisibility(View.INVISIBLE);
+			convertView.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					AlertDialog alertDialog = new AlertDialog.Builder(activity)
+							.setMessage("Bạn muốn tạo thực đơn mới")
+							.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									// TODO regenerate
+									Meal newMeal = MenuSuggestion.generateOneMeal(groupPosition + 1);
+									MenuSuggestion.meal[groupPosition] = newMeal;
+									// refresh menu
+									MenuSuggestion.menu[groupPosition].clear();
+
+									// append data
+									for (Dish d : MenuSuggestion.meal[groupPosition].getMenu())
+										MenuSuggestion.menu[groupPosition].add(d);
+									menuSuggestion.loadMealMenu();
+
+									dialog.dismiss();
+								}
+							})
+							.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									dialog.dismiss();
+								}
+							})
+							.create();
+					alertDialog.show();
+				}
+			});
+		}
 		// last row: accept
 		else if (childPosition == getChildrenCount(groupPosition) - 1 && !this.groups.get(groupPosition).isAccept()){
 			if (this.groups.get(groupPosition).isAccept()) convertView.setVisibility(View.INVISIBLE);
 
-			text.setText("!");
+			text.setText("Chấp nhận");
 			((Button) convertView.findViewById(R.id.button1)).setVisibility(View.INVISIBLE);
 			convertView.setOnClickListener(new OnClickListener() {
 
@@ -155,7 +198,9 @@ public class MenuAdapter extends BaseExpandableListAdapter {
 					alertDialog.show();
 				}
 			});
-		}else{
+		}
+		// Dish
+		else{
 			final Dish dish = (Dish) getChild(groupPosition, childPosition);
 
 			text.setText(dish.getName());
@@ -224,7 +269,7 @@ public class MenuAdapter extends BaseExpandableListAdapter {
 	@Override
 	public int getChildrenCount(int groupPosition) {
 		if (this.groups.get(groupPosition).isAccept()) return groups.get(groupPosition).getMenu().size();
-		else return groups.get(groupPosition).getMenu().size() + 2;
+		else return groups.get(groupPosition).getMenu().size() + 3;
 	}
 
 	@Override
