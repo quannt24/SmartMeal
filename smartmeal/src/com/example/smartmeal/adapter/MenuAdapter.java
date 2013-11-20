@@ -19,8 +19,8 @@ import android.widget.TextView;
 
 import com.example.smartmeal.MainActivity;
 import com.example.smartmeal.R;
-import com.example.smartmeal.fragment.MenuSuggestion;
 import com.example.smartmeal.menu.MealMenu;
+import com.example.smartmeal.tab.MenuSuggestion;
 
 public class MenuAdapter extends BaseExpandableListAdapter {
 

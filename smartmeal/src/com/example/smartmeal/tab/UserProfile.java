@@ -1,4 +1,4 @@
-package com.example.smartmeal.fragment;
+package com.example.smartmeal.tab;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,7 +31,7 @@ public class UserProfile extends Fragment {
 		((TextView) rootView.findViewById(R.id.textView2)).setText("Tuổi bạn là " + age);
 		((TextView) rootView.findViewById(R.id.textView4)).setText("Cân Nặng " + Save.getSave().getInt(Save.WEIGHT) + " kg");
 		((TextView) rootView.findViewById(R.id.textView3)).setText("Chiều cao " + Save.getSave().getInt(Save.HEIGHT) + " cm");
-		((TextView) rootView.findViewById(R.id.textView5)).setText("Mức vận động: cấp " + Save.getSave().getInt(Save.ACTIVITY));
+		((TextView) rootView.findViewById(R.id.textView5)).setText("Mức vận động: cấp " + (Save.getSave().getInt(Save.ACTIVITY) + 1));
 
 		// BMI evaluation
 		((TextView) rootView.findViewById(R.id.textView7)).setText(getBMIeval());
@@ -69,7 +69,7 @@ public class UserProfile extends Fragment {
 		case User.BMI_OVERWEIGHT:
 			return "thân hình hơi béo một tí";
 		case User.BMI_OBESE:
-			return "thân hình quá đồ sộ";
+			return "thân hình đồ sộ";
 		}
 
 		return "Chưa xếp loại";

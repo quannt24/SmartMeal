@@ -1,4 +1,4 @@
-package com.example.smartmeal.fragment;
+package com.example.smartmeal.tab;
 
 import java.io.IOException;
 import java.io.InputStream;
