@@ -58,7 +58,7 @@ public class MenuSuggestion extends Fragment {
 			}
 
 			// load new meal
-			if (!detected[i]) meal[i] = MenuSuggestion.generateMeal(i + 1);
+			if (!detected[i]) meal[i] = MenuSuggestion.generateOneMeal(i + 1);
 
 			// refresh menu
 			menu[i].clear();
@@ -98,7 +98,7 @@ public class MenuSuggestion extends Fragment {
 				.commit();
 	}
 
-	public static Meal generateMeal(int type) {
+	public static Meal generateOneMeal(int type) {
 		InputStream inStream = null;
 		try{
 			// Open rule file

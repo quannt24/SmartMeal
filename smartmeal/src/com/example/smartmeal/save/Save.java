@@ -38,7 +38,7 @@ public class Save {
 		// initialize user
 		preference.getInt(Save.BIRTH, 0);
 		preference.getInt(Save.WEIGHT, 0);
-		preference.getInt(Save.HEIGHT, 0);
+		preference.getFloat(Save.HEIGHT, 0);
 		preference.getInt(Save.ACTIVITY, 0);
 	}
 
@@ -52,7 +52,7 @@ public class Save {
 		user.setName(getString(Save.NAME));
 		user.setSex(getInt(Save.GENDER));
 		user.setYearOfBirth(getInt(Save.BIRTH));
-		user.setHeight(getInt(Save.HEIGHT));
+		user.setHeight(getFloat(Save.HEIGHT));
 		user.setWeight(getInt(Save.WEIGHT));
 		user.setActivity(getInt(Save.ACTIVITY));
 
@@ -65,6 +65,10 @@ public class Save {
 
 	public int getInt(String type) {
 		return save.preference.getInt(type, 0);
+	}
+
+	public float getFloat(String type) {
+		return save.preference.getFloat(type, 0f);
 	}
 
 	public String getString(String type) {
@@ -117,9 +121,19 @@ public class Save {
 
 	public void save(String type, int value) {
 
-		if (type.equals(GENDER) || type.equals(BIRTH) || type.equals(WEIGHT) || type.equals(HEIGHT) || type.equals(ACTIVITY)){
+		if (type.equals(GENDER) || type.equals(BIRTH) || type.equals(WEIGHT) || type.equals(ACTIVITY)){
 			Editor editor = preference.edit();
 			editor.putInt(type, value);
+			editor.commit();
+		}
+
+	}
+
+	public void save(String type, float value) {
+
+		if (type.equals(HEIGHT)){
+			Editor editor = preference.edit();
+			editor.putFloat(type, value);
 			editor.commit();
 		}
 
