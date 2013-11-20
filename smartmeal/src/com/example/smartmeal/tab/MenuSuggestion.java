@@ -16,6 +16,7 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
@@ -31,9 +32,11 @@ public class MenuSuggestion extends Fragment {
 	static SparseArray<MealMenu>	groups		= new SparseArray<MealMenu>();
 
 	// initialize
-	public static MealMenu					menu[]		= new MealMenu[] { new MealMenu("Bữa sáng"), new MealMenu("Bữa trưa"), new MealMenu("Bữa tối") };
-	public static Meal						meal[]		= new Meal[3];
+	public static MealMenu			menu[]		= new MealMenu[] { new MealMenu("Bữa sáng"), new MealMenu("Bữa trưa"), new MealMenu("Bữa tối") };
+	public static Meal				meal[]		= new Meal[3];
 	static boolean					detected[]	= new boolean[] { false, false, false };
+
+	public static MenuSuggestion	menuSuggestion;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -44,6 +47,9 @@ public class MenuSuggestion extends Fragment {
 		TextView day = (TextView) rootView.findViewById(R.id.day);
 		Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+07"));
 		day.setText("Thực đơn ngày " + (new SimpleDateFormat("dd/MM/yyyy", Locale.US)).format(calendar.getTime()));
+
+		// Evaluate
+		((Button) rootView.findViewById(R.id.button)).setBackgroundResource(R.drawable.ic_launcher);
 
 		// look up history
 		for (int i = 0; i < 3; i++){
@@ -81,6 +87,8 @@ public class MenuSuggestion extends Fragment {
 		MenuAdapter adapter = new MenuAdapter(getActivity(), this, groups);
 		listView.setAdapter(adapter);
 
+		menuSuggestion = this;
+
 		return rootView;
 	}
 
@@ -92,10 +100,10 @@ public class MenuSuggestion extends Fragment {
 		return meal[type];
 	}
 
-	public void loadMealMenu() {
-		this.getFragmentManager().beginTransaction()
-				.detach(this)
-				.attach(this)
+	public static void reloadMenu() {
+		MenuSuggestion.menuSuggestion.getFragmentManager().beginTransaction()
+				.detach(MenuSuggestion.menuSuggestion)
+				.attach(MenuSuggestion.menuSuggestion)
 				.commit();
 	}
 

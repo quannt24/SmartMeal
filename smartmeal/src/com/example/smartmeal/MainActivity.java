@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import vn.hust.smie.DishCollection;
+import vn.hust.smie.History;
 import vn.hust.smie.IngredientCollection;
 import vn.hust.smie.Parser;
 import vn.hust.smie.Smie;
@@ -220,5 +221,31 @@ public class MainActivity extends FragmentActivity {
 		i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(i);
 		MainActivity.this.finish();
+	}
+	
+	public void clearHistory(View v) {
+		AlertDialog alertDialog = new AlertDialog.Builder(this)
+				.setTitle("Xóa lịch sử các bữa ăn")
+				.setMessage("Bạn chuẩn bị xóa toàn bộ lịch sử các bữa ăn")
+				.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						History history = new History();
+						Save.getSave().save(history);
+						Submitted.reloadHistory();
+						MenuSuggestion.reloadMenu();
+						dialog.dismiss();
+					}
+				})
+				.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				})
+				.create();
+		alertDialog.show();
 	}
 }
