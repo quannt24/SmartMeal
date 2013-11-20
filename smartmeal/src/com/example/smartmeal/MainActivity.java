@@ -166,8 +166,8 @@ public class MainActivity extends FragmentActivity {
 			try{
 				// validate info
 				step = 0;
-				if(name.trim().equals("")) throw new NumberFormatException();
-				
+				if (name.trim().equals("")) throw new NumberFormatException();
+
 				step = 1;
 				int birth = Integer.parseInt(birthStr);
 				int year = Calendar.getInstance().get(Calendar.YEAR);
@@ -179,7 +179,7 @@ public class MainActivity extends FragmentActivity {
 				if (weight <= 0) throw new NumberFormatException();
 
 				step = 3;
-				float height = Integer.parseInt(heightStr)/100;
+				float height = Integer.parseInt(heightStr) / 100;
 				if (height <= 0) throw new NumberFormatException();
 
 				// save info
@@ -198,7 +198,7 @@ public class MainActivity extends FragmentActivity {
 				else if (step == 1) error = "Bạn chưa đủ tuổi dùng sản phẩm (10 tuổi), hoặc nhập chưa đúng mẫu";
 				else if (step == 2) error = "Khối lượng nhâp chưa đúng mẫu";
 				else if (step == 3) error = "Chiều cao nhập chưa đúng mẫu";
-				
+
 				AlertDialog alertDialog = new AlertDialog.Builder(MAINACTIVITY).setMessage(error).setPositiveButton("Sửa lại", new OnClickListener() {
 
 					@Override
@@ -222,7 +222,7 @@ public class MainActivity extends FragmentActivity {
 		startActivity(i);
 		MainActivity.this.finish();
 	}
-	
+
 	public void clearHistory(View v) {
 		AlertDialog alertDialog = new AlertDialog.Builder(this)
 				.setTitle("Xóa lịch sử các bữa ăn")
@@ -233,6 +233,8 @@ public class MainActivity extends FragmentActivity {
 					public void onClick(DialogInterface dialog, int which) {
 						History history = new History();
 						Save.getSave().save(history);
+						MainActivity.smie.setHistory(history);
+						MenuSuggestion.detected = new boolean[] { false, false, false };
 						Submitted.reloadHistory();
 						MenuSuggestion.reloadMenu();
 						dialog.dismiss();

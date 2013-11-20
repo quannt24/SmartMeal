@@ -34,7 +34,7 @@ public class MenuSuggestion extends Fragment {
 	// initialize
 	public static MealMenu			menu[]		= new MealMenu[] { new MealMenu("Bữa sáng"), new MealMenu("Bữa trưa"), new MealMenu("Bữa tối") };
 	public static Meal				meal[]		= new Meal[3];
-	static boolean					detected[]	= new boolean[] { false, false, false };
+	public static boolean			detected[]	= new boolean[] { false, false, false };
 
 	public static MenuSuggestion	menuSuggestion;
 
@@ -69,6 +69,7 @@ public class MenuSuggestion extends Fragment {
 
 			// refresh menu
 			menu[i].clear();
+			menu[i].removeAccept();
 
 			// append data
 			for (Dish d : meal[i].getMenu())
