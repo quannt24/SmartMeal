@@ -1,4 +1,4 @@
-package com.example.smartmeal.fragment;
+package com.example.smartmeal.tab;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -12,6 +12,7 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
@@ -30,7 +31,12 @@ public class Submitted extends Fragment {
 		View rootView = inflater.inflate(R.layout.list, container, false);
 
 		((TextView) rootView.findViewById(R.id.day)).setText("Các bữa đã chấp nhận");
-		
+
+		// clear history
+		((Button) rootView.findViewById(R.id.button)).setText("Xóa lịch sử");
+		((Button) rootView.findViewById(R.id.button)).setClickable(true);
+
+		// history view
 		History history = MainActivity.smie.getHistory();
 
 		int i = 0;
@@ -61,6 +67,7 @@ public class Submitted extends Fragment {
 		listView.setAdapter(adapter);
 
 		submitted = this;
+
 		return rootView;
 	}
 

@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import vn.hust.smie.DishCollection;
+import vn.hust.smie.History;
 import vn.hust.smie.IngredientCollection;
 import vn.hust.smie.Parser;
 import vn.hust.smie.Smie;
@@ -25,12 +26,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 
-import com.example.smartmeal.fragment.AboutUs;
-import com.example.smartmeal.fragment.MenuSuggestion;
-import com.example.smartmeal.fragment.Setup;
-import com.example.smartmeal.fragment.Submitted;
-import com.example.smartmeal.fragment.UserProfile;
 import com.example.smartmeal.save.Save;
+import com.example.smartmeal.tab.AboutUs;
+import com.example.smartmeal.tab.MenuSuggestion;
+import com.example.smartmeal.tab.Setup;
+import com.example.smartmeal.tab.Submitted;
+import com.example.smartmeal.tab.UserProfile;
 
 public class MainActivity extends FragmentActivity {
 
@@ -165,18 +166,21 @@ public class MainActivity extends FragmentActivity {
 			try{
 				// validate info
 				step = 0;
+				if (name.trim().equals("")) throw new NumberFormatException();
+
+				step = 1;
 				int birth = Integer.parseInt(birthStr);
 				int year = Calendar.getInstance().get(Calendar.YEAR);
 				Log.d("Current", "" + year);
 				if ((((year - birth) < 10)) || (birth < 1900)) throw new NumberFormatException();
 
-				step = 1;
+				step = 2;
 				int weight = Integer.parseInt(weightStr);
 				if (weight <= 0) throw new NumberFormatException();
 
-				step = 2;
-				int height = Integer.parseInt(heightStr);
-				if (weight <= 0) throw new NumberFormatException();
+				step = 3;
+				float height = Integer.parseInt(heightStr) / 100;
+				if (height <= 0) throw new NumberFormatException();
 
 				// save info
 				Save.getSave().save(Save.NAME, name);
@@ -190,9 +194,10 @@ public class MainActivity extends FragmentActivity {
 				e.printStackTrace();
 
 				String error = "";
-				if (step == 0) error = "Bạn chưa đủ tuổi dùng sản phẩm (10 tuổi), hoặc nhập chưa đúng mẫu";
-				else if (step == 1) error = "Khối lượng nhâp chưa đúng mẫu";
-				else if (step == 2) error = "Chiều cao nhập chưa đúng mẫu";
+				if (step == 0) error = "Bạn chưa nhập tên";
+				else if (step == 1) error = "Bạn chưa đủ tuổi dùng sản phẩm (10 tuổi), hoặc nhập chưa đúng mẫu";
+				else if (step == 2) error = "Khối lượng nhâp chưa đúng mẫu";
+				else if (step == 3) error = "Chiều cao nhập chưa đúng mẫu";
 
 				AlertDialog alertDialog = new AlertDialog.Builder(MAINACTIVITY).setMessage(error).setPositiveButton("Sửa lại", new OnClickListener() {
 
@@ -216,5 +221,33 @@ public class MainActivity extends FragmentActivity {
 		i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(i);
 		MainActivity.this.finish();
+	}
+
+	public void clearHistory(View v) {
+		AlertDialog alertDialog = new AlertDialog.Builder(this)
+				.setTitle("Xóa lịch sử các bữa ăn")
+				.setMessage("Bạn chuẩn bị xóa toàn bộ lịch sử các bữa ăn")
+				.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						History history = new History();
+						Save.getSave().save(history);
+						MainActivity.smie.setHistory(history);
+						MenuSuggestion.detected = new boolean[] { false, false, false };
+						Submitted.reloadHistory();
+						MenuSuggestion.reloadMenu();
+						dialog.dismiss();
+					}
+				})
+				.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				})
+				.create();
+		alertDialog.show();
 	}
 }

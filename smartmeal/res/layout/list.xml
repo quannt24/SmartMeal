@@ -19,7 +19,18 @@
         android:id="@+id/expandableListView1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp" >
+        android:layout_below="@+id/button"
+        android:layout_marginTop="15dp" >
     </ExpandableListView>
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/day"
+        android:layout_marginTop="5dp"
+        android:layout_centerHorizontal="true"
+        android:clickable="false"
+        android:onClick="clearHistory" />
 
 </RelativeLayout>

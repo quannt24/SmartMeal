@@ -3,10 +3,10 @@ package com.example.smartmeal.adapter;
 import java.util.ArrayList;
 
 import vn.hust.smie.Dish;
+import vn.hust.smie.Meal;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,8 +20,8 @@ import android.widget.TextView;
 
 import com.example.smartmeal.MainActivity;
 import com.example.smartmeal.R;
-import com.example.smartmeal.fragment.MenuSuggestion;
 import com.example.smartmeal.menu.MealMenu;
+import com.example.smartmeal.tab.MenuSuggestion;
 
 public class MenuAdapter extends BaseExpandableListAdapter {
 
@@ -56,8 +56,8 @@ public class MenuAdapter extends BaseExpandableListAdapter {
 		text = (TextView) convertView.findViewById(R.id.textView1);
 
 		// before last row: add new meal
-		if (childPosition == getChildrenCount(groupPosition) - 2 && !this.groups.get(groupPosition).isAccept()){
-			text.setText("+");
+		if (childPosition == getChildrenCount(groupPosition) - 3 && !this.groups.get(groupPosition).isAccept()){
+			text.setText("Thêm món...");
 			((Button) convertView.findViewById(R.id.button1)).setVisibility(View.INVISIBLE);
 			convertView.setOnClickListener(new OnClickListener() {
 
@@ -65,13 +65,7 @@ public class MenuAdapter extends BaseExpandableListAdapter {
 				public void onClick(View v) {
 					// choice list
 					final ArrayList<Dish> dishes = MainActivity.smie.getDishes();
-					Log.d("Number","" + dishes.size());
-					// remove already chosen dish
-					for (Dish d : MenuAdapter.this.groups.get(groupPosition).getMenu()){
-						Log.d("Remove","" + d.getName());
-						dishes.remove(d);
-					}
-					
+
 					// dish name
 					final ArrayList<String> values = new ArrayList<String>();
 					for (Dish d : dishes)
@@ -100,7 +94,7 @@ public class MenuAdapter extends BaseExpandableListAdapter {
 													// submit
 													MenuAdapter.this.groups.get(groupPosition).add(dish);
 													menuSuggestion.getMeal(groupPosition).addDish(dish.getId());
-													menuSuggestion.loadMealMenu();
+													menuSuggestion.reloadMenu();
 													dialog.dismiss();
 												}
 											})
@@ -129,25 +123,33 @@ public class MenuAdapter extends BaseExpandableListAdapter {
 				}
 			});
 		}
-		// last row: accept
-		else if (childPosition == getChildrenCount(groupPosition) - 1 && !this.groups.get(groupPosition).isAccept()){
+		// regenerate meal
+		else if (childPosition == getChildrenCount(groupPosition) - 2 && !this.groups.get(groupPosition).isAccept()){
 			if (this.groups.get(groupPosition).isAccept()) convertView.setVisibility(View.INVISIBLE);
 
-			text.setText("!");
+			text.setText("Ngẫu nhiên");
 			((Button) convertView.findViewById(R.id.button1)).setVisibility(View.INVISIBLE);
 			convertView.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
 					AlertDialog alertDialog = new AlertDialog.Builder(activity)
-							.setMessage("Bạn chấp nhận thực đơn này")
+							.setMessage("Bạn muốn tạo thực đơn mới")
 							.setPositiveButton("Có", new DialogInterface.OnClickListener() {
 
 								@Override
 								public void onClick(DialogInterface dialog, int which) {
-									MenuAdapter.this.groups.get(groupPosition).accept();
-									menuSuggestion.submitMeal(groupPosition);
-									menuSuggestion.loadMealMenu();
+									// regenerate
+									Meal newMeal = MenuSuggestion.generateOneMeal(groupPosition + 1);
+									MenuSuggestion.meal[groupPosition] = newMeal;
+									// refresh menu
+									MenuSuggestion.menu[groupPosition].clear();
+
+									// append data
+									for (Dish d : MenuSuggestion.meal[groupPosition].getMenu())
+										MenuSuggestion.menu[groupPosition].add(d);
+									menuSuggestion.reloadMenu();
+
 									dialog.dismiss();
 								}
 							})
@@ -162,7 +164,43 @@ public class MenuAdapter extends BaseExpandableListAdapter {
 					alertDialog.show();
 				}
 			});
-		}else{
+		}
+		// last row: accept
+		else if (childPosition == getChildrenCount(groupPosition) - 1 && !this.groups.get(groupPosition).isAccept()){
+			if (this.groups.get(groupPosition).isAccept()) convertView.setVisibility(View.INVISIBLE);
+
+			text.setText("Chấp nhận");
+			((Button) convertView.findViewById(R.id.button1)).setVisibility(View.INVISIBLE);
+			convertView.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					AlertDialog alertDialog = new AlertDialog.Builder(activity)
+							.setMessage("Bạn chấp nhận thực đơn này")
+							.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									MenuAdapter.this.groups.get(groupPosition).accept();
+									menuSuggestion.submitMeal(groupPosition);
+									menuSuggestion.reloadMenu();
+									dialog.dismiss();
+								}
+							})
+							.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									dialog.dismiss();
+								}
+							})
+							.create();
+					alertDialog.show();
+				}
+			});
+		}
+		// Dish
+		else{
 			final Dish dish = (Dish) getChild(groupPosition, childPosition);
 
 			text.setText(dish.getName());
@@ -209,7 +247,7 @@ public class MenuAdapter extends BaseExpandableListAdapter {
 									// remove
 									MenuAdapter.this.groups.get(groupPosition).remove(dish);
 									menuSuggestion.getMeal(groupPosition).removeDish(dish.getId());
-									menuSuggestion.loadMealMenu();
+									menuSuggestion.reloadMenu();
 									dialog.dismiss();
 								}
 							})
@@ -231,7 +269,7 @@ public class MenuAdapter extends BaseExpandableListAdapter {
 	@Override
 	public int getChildrenCount(int groupPosition) {
 		if (this.groups.get(groupPosition).isAccept()) return groups.get(groupPosition).getMenu().size();
-		else return groups.get(groupPosition).getMenu().size() + 2;
+		else return groups.get(groupPosition).getMenu().size() + 3;
 	}
 
 	@Override
