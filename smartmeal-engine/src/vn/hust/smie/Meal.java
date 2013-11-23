@@ -151,6 +151,21 @@ public class Meal implements Serializable{
     public double getShortedGlu() {
 	return shortedGlu;
     }
+    
+    /**
+     * Get a balance evaluation of a meal. A negative result means the meal has redundant
+     * (in overall) nutrition, a positive result means the meal has short nutrition. The balance
+     * score ranges from -3 to 3
+     * @return
+     */
+    public int getBalance() {
+	double shorted = shortedEnergy + shortedPro + shortedLip + shortedGlu;
+	double bound = (reqEnergy + reqProAmount + reqLipAmount + reqGluAmount) / 2;
+	int score = (int) Math.round(shorted / bound * 3);
+	if (score < -3) score = -3;
+	if (score > 3) score = 3;
+	return score;
+    }
 
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
