@@ -19,6 +19,7 @@ public class Dish implements Serializable {
 	public transient static final int			TYPE_PROTEIN		= 3;
 	public transient static final int			TYPE_FRUIT			= 4;
 	public transient static final int			TYPE_MIXED			= 5;
+	public transient static final int			TYPE_BREAKFAST			= 6; // Specific for breakfast
 
 	private transient int						id;
 	private String								name;

@@ -59,7 +59,7 @@ public class Tester {
 	// Get result
 	Meal meal1 = smie.getMeal();
 	// Print result
-	System.out.println("Result meal 1:");
+	System.out.println("Result meal 1: " + meal1.getBalance());
 	ArrayList<Dish> menu1 = meal1.getMenu();
 	for (Dish d : menu1) {
 	    System.out.println(d);
@@ -71,7 +71,7 @@ public class Tester {
 	smie.setupMeal(Meal.TYPE_LUNCH);
 	smie.executeRules();
 	Meal meal2 = smie.getMeal();
-	System.out.println("Result meal 2:");
+	System.out.println("Result meal 2:" + meal2.getBalance());
 	ArrayList<Dish> menu2 = meal2.getMenu();
 	for (Dish d : menu2) {
 	    System.out.println(d);
