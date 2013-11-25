@@ -94,7 +94,7 @@ public class MenuAdapter extends BaseExpandableListAdapter {
 													// submit
 													MenuAdapter.this.groups.get(groupPosition).add(dish);
 													menuSuggestion.getMeal(groupPosition).addDish(dish.getId());
-													menuSuggestion.reloadMenu();
+													MenuSuggestion.reloadMenu();
 													dialog.dismiss();
 												}
 											})
@@ -148,7 +148,7 @@ public class MenuAdapter extends BaseExpandableListAdapter {
 									// append data
 									for (Dish d : MenuSuggestion.meal[groupPosition].getMenu())
 										MenuSuggestion.menu[groupPosition].add(d);
-									menuSuggestion.reloadMenu();
+									MenuSuggestion.reloadMenu();
 
 									dialog.dismiss();
 								}
@@ -183,7 +183,7 @@ public class MenuAdapter extends BaseExpandableListAdapter {
 								public void onClick(DialogInterface dialog, int which) {
 									MenuAdapter.this.groups.get(groupPosition).accept();
 									menuSuggestion.submitMeal(groupPosition);
-									menuSuggestion.reloadMenu();
+									MenuSuggestion.reloadMenu();
 									dialog.dismiss();
 								}
 							})
@@ -247,7 +247,7 @@ public class MenuAdapter extends BaseExpandableListAdapter {
 									// remove
 									MenuAdapter.this.groups.get(groupPosition).remove(dish);
 									menuSuggestion.getMeal(groupPosition).removeDish(dish.getId());
-									menuSuggestion.reloadMenu();
+									MenuSuggestion.reloadMenu();
 									dialog.dismiss();
 								}
 							})

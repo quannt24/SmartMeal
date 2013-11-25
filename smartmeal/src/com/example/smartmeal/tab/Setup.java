@@ -15,8 +15,7 @@ import com.example.smartmeal.save.Save;
 public class Setup extends Fragment {
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.setup, container, false);
 
 		// saved info
@@ -29,9 +28,9 @@ public class Setup extends Fragment {
 			((RadioGroup) rootView.findViewById(R.id.radioGroup2)).check(R.id.radio00);
 			break;
 		}
-		if( Save.getSave().getInt(Save.BIRTH) != 0) ((EditText) rootView.findViewById(R.id.editText4)).setText("" + Save.getSave().getInt(Save.BIRTH));
-		if( Save.getSave().getInt(Save.WEIGHT) != 0) ((EditText) rootView.findViewById(R.id.editText2)).setText("" + Save.getSave().getInt(Save.WEIGHT));
-		if( Save.getSave().getInt(Save.HEIGHT) != 0) ((EditText) rootView.findViewById(R.id.editText3)).setText("" + Save.getSave().getInt(Save.HEIGHT));
+		if (Save.getSave().getInt(Save.BIRTH) != 0) ((EditText) rootView.findViewById(R.id.editText4)).setText("" + Save.getSave().getInt(Save.BIRTH));
+		if (Save.getSave().getInt(Save.WEIGHT) != 0) ((EditText) rootView.findViewById(R.id.editText2)).setText("" + Save.getSave().getInt(Save.WEIGHT));
+		if (Save.getSave().getFloat(Save.HEIGHT) != 0) ((EditText) rootView.findViewById(R.id.editText3)).setText("" +  (int) (Save.getSave().getFloat(Save.HEIGHT) * 100));
 		switch(Save.getSave().getInt(Save.ACTIVITY)){
 		case User.ACTIVITY_FEW:
 			((RadioGroup) rootView.findViewById(R.id.radioGroup1)).check(R.id.radio11);

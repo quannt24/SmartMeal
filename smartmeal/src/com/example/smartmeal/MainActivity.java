@@ -179,7 +179,7 @@ public class MainActivity extends FragmentActivity {
 				if (weight <= 0) throw new NumberFormatException();
 
 				step = 3;
-				float height = Integer.parseInt(heightStr) / 100;
+				float height = Integer.parseInt(heightStr) / 100.0f;
 				if (height <= 0) throw new NumberFormatException();
 
 				// save info
