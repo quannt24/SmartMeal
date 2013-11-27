@@ -77,30 +77,14 @@ public class MenuSuggestion extends Fragment {
 
 		// Evaluate
 		// get point
-		int point = (meal[0].getBalance() + meal[1].getBalance() + meal[2].getBalance()) / 3;
-		switch(point){
-		case -3:
-			((Button) rootView.findViewById(R.id.button)).setBackgroundResource(R.drawable.m3);
-			break;
-		case -2:
-			((Button) rootView.findViewById(R.id.button)).setBackgroundResource(R.drawable.m2);
-			break;
-		case -1:
-			((Button) rootView.findViewById(R.id.button)).setBackgroundResource(R.drawable.m1);
-			break;
-		case 0:
-			((Button) rootView.findViewById(R.id.button)).setBackgroundResource(R.drawable.g);
-			break;
-		case 1:
-			((Button) rootView.findViewById(R.id.button)).setBackgroundResource(R.drawable.l1);
-			break;
-		case 2:
-			((Button) rootView.findViewById(R.id.button)).setBackgroundResource(R.drawable.l2);
-			break;
-		case 3:
-			((Button) rootView.findViewById(R.id.button)).setBackgroundResource(R.drawable.l3);
-			break;
-		}
+		int point = meal[0].getBalance() + meal[1].getBalance() + meal[2].getBalance();
+		if (point <= -6) ((Button) rootView.findViewById(R.id.button)).setBackgroundResource(R.drawable.m3);
+		else if (point <= -3) ((Button) rootView.findViewById(R.id.button)).setBackgroundResource(R.drawable.m2);
+		else if (point < 0) ((Button) rootView.findViewById(R.id.button)).setBackgroundResource(R.drawable.m1);
+		else if (point == 0) ((Button) rootView.findViewById(R.id.button)).setBackgroundResource(R.drawable.g);
+		else if (point < 3) ((Button) rootView.findViewById(R.id.button)).setBackgroundResource(R.drawable.l1);
+		else if (point < 6) ((Button) rootView.findViewById(R.id.button)).setBackgroundResource(R.drawable.l2);
+		else ((Button) rootView.findViewById(R.id.button)).setBackgroundResource(R.drawable.l3);
 
 		// append list
 		groups.append(0, menu[0]);

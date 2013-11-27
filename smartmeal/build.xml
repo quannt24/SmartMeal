@@ -86,7 +86,7 @@
          In all cases you must update the value of version-tag below to read 'custom' instead of an integer,
          in order to avoid having your file be overridden by tools such as "android update project"
     -->
-    <!-- version-tag: 2 -->
+ 	<!-- version-tag: 2 -->
     <target name="-jarjar" depends="-compile">
         <taskdef name="jarjar" classname="com.tonicsystems.jarjar.JarJarTask"
                  classpath="buildtools/jarjar-1.4.jar"/>
