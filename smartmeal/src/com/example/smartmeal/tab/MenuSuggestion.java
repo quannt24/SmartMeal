@@ -48,9 +48,6 @@ public class MenuSuggestion extends Fragment {
 		Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+07"));
 		day.setText("Thực đơn ngày " + (new SimpleDateFormat("dd/MM/yyyy", Locale.US)).format(calendar.getTime()));
 
-		// Evaluate
-		((Button) rootView.findViewById(R.id.button)).setBackgroundResource(R.drawable.ic_launcher);
-
 		// look up history
 		for (int i = 0; i < 3; i++){
 			if (detected[i]) continue;
@@ -77,6 +74,17 @@ public class MenuSuggestion extends Fragment {
 
 			detected[i] = true;
 		}
+
+		// Evaluate
+		// get point
+		int point = meal[0].getBalance() + meal[1].getBalance() + meal[2].getBalance();
+		if (point <= -6) ((Button) rootView.findViewById(R.id.button)).setBackgroundResource(R.drawable.m3);
+		else if (point <= -3) ((Button) rootView.findViewById(R.id.button)).setBackgroundResource(R.drawable.m2);
+		else if (point < 0) ((Button) rootView.findViewById(R.id.button)).setBackgroundResource(R.drawable.m1);
+		else if (point == 0) ((Button) rootView.findViewById(R.id.button)).setBackgroundResource(R.drawable.g);
+		else if (point < 3) ((Button) rootView.findViewById(R.id.button)).setBackgroundResource(R.drawable.l1);
+		else if (point < 6) ((Button) rootView.findViewById(R.id.button)).setBackgroundResource(R.drawable.l2);
+		else ((Button) rootView.findViewById(R.id.button)).setBackgroundResource(R.drawable.l3);
 
 		// append list
 		groups.append(0, menu[0]);

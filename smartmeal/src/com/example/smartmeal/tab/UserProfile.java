@@ -35,7 +35,7 @@ public class UserProfile extends Fragment {
 		((TextView) rootView.findViewById(R.id.textView1)).setText("Xin chào, bạn " + Save.getSave().getString(Save.NAME));
 		((TextView) rootView.findViewById(R.id.textView2)).setText("Tuổi bạn là " + age);
 		((TextView) rootView.findViewById(R.id.textView4)).setText("Cân Nặng " + Save.getSave().getInt(Save.WEIGHT) + " kg");
-		((TextView) rootView.findViewById(R.id.textView3)).setText("Chiều cao " + ((int) Save.getSave().getFloat(Save.HEIGHT) * 100) + " cm");
+		((TextView) rootView.findViewById(R.id.textView3)).setText("Chiều cao " + (int) (Save.getSave().getFloat(Save.HEIGHT) * 100) + " cm");
 		((TextView) rootView.findViewById(R.id.textView5)).setText("Mức vận động: cấp " + (Save.getSave().getInt(Save.ACTIVITY) + 1));
 
 		// BMI evaluation

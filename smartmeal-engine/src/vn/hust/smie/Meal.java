@@ -162,8 +162,8 @@ public class Meal implements Serializable{
 	double shorted = shortedEnergy + shortedPro + shortedLip + shortedGlu;
 	double bound = (reqEnergy + reqProAmount + reqLipAmount + reqGluAmount) / 2;
 	int score = (int) Math.round(shorted / bound * 3);
-	if (score < -3) score = -3;
-	if (score > 3) score = 3;
+//	if (score < -3) score = -3;
+//	if (score > 3) score = 3;
 	return score;
     }
 
